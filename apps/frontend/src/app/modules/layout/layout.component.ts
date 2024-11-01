@@ -1,16 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, distinctUntilChanged, of, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Subject,
+  distinctUntilChanged,
+  of,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
 
 import { LocationService } from '../../shared/services/location.service';
 import { Weather } from '../../shared/models/weather';
 import { ThemeService } from '../../shared/services/theme.service';
+import { PersistenceService } from '../../shared/services/persistence.service';
+import { TranslocoService } from '../transloco/transloco-service';
+import { AvailableLangs } from '@ngneat/transloco';
+import { TranslationService } from '../../shared/services/translation.service';
 
 @Component({
   selector: 'weather-layout-component',
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class LayoutComponent implements OnInit {
   centerSearchBar: boolean = true;
@@ -27,12 +39,34 @@ export class LayoutComponent implements OnInit {
 
   currentFontColorClass: string = 'text-white';
 
+  currentRecentLocationIds: string[] = [];
+
+  isCountrySelectOpen: boolean = false;
+
+  availableTranslationKeys: string[];
+
+  currentTranslationKey: any;
+
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+
   constructor(
     private locationService: LocationService,
     private router: Router,
     private route: ActivatedRoute,
     private themeService: ThemeService,
-  ) {}
+    private persistenceService: PersistenceService,
+    private translationService: TranslationService,
+  ) {
+    this.availableTranslationKeys =
+      this.translationService.getAvailableLanguageKeys() as string[];
+
+    this.translationService.activeLanguageKey
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((key) => {
+        this.currentTranslationKey = key;
+        console.log(this.currentTranslationKey);
+      });
+  }
 
   ngOnInit(): void {
     this.searchInputControl.valueChanges.subscribe((query) => {
@@ -58,6 +92,10 @@ export class LayoutComponent implements OnInit {
     this.themeService.fontColorClass$.subscribe((fontColor: string) => {
       this.currentFontColorClass = fontColor;
     });
+
+    this.persistenceService.recentLocations.subscribe(
+      (locations) => (this.currentRecentLocationIds = locations),
+    );
   }
 
   getBackgroundImageClass() {
@@ -70,6 +108,7 @@ export class LayoutComponent implements OnInit {
   }
 
   viewLocation(locationId: string) {
+    this.persistenceService.addRecentLocation(locationId);
     this.router.navigate(['/', locationId]);
     this.searchInputControl.setValue('');
   }
@@ -83,5 +122,9 @@ export class LayoutComponent implements OnInit {
     this.locationService
       .getLocations(query)
       .subscribe((result) => (this.locationResults = result));
+  }
+
+  onSelectLanguage(key: string) {
+    this.translationService.setLanguage(key);
   }
 }

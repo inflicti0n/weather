@@ -74,11 +74,9 @@ export class IconsModule {
     this.iconReg?.loadSvg('assets/icons/chart.svg', 'chart')?.subscribe();
 
     this.iconReg?.loadSvg('assets/icons/location.svg', 'location')?.subscribe();
-    this.iconReg?.loadSvg('assets/icons/uk-flag.svg', 'uk-flag')?.subscribe();
+    this.iconReg?.loadSvg('assets/icons/en.svg', 'en')?.subscribe();
 
-    this.iconReg
-      ?.loadSvg('assets/icons/greece-flag.svg', 'greece-flag')
-      ?.subscribe();
+    this.iconReg?.loadSvg('assets/icons/el.svg', 'el')?.subscribe();
 
     this.iconReg.addSvg(
       'showers',

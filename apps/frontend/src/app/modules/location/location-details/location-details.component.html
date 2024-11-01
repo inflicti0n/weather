@@ -26,9 +26,11 @@
           </button>
         </div>
         <!-- Weather Summary-->
-        <div class="flex flex-row justify-center self-center max-h-[35vh]">
+        <div
+          class="flex flex-row justify-center self-center max-h-[35vh] w-full"
+        >
           <div
-            class="items-center justify-center flex flex-col self-center text-center gap-2 tall:gap-3"
+            class="items-center justify-center flex flex-col self-center text-center w-full gap-2 tall:gap-3"
           >
             <div class="w-full text-2xl tall:text-4xl font-semibold">
               {{ t('locations.' + location.id) }}
@@ -267,7 +269,7 @@
           <button
             (click)="selectDayWeather(weather.dateTime)"
             *ngFor="
-              let weather of dayAveragedWeather | slice: 0 : 30;
+              let weather of dayAveragedWeather | slice: 1 : 31;
               let first = first;
               let last = last
             "
@@ -275,7 +277,12 @@
             [ngClass]="{
               'border-white':
                 (weather.dateTime | date: 'M-d-y') ===
-                (currentlySelectedWeather[0].dateTime | date: 'M-d-y'),
+                  (currentlySelectedWeather[0].dateTime | date: 'M-d-y') &&
+                currentFontColorClass === 'text-white',
+              'border-sky-950':
+                (weather.dateTime | date: 'M-d-y') ===
+                  (currentlySelectedWeather[0].dateTime | date: 'M-d-y') &&
+                currentFontColorClass === 'text-sky-950',
               'border-solid':
                 (weather.dateTime | date: 'M-d-y') ===
                 (currentlySelectedWeather[0].dateTime | date: 'M-d-y'),
@@ -358,7 +365,7 @@
             <div class="w-[10%] items-center flex flex-row justify-center">
               {{ weather.temperatureCelsius }}°
             </div>
-            <div class="w-[30%] items-center flex flex-row justify-start gap-2">
+            <div class="w-[35%] items-center flex flex-row justify-start gap-2">
               <svg-icon
                 name="{{
                   getTimeAdjustedWeatherIconName(
@@ -386,9 +393,6 @@
                 {{ weather.windSpeedKmh }}
               </div>
               <div>km/h</div>
-            </div>
-            <div class="w-[4%] items-center flex flex-row justify-start">
-              <svg-icon name="arrow-down" [svgClass]="'w-6 h-6'"></svg-icon>
             </div>
           </button>
         </div>
@@ -692,7 +696,7 @@
           <button
             (click)="selectDayWeather(weather.dateTime)"
             *ngFor="
-              let weather of dayAveragedWeather | slice: 0 : 30;
+              let weather of dayAveragedWeather | slice: 1 : 31;
               let first = first;
               let last = last
             "
@@ -700,7 +704,12 @@
             [ngClass]="{
               'border-white':
                 (weather.dateTime | date: 'M-d-y') ===
-                (currentlySelectedWeather[0].dateTime | date: 'M-d-y'),
+                  (currentlySelectedWeather[0].dateTime | date: 'M-d-y') &&
+                currentFontColorClass === 'text-white',
+              'border-sky-950':
+                (weather.dateTime | date: 'M-d-y') ===
+                  (currentlySelectedWeather[0].dateTime | date: 'M-d-y') &&
+                currentFontColorClass === 'text-sky-950',
               'border-solid':
                 (weather.dateTime | date: 'M-d-y') ===
                 (currentlySelectedWeather[0].dateTime | date: 'M-d-y'),

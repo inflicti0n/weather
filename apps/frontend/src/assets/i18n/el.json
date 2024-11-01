@@ -1,10 +1,15 @@
 {
   "overlay": {
-    "search": "Search location",
-    "recent-locations": "Recent Locations"
+    "search": "Αναζήτηση τοποθεσίας",
+    "recent-locations": "Πρόσφατες τοποθεσίες",
+    "languages": {
+      "el": "Ελληνικά",
+      "en": "Αγγλικά"
+    }
   },
   "location": {
-    "now": "Now",
+    "now": "Τώρα",
+    "today": "Σήμερα",
     "view-full-forecast": "View Full Forecast",
     "weather-conditions": {
       "sunny": "Sunny",
@@ -18,6 +23,36 @@
       "heavy-rain": "Heavy Rain",
       "snowy": "Snowy",
       "sleet": "Sleet"
+    },
+    "forecast": {
+      "sunny": "Sunny",
+      "partly-sunny": "Partly Sunny",
+      "clear": "Mostly Clear",
+      "partly-cloudy": "Mostly Cloudy",
+      "overcast": "Mostly Overcast",
+      "thunderstorm": "Thunderstorm expected at",
+      "fog": "Mostly Foggy",
+      "showers": "Showers expected at",
+      "heavy-rain": "Heavy rain expected at",
+      "snowy": "Snow expected at",
+      "sleet": "Sleet expected at"
+    },
+    "details": {
+      "uvi-low": "Low",
+      "uvi-moderate": "Moderate",
+      "uvi-high": "High",
+      "uvi-very-high": "Very High",
+      "uvi-extreme": "Extreme",
+      "aqi-good": "Good",
+      "aqi-moderate": "Moderate",
+      "aqi-poor": "Poor",
+      "aqi-unhealthy": "Unhealthy",
+      "aqi-very-unhealthy": "Very Unhealthy",
+      "aqi-hazardous": "Hazardous",
+      "compass-north": "N",
+      "compass-south": "S",
+      "compass-west": "W",
+      "compass-east": "E"
     }
   },
   "locations": {
@@ -31,6 +66,7 @@
     "amsterdam-netherlands": "Amsterdam, Netherlands",
     "berlin-germany": "Berlin, Germany",
     "rome-italy": "Rome, Italy",
-    "vienna-austria": "Vienna, Austria"
+    "vienna-austria": "Vienna, Austria",
+    "oslo-norway": "Oslo, Norway"
   }
 }

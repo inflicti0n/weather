@@ -1,7 +1,11 @@
 {
   "overlay": {
     "search": "Search location",
-    "recent-locations": "Recent Locations"
+    "recent-locations": "Recent Locations",
+    "languages": {
+      "el": "Greek",
+      "en": "English"
+    }
   },
   "location": {
     "now": "Now",
@@ -62,6 +66,7 @@
     "amsterdam-netherlands": "Amsterdam, Netherlands",
     "berlin-germany": "Berlin, Germany",
     "rome-italy": "Rome, Italy",
-    "vienna-austria": "Vienna, Austria"
+    "vienna-austria": "Vienna, Austria",
+    "oslo-norway": "Oslo, Norway"
   }
 }

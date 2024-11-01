@@ -768,11 +768,11 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
 
   private getLocationMonthlyWeather(locationId: string) {
     const localTime = now(getLocalTimeZone());
-    //localTime.set({ hour: 0 });
+    localTime.set({ hour: 0 });
     this.locationService
       .getLocationWeather(
         locationId,
-        localTime.subtract({ hours: localTime.hour + 1 }).toAbsoluteString(), //localTime.subtract({ hours: 1 }).toAbsoluteString(),
+        localTime.subtract({ days: 1 }).toAbsoluteString(),
         localTime.add({ days: 30 }).set({ hour: 1 }).toAbsoluteString(),
       )
       .subscribe((result) => {
@@ -786,9 +786,9 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
         }
         this.currentMonthlyWeather = this.getMonthlyWeather(result.weather);
 
-        this.selectDayWeather(this.location.weather[0].dateTime);
+        this.selectDayWeather(this.location.weather[2].dateTime);
 
-        this.selectHourWeather(this.location.weather[0].dateTime);
+        this.selectHourWeather(this.location.weather[2].dateTime);
 
         this.dayAveragedWeather = this.getDayAveragedWeather();
 

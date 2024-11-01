@@ -1,5 +1,6 @@
 export const locationTimezoneMap: Record<string, string> = {
   'athens-greece': 'Europe/Athens',
+  'oslo-norway': 'Europe/Oslo',
   'larissa-greece': 'Europe/Athens',
   'thessaloniki-greece': 'Europe/Athens',
   'tokyo-japan': 'Asia/Tokyo',

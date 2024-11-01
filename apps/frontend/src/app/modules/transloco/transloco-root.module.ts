@@ -1,6 +1,6 @@
 import { provideTransloco, TranslocoModule } from '@ngneat/transloco';
-import { isDevMode, NgModule } from '@angular/core';
 import { TranslocoService } from './transloco-service';
+import { isDevMode, NgModule } from '@angular/core';
 
 @NgModule({
   exports: [TranslocoModule],
@@ -9,6 +9,7 @@ import { TranslocoService } from './transloco-service';
       config: {
         availableLangs: ['en', 'el'],
         defaultLang: 'en',
+        fallbackLang: 'en',
         // Remove this option if your application doesn't support changing language in runtime.
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),
