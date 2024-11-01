@@ -23,6 +23,8 @@ export class LayoutComponent implements OnInit {
 
   currentBackgroundImageClass: string = 'sunny-1';
 
+  currentBackgroundDaytime: 'day' | 'night' = 'day';
+
   constructor(
     private locationService: LocationService,
     private router: Router,
@@ -43,6 +45,11 @@ export class LayoutComponent implements OnInit {
       });
 
     this.themeService.currentLocationWeatherCondition.subscribe((condition) => {
+      if (condition.includes('day') || condition.includes('sunny')) {
+        this.currentBackgroundDaytime = 'day';
+      } else {
+        this.currentBackgroundDaytime = 'night';
+      }
       this.currentBackgroundImageClass = condition;
     });
   }
@@ -52,7 +59,7 @@ export class LayoutComponent implements OnInit {
       'background-image':
         "url('../../assets/backgrounds/" +
         this.currentBackgroundImageClass +
-        ".png')",
+        ".jpg')",
     };
   }
 
