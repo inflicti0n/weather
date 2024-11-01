@@ -20,7 +20,6 @@ export class LocationService {
     startTimeIsoString: string,
     endTimeIsoString?: string,
   ) {
-    console.log(startTimeIsoString, endTimeIsoString);
     return this.httpClient
       .get<Location>(
         `/backend/location/${locationId}/weather?startTime=${startTimeIsoString}&${endTimeIsoString ? 'endTime=' + endTimeIsoString : ''}`,

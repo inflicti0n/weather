@@ -348,8 +348,6 @@ export class LocationDetailsComponent implements OnInit {
                 textStrokeColor: 'black',
                 textStrokeWidth: 1.5,
                 align: (context: any) => {
-                  console.log(context.dataIndex);
-
                   switch (context.dataIndex) {
                     case 0:
                       return this.selectedGraphType === 'temperature'
@@ -364,8 +362,6 @@ export class LocationDetailsComponent implements OnInit {
                   }
                 },
                 anchor: (context: any) => {
-                  console.log(context.dataIndex);
-
                   switch (context.dataIndex) {
                     case 0:
                       return this.selectedGraphType === 'temperature'
@@ -524,8 +520,6 @@ export class LocationDetailsComponent implements OnInit {
                 textStrokeColor: 'black',
                 textStrokeWidth: 1.5,
                 align: (context: any) => {
-                  console.log(context.dataIndex);
-
                   switch (context.dataIndex) {
                     case 0:
                       return this.selectedGraphType === 'temperature'
@@ -540,8 +534,6 @@ export class LocationDetailsComponent implements OnInit {
                   }
                 },
                 anchor: (context: any) => {
-                  console.log(context.dataIndex);
-
                   switch (context.dataIndex) {
                     case 0:
                       return this.selectedGraphType === 'temperature'
@@ -647,7 +639,6 @@ export class LocationDetailsComponent implements OnInit {
         i < this.hourlyWeatherChart.data.datasets[0].data.length;
         i++
       ) {
-        console.log(i);
         if (i % 4 === 0) {
           labelsToDisplay.push(true);
           pointRadii.push(8);
@@ -666,7 +657,6 @@ export class LocationDetailsComponent implements OnInit {
         i < this.hourlyWeatherChart2.data.datasets[0].data.length;
         i++
       ) {
-        console.log(i);
         if (i % 4 === 0) {
           labelsToDisplay.push(true);
           pointRadii.push(8);
@@ -705,7 +695,6 @@ export class LocationDetailsComponent implements OnInit {
     if (!this.hourlyWeatherChart2) {
       return;
     }
-    //console.log(this.currentlySelectedWeather);
 
     const weatherData = this.currentlySelectedWeather.map(
       (weather: Weather) => {
@@ -719,12 +708,9 @@ export class LocationDetailsComponent implements OnInit {
         }
       },
     );
-    console.log(weatherData);
-    console.log(this.hourlyWeatherChart.data.datasets[0].data);
+
     this.hourlyWeatherChart.data.datasets[0].data = weatherData;
     this.hourlyWeatherChart2.data.datasets[0].data = weatherData;
-
-    console.log(this.hourlyWeatherChart.options.scales);
 
     switch (this.selectedGraphType) {
       case 'temperature':
@@ -773,7 +759,6 @@ export class LocationDetailsComponent implements OnInit {
   }
 
   private getLocationMonthlyWeather(locationId: string) {
-    console.log('getting ', locationId);
     const localTime = now(getLocalTimeZone());
     //localTime.set({ hour: 0 });
     this.locationService
@@ -786,7 +771,7 @@ export class LocationDetailsComponent implements OnInit {
         if (!result) {
           return;
         }
-        console.log(result);
+
         this.location = result;
         if (this.currentTimezone) {
           this.initializeClock(this.currentTimezone);
@@ -988,29 +973,7 @@ export class LocationDetailsComponent implements OnInit {
       },
     );
 
-    //console.log(averagedDayWeather);
-
     return averagedDayWeather;
-    /*const dayWeather = weather.forEach((weather: Weather) => {
-      const lol = this.datePipe.transform(
-        new Date(weather.dateTime.toString()),
-        'M-d-y',
-      );
-      const hoh = { lol: 'hjeh' };
-
-      const date = new Date(weather.dateTime);
-      daysWithWeathe;
-      return;
-    });
-
-    const average = (array: number[]) =>
-      array.reduce((p: number, c: number) => p + c, 0) / array.length;
-
-    const averageTemperature = average(
-      weather.map((weather: Weather) => weather.temperatureCelsius),
-    );
-
-    const prevalentCondition = this.getDayForecast(weather);*/
   }
 
   getDayForecast(dayWeather: Weather[]) {
@@ -1114,7 +1077,7 @@ export class LocationDetailsComponent implements OnInit {
           new Date(dateTime.toString()),
           'short',
         );
-        console.log(dayAndHour);
+
         if (
           dayAndHour ===
           this.datePipe.transform(

@@ -17,12 +17,13 @@ export class ThemeService {
   currentLocationWeatherCondition: BehaviorSubject<string> =
     new BehaviorSubject('sunny-1');
 
+  useLightFont: boolean = true;
+
   constructor(private httpClient: HttpClient) {}
 
   updateTheme(weather: Weather, timezone: string) {
     const hour = this.getLocalTime(weather.dateTime, timezone)?.getHours();
 
-    console.log(hour);
     if (hour && hour > 5 && hour < 21) {
       if (['clear', 'partly-cloudy'].includes(weather.weatherCondition)) {
         const condition =
@@ -45,14 +46,12 @@ export class ThemeService {
         );
       }
 
-      console.log(this.currentLocationWeatherCondition.value);
       return;
     }
 
     this.currentLocationWeatherCondition.next(
       `${weather.weatherCondition}-night-${Math.floor(Math.random() * 2)}`,
     );
-    console.log(this.currentLocationWeatherCondition.value);
   }
   getLocalTime(dateTime: Date, timezone: string) {
     if (timezone) {
