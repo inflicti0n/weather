@@ -8,6 +8,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SharedModule } from '../../../shared/shared.module';
 import { LocationDetailsComponent } from './location-details.component';
 
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 @NgModule({
   declarations: [LocationDetailsComponent],
   imports: [
@@ -17,6 +18,7 @@ import { LocationDetailsComponent } from './location-details.component';
     MatInputModule,
     NgxChartsModule,
     BrowserAnimationsModule,
+    MatButtonToggleModule,
   ],
   providers: [],
 })

@@ -190,6 +190,8 @@ export class LocationDetailsComponent implements OnInit {
 
   hourlyWeatherChart: Chart | null = null;
 
+  selectedGraphType: 'temperature' | 'precipitation' | 'wind' = 'temperature';
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -218,34 +220,53 @@ export class LocationDetailsComponent implements OnInit {
     //Interaction.modes = Interpolate;
   }
 
-  private initializeChart() {
-    let width: number | null;
-    let height: number | null;
-    let gradient: CanvasGradient | null;
+  getGradient(ctx: CanvasRenderingContext2D, chartArea: ChartArea) {
+    let width: number | null = null;
+    let height: number | null = null;
+    let gradient: CanvasGradient | null = null;
 
-    Chart.register(ChartDataLabels);
+    const chartWidth = chartArea.right - chartArea.left;
+    const chartHeight = chartArea.bottom - chartArea.top;
+    if (!gradient || width !== chartWidth || height !== chartHeight) {
+      // Create the gradient because this is either the first render
+      // or the size of the chart has changed
+      width = chartWidth;
+      height = chartHeight;
+      gradient = ctx.createLinearGradient(
+        0,
+        chartArea.bottom,
+        0,
+        chartArea.top,
+      );
 
-    function getGradient(ctx: CanvasRenderingContext2D, chartArea: ChartArea) {
-      const chartWidth = chartArea.right - chartArea.left;
-      const chartHeight = chartArea.bottom - chartArea.top;
-      if (!gradient || width !== chartWidth || height !== chartHeight) {
-        // Create the gradient because this is either the first render
-        // or the size of the chart has changed
-        width = chartWidth;
-        height = chartHeight;
-        gradient = ctx.createLinearGradient(
-          0,
-          chartArea.bottom,
-          0,
-          chartArea.top,
-        );
-        gradient.addColorStop(0, 'rgb(54, 162, 235)');
-        gradient.addColorStop(0.5, 'rgb(255, 205, 86)');
-        gradient.addColorStop(1, 'rgb(255, 99, 132)');
+      switch (this.selectedGraphType) {
+        case 'temperature':
+          gradient.addColorStop(0, 'rgb(54, 162, 235)');
+          gradient.addColorStop(0.5, 'rgb(255, 205, 86)');
+          gradient.addColorStop(1, 'rgb(255, 99, 132)');
+          break;
+        case 'precipitation':
+          gradient.addColorStop(0, 'rgb(34, 91, 181)');
+          gradient.addColorStop(0.5, 'rgb(34, 91, 181)');
+          gradient.addColorStop(1, 'rgb(34, 91, 181)');
+          break;
+        case 'wind':
+          gradient.addColorStop(0, 'rgb(168, 195, 237)');
+          gradient.addColorStop(0.5, 'rgb(168, 195, 237)');
+          gradient.addColorStop(1, 'rgb(168, 195, 237)');
+          break;
       }
 
-      return gradient;
+      /**gradient.addColorStop(0, 'rgb(54, 162, 235)');
+      gradient.addColorStop(0.5, 'rgb(255, 205, 86)');
+      gradient.addColorStop(1, 'rgb(255, 99, 132)');*/
     }
+
+    return gradient;
+  }
+
+  private initializeChart() {
+    Chart.register(ChartDataLabels);
 
     setTimeout(() => {
       const element = <HTMLCanvasElement>document.getElementById('myChart');
@@ -304,7 +325,7 @@ export class LocationDetailsComponent implements OnInit {
               pointHoverRadius: pointRadii,
               pointBorderColor: 'white',
               backgroundColor: 'white',
-              borderColor: function (context) {
+              borderColor: (context) => {
                 const chart = context.chart;
                 const { ctx, chartArea } = chart;
 
@@ -312,23 +333,58 @@ export class LocationDetailsComponent implements OnInit {
                   // This case happens on initial chart load
                   return;
                 }
-                return getGradient(ctx, chartArea);
+                return this.getGradient(ctx, chartArea);
               },
               tension: 0.1,
               datalabels: {
-                align: 'end',
-                anchor: 'end',
+                textStrokeColor: 'black',
+                textStrokeWidth: 1.5,
+                align: (context: any) => {
+                  console.log(context.dataIndex);
+
+                  switch (context.dataIndex) {
+                    case 0:
+                      return this.selectedGraphType === 'temperature'
+                        ? 'top'
+                        : 'right';
+                    case 24:
+                      return this.selectedGraphType === 'temperature'
+                        ? 'top'
+                        : 'left';
+                    default:
+                      return 'top';
+                  }
+                },
+                anchor: (context: any) => {
+                  console.log(context.dataIndex);
+
+                  switch (context.dataIndex) {
+                    case 0:
+                      return this.selectedGraphType === 'temperature'
+                        ? 'end'
+                        : 'end';
+                    case 24:
+                      return 'end';
+                    default:
+                      return 'end';
+                  }
+                },
               },
             },
           ],
         },
         options: {
+          layout: {
+            padding: {
+              left: 15,
+              right: 15,
+            },
+          },
           onHover: (e: any, item: any) => {
             if (!this.currentlySelectedSingularWeather) {
               return;
             }
-            console.log(this.currentlySelectedWeather[item[0].index]);
-            console.log(item[0].index);
+
             this.selectGraphWeather(
               this.currentlySelectedWeather[item[0].index].id,
             );
@@ -352,11 +408,40 @@ export class LocationDetailsComponent implements OnInit {
               /*backgroundColor: 'rgb(75, 192, 192)',
               borderRadius: 4,*/
               color: 'white',
-              font: {
-                size: 20,
-                weight: 'bold',
+              font: (context) => {
+                switch (this.selectedGraphType) {
+                  case 'temperature':
+                    return {
+                      family: 'comfortaa',
+                      weight: 'bold',
+                      size: 20,
+                    };
+                  case 'precipitation':
+                    return {
+                      family: 'comfortaa',
+                      weight: 'bold',
+                      size: 18,
+                    };
+                  case 'wind':
+                    return {
+                      family: 'comfortaa',
+                      weight: 'bold',
+                      size: 14,
+                    };
+                }
               },
-              formatter: Math.round,
+              formatter: (value: any) => {
+                switch (this.selectedGraphType) {
+                  case 'temperature':
+                    return Math.round(value) + '°';
+                  case 'precipitation':
+                    return value + '%';
+                  case 'wind':
+                    return value + 'km/h';
+                }
+
+                return Math.round;
+              },
               //padding: 6,
               display: labelsToDisplay,
             },
@@ -416,11 +501,61 @@ export class LocationDetailsComponent implements OnInit {
     //console.log(this.currentlySelectedWeather);
 
     const weatherData = this.currentlySelectedWeather.map(
-      (weather: Weather) => weather.temperatureCelsius,
+      (weather: Weather) => {
+        switch (this.selectedGraphType) {
+          case 'temperature':
+            return weather.temperatureCelsius;
+          case 'precipitation':
+            return weather.precipitationProbabilityPercent;
+          case 'wind':
+            return weather.windSpeedKmh;
+        }
+      },
     );
     console.log(weatherData);
     console.log(this.hourlyWeatherChart.data.datasets[0].data);
     this.hourlyWeatherChart.data.datasets[0].data = weatherData;
+
+    console.log(this.hourlyWeatherChart.options.scales);
+
+    switch (this.selectedGraphType) {
+      case 'temperature':
+        const temperatureScales = {
+          x: { display: false },
+          y: {
+            display: false,
+            min: -20,
+            max: 50,
+          },
+        };
+        this.hourlyWeatherChart.options.scales = temperatureScales;
+
+        break;
+      case 'precipitation':
+        const precipitationScales = {
+          x: { display: false },
+          y: {
+            display: false,
+            min: -5,
+            max: 110,
+          },
+        };
+
+        //this.hourlyWeatherChart.data.datasets.
+        this.hourlyWeatherChart.options.scales = precipitationScales;
+        break;
+      case 'wind':
+        const windScales = {
+          x: { display: false },
+          y: {
+            display: false,
+            min: -5,
+            max: 50,
+          },
+        };
+        this.hourlyWeatherChart.options.scales = windScales;
+        break;
+    }
 
     this.hourlyWeatherChart.update();
   }
@@ -903,5 +1038,10 @@ export class LocationDetailsComponent implements OnInit {
     const isChecked = (<HTMLInputElement>event.target).checked;
 
     this.hourlyWeatherStyleToggle = isChecked === true ? 'graph' : 'list';
+  }
+
+  selectGraphType(type: 'temperature' | 'precipitation' | 'wind') {
+    this.selectedGraphType = type;
+    this.updateChartData();
   }
 }
