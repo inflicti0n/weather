@@ -5,6 +5,7 @@ import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     RouterModule,
     AngularSvgIconModule,
     TranslocoModule,
+    MatTooltipModule,
   ],
   exports: [
     CommonModule,
@@ -22,6 +24,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     RouterModule,
     AngularSvgIconModule,
     TranslocoModule,
+    MatTooltipModule,
   ],
   providers: [MatIconRegistry, DatePipe],
 })

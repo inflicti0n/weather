@@ -213,8 +213,6 @@ export class LocationDetailsComponent implements OnInit {
       }
     });
 
-    this.initializeChart();
-
     //Interaction.modes.point = interpolate;
     //Chart.register(CrosshairPlugin);
     //Interaction.modes = Interpolate;
@@ -477,8 +475,9 @@ export class LocationDetailsComponent implements OnInit {
             pointBackgroundColors.push("#f58368");
         }*/
       }
+      this.updateChartData();
       this.hourlyWeatherChart.update();
-    }, 1000);
+    }, 300);
   }
 
   selectGraphWeather(id: string) {
@@ -568,7 +567,7 @@ export class LocationDetailsComponent implements OnInit {
       .getLocationWeather(
         locationId,
         localTime.subtract({ hours: localTime.hour + 1 }).toAbsoluteString(), //localTime.subtract({ hours: 1 }).toAbsoluteString(),
-        localTime.add({ days: 29 }).set({ hour: 23 }).toAbsoluteString(),
+        localTime.add({ days: 30 }).set({ hour: 1 }).toAbsoluteString(),
       )
       .subscribe((result) => {
         if (!result) {
@@ -586,6 +585,8 @@ export class LocationDetailsComponent implements OnInit {
         this.selectHourWeather(this.location.weather[0].dateTime);
 
         this.dayAveragedWeather = this.getDayAveragedWeather();
+
+        this.initializeChart();
       });
   }
 
@@ -877,9 +878,9 @@ export class LocationDetailsComponent implements OnInit {
       return;
     }
 
-    this.updateChartData();
-
     this.selectHourWeather(this.currentlySelectedWeather[0].dateTime);
+
+    this.updateChartData();
   }
 
   selectHourWeather(dateTime: Date) {
@@ -892,9 +893,9 @@ export class LocationDetailsComponent implements OnInit {
       return;
     }
 
-    this.currentlySelectedWeather = this.currentMonthlyWeather[dayDate];
+    // this.currentlySelectedWeather = this.currentMonthlyWeather[dayDate];
 
-    const hourWeather = this.currentlySelectedWeather.find(
+    const hourWeather = this.currentMonthlyWeather[dayDate].find(
       (weather: Weather) => {
         const dayAndHour = this.datePipe.transform(
           new Date(dateTime.toString()),

@@ -257,7 +257,7 @@
           <button
             (click)="selectDayWeather(weather.dateTime)"
             *ngFor="
-              let weather of dayAveragedWeather;
+              let weather of dayAveragedWeather | slice: 0 : 30;
               let first = first;
               let last = last
             "
@@ -325,7 +325,7 @@
             ></span>
           </label>
         </div>
-        <!-- Hourly Weather Graph - List -->
+        <!-- Hourly Weather List -->
         <div
           *ngIf="hourlyWeatherStyleToggle === 'list'"
           class="gap-2 flex flex-col max-w-[40rem] items-start rounded-3xl w-full h-[23.6rem] px-3 py-3 bg-white/50 overflow-y-auto scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25"
@@ -382,51 +382,24 @@
             </div>
           </button>
         </div>
-        <!-- Graph-->
+        <!-- Hourly Weather Graph-->
         <div
-          *ngIf="hourlyWeatherStyleToggle === 'graph'"
+          [ngClass]="{
+            block: hourlyWeatherStyleToggle === 'graph',
+            hidden: hourlyWeatherStyleToggle !== 'graph'
+          }"
           class="overflow-hidden flex flex-col max-w-[40rem] items-start justify-start rounded-3xl w-full h-[23.6rem] bg-black/25"
         >
           <!-- Weather Data toggle -->
           <div class="flex flex-row mt-3 -ml-4 w-full items-center justify-end">
             <div class="flex flex-row px-2 items-center">
-              <!-- <button
-                [ngClass]="{
-                  'bg-white/50': selectedGraphType === 'temperature'
-                }"
-                class="py-1 pl-1"
-              >
-                <svg-icon
-                  name="temperature"
-                  class="z-10"
-                  [svgClass]="'w-5 h-5'"
-                ></svg-icon>
-              </button>
-              <div class="ml-1 border-solid border-black border-l">&nbsp;</div>
               <button
-                [ngClass]="{
-                  'bg-white/50': selectedGraphType === 'precipitation'
-                }"
-                class="py-1"
-              >
-                <svg-icon
-                  name="precipitation"
-                  class="z-10"
-                  [svgClass]="'w-6 h-6'"
-                ></svg-icon>
-              </button>
-              <div class="ml-1 border-solid border-black border-l">&nbsp;</div>
-              <button
-                [ngClass]="{ 'bg-white/50': selectedGraphType === 'wind' }"
-                class="py-1 pr-1"
-              >
-                <svg-icon
-                  name="wind"
-                  class="z-10"
-                  [svgClass]="'w-4 h-4'"
-                ></svg-icon>
-              </button>-->
-              <button
+                [matTooltipClass]="
+                  'backdrop-blur-[30px] backdrop-brightness-[1.1] bg-white/25 drop-shadow-xl text-sm rounded-full'
+                "
+                [matTooltipPosition]="'below'"
+                #tooltip="matTooltip"
+                matTooltip="Temperature"
                 (click)="selectGraphType('temperature')"
                 [ngClass]="{
                   'bg-white/50': selectedGraphType === 'temperature'
@@ -440,6 +413,12 @@
                 ></svg-icon>
               </button>
               <button
+                [matTooltipClass]="
+                  'backdrop-blur-[30px] backdrop-brightness-[1.1] bg-white/25 drop-shadow-xl text-sm rounded-full'
+                "
+                [matTooltipPosition]="'below'"
+                #tooltip="matTooltip"
+                matTooltip="Precipitation"
                 (click)="selectGraphType('precipitation')"
                 [ngClass]="{
                   'bg-white/50': selectedGraphType === 'precipitation'
@@ -453,6 +432,12 @@
                 ></svg-icon>
               </button>
               <button
+                [matTooltipClass]="
+                  'backdrop-blur-[30px] backdrop-brightness-[1.1] bg-white/25 drop-shadow-xl text-sm rounded-full'
+                "
+                [matTooltipPosition]="'below'"
+                #tooltip="matTooltip"
+                matTooltip="Wind"
                 (click)="selectGraphType('wind')"
                 [ngClass]="{
                   'bg-white/50': selectedGraphType === 'wind'
