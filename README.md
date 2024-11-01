@@ -10,8 +10,8 @@
  1.	Install [Node.js](https://nodejs.org/en)
  2. Install [Visual Studio Code](https://code.visualstudio.com)
  3. Clone this repo
- 4. Run `npm install`
- 5. Run `npm run weather`
+ 4.	On Visual Studio Code, open a new Terminal and run  `npm install`
+ 5.	On Visual Studio Code, run : `npm run weather`
 
 Now, you can open your browser and navigate to http://localhost:4200/
 
