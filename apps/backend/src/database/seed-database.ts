@@ -27,7 +27,7 @@ export function generateWeatherInsertsForLocation(location: Location) {
 
   let lastGeneratedPresetId = 1;
 
-  for (let day = 0; day < 60; day++) {
+  for (let day = -1; day < 60; day++) {
     for (let hour = 0; hour < 24; hour++) {
       const dateToAssign = new Date(currentDate);
       dateToAssign.setDate(currentDate.getDate() + day);

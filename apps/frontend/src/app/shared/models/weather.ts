@@ -1,4 +1,5 @@
 export interface Weather {
+  id: string;
   dateTime: Date;
   airQualityIndex: number;
   humidityPercent: number;

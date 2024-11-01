@@ -17,7 +17,9 @@ import {
 } from '@internationalized/date';
 import { TranslocoService } from '@ngneat/transloco';
 import { colorSets } from '@swimlane/ngx-charts';
-import { Chart, ChartArea } from 'chart.js/auto';
+import { Chart, ChartArea, Interaction } from 'chart.js/auto';
+
+import { getRelativePosition } from 'chart.js/helpers';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import * as shape from 'd3-shape';
 
@@ -25,6 +27,7 @@ import { Location } from '../../../shared/models/location';
 import { locationTimezoneMap } from '../../../shared/models/location-timezone-map';
 import { Weather } from '../../../shared/models/weather';
 import { LocationService } from '../../../shared/services/location.service';
+import { crossplugin, interpolate } from '../../../utils/crosshair-plugin';
 
 @Component({
   selector: 'weather-location-details-component',
@@ -185,6 +188,8 @@ export class LocationDetailsComponent implements OnInit {
     weatherCondition: string;
   }[] = [];
 
+  hourlyWeatherChart: Chart | null = null;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -195,9 +200,30 @@ export class LocationDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('Location Details Component Initialized');
+
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      // Access individual route parameters using params.get('parameterName')
+      const id = params.get('location-id');
+      if (id) {
+        this.currentTimezone = locationTimezoneMap[id];
+        this.getLocationMonthlyWeather(id);
+      }
+    });
+
+    this.initializeChart();
+
+    //Interaction.modes.point = interpolate;
+    //Chart.register(CrosshairPlugin);
+    //Interaction.modes = Interpolate;
+  }
+
+  private initializeChart() {
     let width: number | null;
     let height: number | null;
     let gradient: CanvasGradient | null;
+
+    Chart.register(ChartDataLabels);
 
     function getGradient(ctx: CanvasRenderingContext2D, chartArea: ChartArea) {
       const chartWidth = chartArea.right - chartArea.left;
@@ -220,18 +246,6 @@ export class LocationDetailsComponent implements OnInit {
 
       return gradient;
     }
-    console.log('Location Details Component Initialized');
-
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      // Access individual route parameters using params.get('parameterName')
-      const id = params.get('location-id');
-      if (id) {
-        this.currentTimezone = locationTimezoneMap[id];
-        this.getLocationMonthlyWeather(id);
-      }
-    });
-
-    Chart.register(ChartDataLabels);
 
     setTimeout(() => {
       const element = <HTMLCanvasElement>document.getElementById('myChart');
@@ -242,19 +256,52 @@ export class LocationDetailsComponent implements OnInit {
       if (!context) {
         return;
       }
-      const myChart = new Chart(context, {
+
+      const pointRadii: number[] = [];
+      const labelsToDisplay: any = [];
+
+      this.hourlyWeatherChart = new Chart(context, {
+        plugins: [crossplugin],
         type: 'line',
         data: {
-          labels: ['Ma', 'Ju', 'Bo', 'Lo', 'Mo', 'Gu', 'Gi'],
+          labels: [
+            'Ma',
+            'Ju',
+            'Bo',
+            'Lo',
+            'Mo',
+            'Gu',
+            'Gi',
+            'Ma',
+            'Ju',
+            'Bo',
+            'Lo',
+            'Mo',
+            'Gu',
+            'Gi',
+            'Ma',
+            'Ju',
+            'Bo',
+            'Lo',
+            'Mo',
+            'Gu',
+            'Gi',
+            'Ma',
+            'Ju',
+            'Bo',
+            'Lo',
+          ],
           datasets: [
             {
               label: 'My First Dataset',
               cubicInterpolationMode: 'monotone',
-              data: [10, 10, -15, 25, 30, 30, 40],
+              data: [
+                10, 10, 8, 8, 6, 5, 7, 3, 7, 10, 25, 30, 30, 40, 10, 10, -15,
+                25, 30, 30, 40, 10, 10, -15, 14,
+              ],
               fill: false,
-
-              pointRadius: 7,
-              pointHoverRadius: 7,
+              pointRadius: pointRadii,
+              pointHoverRadius: pointRadii,
               pointBorderColor: 'white',
               backgroundColor: 'white',
               borderColor: function (context) {
@@ -276,7 +323,28 @@ export class LocationDetailsComponent implements OnInit {
           ],
         },
         options: {
+          onHover: (e: any, item: any) => {
+            if (!this.currentlySelectedSingularWeather) {
+              return;
+            }
+            console.log(this.currentlySelectedWeather[item[0].index]);
+            console.log(item[0].index);
+            this.selectGraphWeather(
+              this.currentlySelectedWeather[item[0].index].id,
+            );
+          },
+          interaction: {
+            mode: 'nearest',
+            axis: 'x',
+          },
+          hover: {
+            mode: 'nearest',
+            intersect: false,
+          },
           plugins: {
+            tooltip: {
+              enabled: false,
+            },
             legend: {
               display: false,
             },
@@ -285,10 +353,12 @@ export class LocationDetailsComponent implements OnInit {
               borderRadius: 4,*/
               color: 'white',
               font: {
+                size: 20,
                 weight: 'bold',
               },
               formatter: Math.round,
               //padding: 6,
+              display: labelsToDisplay,
             },
           },
           scales: {
@@ -299,24 +369,77 @@ export class LocationDetailsComponent implements OnInit {
               max: 50,
             },
           },
+          maintainAspectRatio: false,
         },
       });
+
+      for (
+        let i = 0;
+        i < this.hourlyWeatherChart.data.datasets[0].data.length;
+        i++
+      ) {
+        console.log(i);
+        if (i % 4 === 0) {
+          labelsToDisplay.push(true);
+          pointRadii.push(8);
+        } else {
+          labelsToDisplay.push(false);
+          pointRadii.push(2);
+        }
+        /*if (myChart.data.datasets[0].data[i] > 100) {
+            pointBackgroundColors.push("#90cd8a");
+        } else {
+            pointBackgroundColors.push("#f58368");
+        }*/
+      }
+      this.hourlyWeatherChart.update();
     }, 1000);
+  }
+
+  selectGraphWeather(id: string) {
+    const weatherToShow = this.currentlySelectedWeather.find(
+      (weather: Weather) => weather.id === id,
+    );
+
+    if (!weatherToShow) {
+      return;
+    }
+
+    this.currentlySelectedSingularWeather = weatherToShow;
+  }
+
+  updateChartData() {
+    if (!this.hourlyWeatherChart) {
+      return;
+    }
+
+    //console.log(this.currentlySelectedWeather);
+
+    const weatherData = this.currentlySelectedWeather.map(
+      (weather: Weather) => weather.temperatureCelsius,
+    );
+    console.log(weatherData);
+    console.log(this.hourlyWeatherChart.data.datasets[0].data);
+    this.hourlyWeatherChart.data.datasets[0].data = weatherData;
+
+    this.hourlyWeatherChart.update();
   }
 
   private getLocationMonthlyWeather(locationId: string) {
     console.log('getting ', locationId);
     const localTime = now(getLocalTimeZone());
+    //localTime.set({ hour: 0 });
     this.locationService
       .getLocationWeather(
         locationId,
-        localTime.subtract({ hours: 1 }).toAbsoluteString(),
+        localTime.subtract({ hours: localTime.hour + 1 }).toAbsoluteString(), //localTime.subtract({ hours: 1 }).toAbsoluteString(),
         localTime.add({ days: 29 }).set({ hour: 23 }).toAbsoluteString(),
       )
       .subscribe((result) => {
         if (!result) {
           return;
         }
+        console.log(result);
         this.location = result;
         if (this.currentTimezone) {
           this.initializeClock(this.currentTimezone);
@@ -601,11 +724,25 @@ export class LocationDetailsComponent implements OnInit {
       return;
     }
 
+    const laterDayDate = new Date(dateTime.toString());
+    laterDayDate.setDate(laterDayDate.getDate() + 1);
+
+    const nextDayDate = this.datePipe.transform(laterDayDate, 'M-d-y');
+
+    if (!nextDayDate) {
+      return;
+    }
+
     this.currentlySelectedWeather = this.currentMonthlyWeather[dayDate];
+    this.currentlySelectedWeather.push(
+      this.currentMonthlyWeather[nextDayDate][0],
+    );
 
     if (!this.currentlySelectedSingularWeather?.dateTime) {
       return;
     }
+
+    this.updateChartData();
 
     this.selectHourWeather(this.currentlySelectedWeather[0].dateTime);
   }
