@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ResponsiveComponent } from './components/responsive.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     AngularSvgIconModule,
     TranslocoModule,
     MatTooltipModule,
+    ResponsiveComponent,
   ],
   exports: [
     CommonModule,
@@ -25,6 +27,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     AngularSvgIconModule,
     TranslocoModule,
     MatTooltipModule,
+    ResponsiveComponent,
   ],
   providers: [MatIconRegistry, DatePipe],
 })

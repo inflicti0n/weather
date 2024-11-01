@@ -14,6 +14,7 @@ import { Weather } from '../../shared/models/weather';
 import { LocationService } from '../../shared/services/location.service';
 import { TranslocoService } from '@ngneat/transloco';
 import { DatePipe } from '@angular/common';
+import { ResponsiveService } from '../../shared/services/responsive.service';
 
 @Component({
   selector: 'weather-location-component',
@@ -35,10 +36,15 @@ export class LocationComponent implements OnInit {
     private locationService: LocationService,
     private translocoService: TranslocoService,
     private datePipe: DatePipe,
+    private responsiveService: ResponsiveService,
   ) {}
 
   ngOnInit(): void {
     console.log('Location Component Initialized');
+
+    this.responsiveService.onResize$.subscribe((size) => {
+      console.log(size);
+    });
 
     this.route.paramMap.subscribe((params: ParamMap) => {
       // Access individual route parameters using params.get('parameterName')

@@ -189,6 +189,7 @@ export class LocationDetailsComponent implements OnInit {
   }[] = [];
 
   hourlyWeatherChart: Chart | null = null;
+  hourlyWeatherChart2: Chart | null = null;
 
   selectedGraphType: 'temperature' | 'precipitation' | 'wind' = 'temperature';
 
@@ -273,6 +274,15 @@ export class LocationDetailsComponent implements OnInit {
       }
       const context = element?.getContext('2d');
       if (!context) {
+        return;
+      }
+
+      const element2 = <HTMLCanvasElement>document.getElementById('myChart2');
+      if (!element) {
+        return;
+      }
+      const context2 = element2?.getContext('2d');
+      if (!context2) {
         return;
       }
 
@@ -455,6 +465,182 @@ export class LocationDetailsComponent implements OnInit {
           maintainAspectRatio: false,
         },
       });
+      this.hourlyWeatherChart2 = new Chart(context2, {
+        plugins: [crossplugin],
+        type: 'line',
+        data: {
+          labels: [
+            'Ma',
+            'Ju',
+            'Bo',
+            'Lo',
+            'Mo',
+            'Gu',
+            'Gi',
+            'Ma',
+            'Ju',
+            'Bo',
+            'Lo',
+            'Mo',
+            'Gu',
+            'Gi',
+            'Ma',
+            'Ju',
+            'Bo',
+            'Lo',
+            'Mo',
+            'Gu',
+            'Gi',
+            'Ma',
+            'Ju',
+            'Bo',
+            'Lo',
+          ],
+          datasets: [
+            {
+              label: 'My First Dataset',
+              cubicInterpolationMode: 'monotone',
+              data: [
+                10, 10, 8, 8, 6, 5, 7, 3, 7, 10, 25, 30, 30, 40, 10, 10, -15,
+                25, 30, 30, 40, 10, 10, -15, 14,
+              ],
+              fill: false,
+              pointRadius: pointRadii,
+              pointHoverRadius: pointRadii,
+              pointBorderColor: 'white',
+              backgroundColor: 'white',
+              borderColor: (context) => {
+                const chart = context.chart;
+                const { ctx, chartArea } = chart;
+
+                if (!chartArea) {
+                  // This case happens on initial chart load
+                  return;
+                }
+                return this.getGradient(ctx, chartArea);
+              },
+              tension: 0.1,
+              datalabels: {
+                textStrokeColor: 'black',
+                textStrokeWidth: 1.5,
+                align: (context: any) => {
+                  console.log(context.dataIndex);
+
+                  switch (context.dataIndex) {
+                    case 0:
+                      return this.selectedGraphType === 'temperature'
+                        ? 'top'
+                        : 'right';
+                    case 24:
+                      return this.selectedGraphType === 'temperature'
+                        ? 'top'
+                        : 'left';
+                    default:
+                      return 'top';
+                  }
+                },
+                anchor: (context: any) => {
+                  console.log(context.dataIndex);
+
+                  switch (context.dataIndex) {
+                    case 0:
+                      return this.selectedGraphType === 'temperature'
+                        ? 'end'
+                        : 'end';
+                    case 24:
+                      return 'end';
+                    default:
+                      return 'end';
+                  }
+                },
+              },
+            },
+          ],
+        },
+        options: {
+          layout: {
+            padding: {
+              left: 15,
+              right: 15,
+            },
+          },
+          onHover: (e: any, item: any) => {
+            if (!this.currentlySelectedSingularWeather) {
+              return;
+            }
+
+            this.selectGraphWeather(
+              this.currentlySelectedWeather[item[0].index].id,
+            );
+          },
+          interaction: {
+            mode: 'nearest',
+            axis: 'x',
+          },
+          hover: {
+            mode: 'nearest',
+            intersect: false,
+          },
+          plugins: {
+            tooltip: {
+              enabled: false,
+            },
+            legend: {
+              display: false,
+            },
+            datalabels: {
+              /*backgroundColor: 'rgb(75, 192, 192)',
+              borderRadius: 4,*/
+              color: 'white',
+              font: (context) => {
+                switch (this.selectedGraphType) {
+                  case 'temperature':
+                    return {
+                      family: 'comfortaa',
+                      weight: 'bold',
+                      size: 16,
+                    };
+                  case 'precipitation':
+                    return {
+                      family: 'comfortaa',
+                      weight: 'bold',
+                      size: 12,
+                    };
+                  case 'wind':
+                    return {
+                      family: 'comfortaa',
+                      weight: 'bold',
+                      size: 12,
+                    };
+                }
+              },
+              formatter: (value: any) => {
+                switch (this.selectedGraphType) {
+                  case 'temperature':
+                    return Math.round(value) + '°';
+                  case 'precipitation':
+                    return value + '%';
+                  case 'wind':
+                    return value + 'km/h';
+                }
+
+                return Math.round;
+              },
+              //padding: 6,
+              display: labelsToDisplay,
+            },
+          },
+          scales: {
+            x: { display: false },
+            y: {
+              display: false,
+              min: -20,
+              max: 50,
+            },
+          },
+          maintainAspectRatio: false,
+        },
+      });
 
       for (
         let i = 0;
@@ -475,8 +661,28 @@ export class LocationDetailsComponent implements OnInit {
             pointBackgroundColors.push("#f58368");
         }*/
       }
+      for (
+        let i = 0;
+        i < this.hourlyWeatherChart2.data.datasets[0].data.length;
+        i++
+      ) {
+        console.log(i);
+        if (i % 4 === 0) {
+          labelsToDisplay.push(true);
+          pointRadii.push(8);
+        } else {
+          labelsToDisplay.push(false);
+          pointRadii.push(2);
+        }
+        /*if (myChart.data.datasets[0].data[i] > 100) {
+            pointBackgroundColors.push("#90cd8a");
+        } else {
+            pointBackgroundColors.push("#f58368");
+        }*/
+      }
       this.updateChartData();
       this.hourlyWeatherChart.update();
+      this.hourlyWeatherChart2.update();
     }, 300);
   }
 
@@ -496,7 +702,9 @@ export class LocationDetailsComponent implements OnInit {
     if (!this.hourlyWeatherChart) {
       return;
     }
-
+    if (!this.hourlyWeatherChart2) {
+      return;
+    }
     //console.log(this.currentlySelectedWeather);
 
     const weatherData = this.currentlySelectedWeather.map(
@@ -514,6 +722,7 @@ export class LocationDetailsComponent implements OnInit {
     console.log(weatherData);
     console.log(this.hourlyWeatherChart.data.datasets[0].data);
     this.hourlyWeatherChart.data.datasets[0].data = weatherData;
+    this.hourlyWeatherChart2.data.datasets[0].data = weatherData;
 
     console.log(this.hourlyWeatherChart.options.scales);
 
@@ -528,6 +737,7 @@ export class LocationDetailsComponent implements OnInit {
           },
         };
         this.hourlyWeatherChart.options.scales = temperatureScales;
+        this.hourlyWeatherChart2.options.scales = temperatureScales;
 
         break;
       case 'precipitation':
@@ -536,12 +746,13 @@ export class LocationDetailsComponent implements OnInit {
           y: {
             display: false,
             min: -5,
-            max: 110,
+            max: 125,
           },
         };
 
         //this.hourlyWeatherChart.data.datasets.
         this.hourlyWeatherChart.options.scales = precipitationScales;
+        this.hourlyWeatherChart2.options.scales = precipitationScales;
         break;
       case 'wind':
         const windScales = {
@@ -553,10 +764,12 @@ export class LocationDetailsComponent implements OnInit {
           },
         };
         this.hourlyWeatherChart.options.scales = windScales;
+        this.hourlyWeatherChart2.options.scales = windScales;
         break;
     }
 
     this.hourlyWeatherChart.update();
+    this.hourlyWeatherChart2.update();
   }
 
   private getLocationMonthlyWeather(locationId: string) {
