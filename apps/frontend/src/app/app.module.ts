@@ -17,7 +17,7 @@ import { LocationModule } from './modules/location/location.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { paramsInheritanceStrategy: 'always' }),
     AngularSvgIconModule.forRoot(),
     IconsModule.forRoot(),
     TranslocoRootModule,

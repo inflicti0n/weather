@@ -6,6 +6,7 @@ export interface Weather {
   temperatureCelsius: number;
   uvIndex: number;
   weatherCondition: string;
+  windDirection: string;
   windGustsKmh: number;
   windSpeedKmh: number;
 }

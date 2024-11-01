@@ -23,7 +23,6 @@ import { DatePipe } from '@angular/common';
 export class LocationComponent implements OnInit {
   currentIntervalId: number | null = null;
   time: Date = new Date(); // global variable for string interpolation on html
-  centerSearchBar: boolean = true;
 
   searchInputControl = new UntypedFormControl();
 
@@ -41,12 +40,6 @@ export class LocationComponent implements OnInit {
   ngOnInit(): void {
     console.log('Location Component Initialized');
 
-    /*const locationId = this.route.snapshot.paramMap.get('location-id');
-    if (locationId) {
-      this.currentTimezone = locationTimezoneMap[locationId];
-      this.getLocationHourlyWeather(locationId);
-    }*/
-
     this.route.paramMap.subscribe((params: ParamMap) => {
       // Access individual route parameters using params.get('parameterName')
       const id = params.get('location-id');
@@ -58,7 +51,7 @@ export class LocationComponent implements OnInit {
   }
 
   private getLocationHourlyWeather(locationId: string) {
-    let localTime = now(getLocalTimeZone());
+    const localTime = now(getLocalTimeZone());
     setTimeout;
     this.locationService
       .getLocationWeather(
@@ -152,15 +145,15 @@ export class LocationComponent implements OnInit {
       if (disruptiveWeather) {
         const date = new Date(disruptiveWeather.dateTime);
 
-        const convertedo = parseAbsolute(
+        const zonedDateTime = parseAbsolute(
           date.toISOString(),
           this.currentTimezone,
         );
-        const heh = toCalendarDateTime(convertedo);
+        const calendarDateTime = toCalendarDateTime(zonedDateTime);
 
         return `${this.translocoService.translate(
           'location.forecast.' + disruptiveWeather?.weatherCondition,
-        )} ${this.datePipe.transform(new Date(heh.toString()), 'h:mm a')}`;
+        )} ${this.datePipe.transform(new Date(calendarDateTime.toString()), 'h:mm a')}`;
       }
 
       const conditionOccurences = [
@@ -191,8 +184,11 @@ export class LocationComponent implements OnInit {
     return;
   }
 
-  getTimeAdjustedWeatherIconName(condition: string, hour: number) {
+  getTimeAdjustedWeatherIconName(condition: string, dateTime: Date) {
+    const hour = this.getLocalTime(dateTime)?.getHours();
+
     if (
+      hour &&
       hour > 5 &&
       hour < 21 &&
       ['clear', 'partly-cloudy'].includes(condition)

@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Location } from './location.entity';
 
-export enum WeatherConditions {
+export enum WeatherCondition {
   Clear = 'clear',
   PartlyCloudy = 'partly-cloudy',
   Overcast = 'overcast',
@@ -13,6 +13,17 @@ export enum WeatherConditions {
   HeavyRain = 'heavy-rain',
   Snowy = 'snowy',
   Sleet = 'sleet',
+}
+
+export enum WindDirection {
+  North = 'north',
+  South = 'south',
+  West = 'west',
+  East = 'east',
+  NorthWest = 'north-west',
+  NorthEast = 'north-east',
+  SouthWest = 'south-west',
+  SouthEast = 'south-east',
 }
 
 @Entity()
@@ -48,9 +59,9 @@ export class Weather {
   @ApiProperty()
   @Column({
     type: 'simple-enum',
-    enum: WeatherConditions,
+    enum: WeatherCondition,
   })
-  weatherCondition: WeatherConditions;
+  weatherCondition: WeatherCondition;
 
   @ApiProperty()
   @Column()
@@ -59,6 +70,13 @@ export class Weather {
   @ApiProperty()
   @Column()
   windSpeedKmh: number;
+
+  @ApiProperty()
+  @Column({
+    type: 'simple-enum',
+    enum: WindDirection,
+  })
+  windDirection: WindDirection;
 
   @ApiProperty()
   @ManyToOne(() => Location, (location) => location.weather)

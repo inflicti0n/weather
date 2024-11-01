@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 import { LayoutComponent } from './modules/layout/layout.component';
 import { LocationComponent } from './modules/location/location.component';
+import { LocationDetailsComponent } from './modules/location/location-details/location-details.component';
 
 export const appRoutes: Route[] = [
   // Landing route
@@ -12,6 +13,12 @@ export const appRoutes: Route[] = [
       {
         path: ':location-id',
         component: LocationComponent,
+        children: [
+          {
+            path: 'details',
+            component: LocationDetailsComponent,
+          },
+        ],
       },
     ],
   },
