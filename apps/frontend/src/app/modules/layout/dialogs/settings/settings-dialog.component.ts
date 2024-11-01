@@ -40,7 +40,6 @@ export class SettingsDialogComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private themeService: ThemeService,
-    private persistenceService: PersistenceService,
     private translationService: TranslationService,
     private settingsService: SettingsService,
     private dialogRef: MatDialogRef<SettingsDialogComponent>,
@@ -61,44 +60,44 @@ export class SettingsDialogComponent implements OnInit {
     });
   }
 
-  getBackgroundImageClass() {
-    return {
-      'background-image':
-        "url('../../assets/backgrounds/" +
-        this.currentBackgroundImageClass +
-        ".jpg')",
-    };
+  getCurrentTemperatureUnits() {
+    return this.settingsService.currentTemperatureUnits$.value;
   }
 
-  viewLocation(locationId: string) {
-    this.persistenceService.addRecentLocation(locationId);
-    this.router.navigate(['/', locationId]);
-    this.searchInputControl.setValue('');
+  getCurrentSpeedUnits() {
+    return this.settingsService.currentSpeedUnits$.value;
   }
 
-  preventEvent(event: Event) {
-    event.stopPropagation();
-    event.preventDefault();
+  getCurrentTimeFormat() {
+    return this.settingsService.currentTimeFormat$.value;
   }
 
-  onSelectLanguage(key: string) {
-    this.translationService.setLanguage(key);
+  getCurrentWeatherIconCollection() {
+    return this.settingsService.currentWeatherIconCollection$.value;
   }
 
-  updateFont(fontClass: string) {
-    this.settingsService.updateFont(fontClass);
+  getCurrentTheme() {
+    return this.settingsService.currentTheme$.value;
   }
 
-  getCurrentFont() {
-    return this.settingsService.currentFont$.value;
+  updateTemperatureUnits(units: string) {
+    this.settingsService.updateTemperatureUnits(units);
   }
 
-  updateContrast(contrast: string) {
-    this.settingsService.updateContrast(contrast);
+  updateSpeedUnits(units: string) {
+    this.settingsService.updateSpeedUnits(units);
   }
 
-  getCurrentContrast() {
-    return this.settingsService.currentContrast$.value;
+  updateTimeFormat(format: number) {
+    this.settingsService.updateTimeFormat(format);
+  }
+
+  updateWeatherIconCollection(collection: string) {
+    this.settingsService.updateWeatherIconCollection(collection);
+  }
+
+  updateTheme(theme: string) {
+    this.settingsService.updateTheme(theme);
   }
 
   closeDialog() {

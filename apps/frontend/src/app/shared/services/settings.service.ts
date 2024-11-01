@@ -1,89 +1,117 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable, Renderer2 } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
-import { Location } from '../models/location';
-import {
-  getLocalTimeZone,
-  now,
-  parseAbsolute,
-  toCalendarDateTime,
-} from '@internationalized/date';
-import { Weather } from '../models/weather';
-import { DOCUMENT } from '@angular/common';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+
+import { PersistenceService } from './persistence.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SettingsService {
-  currentFont$ = new BehaviorSubject('comfortaa');
-  currentContrast$ = new BehaviorSubject('default');
+  currentFont$ = new BehaviorSubject('comfortaa'); //atkinson-hyperlegible  ,  opendyslexic
+  currentContrast$ = new BehaviorSubject('default'); //high
+  currentTemperatureUnits$ = new BehaviorSubject('celsius'); //fahrenheit
+  currentSpeedUnits$ = new BehaviorSubject('kilometers'); //miles
+  currentTimeFormat$ = new BehaviorSubject(24); // 12
+  currentWeatherIconCollection$ = new BehaviorSubject('solid'); //outline
+  currentTheme$ = new BehaviorSubject('default'); // iridescent
 
-  currentLocationWeatherCondition: BehaviorSubject<string> =
-    new BehaviorSubject('sunny-1');
+  constructor(
+    private httpClient: HttpClient,
+    private persistenceService: PersistenceService,
+  ) {
+    //Get Current Font from Local Storage
+    this.persistenceService.currentFont$.subscribe((currentFont: any) => {
+      if (currentFont) {
+        this.updateFont(currentFont);
+      }
+    });
 
-  private fontColors = { light: 'text-white', dark: 'text-sky-950' };
+    //Get Current Contrast from Local Storage
+    this.persistenceService.currentContrast$.subscribe(
+      (currentContrast: any) => {
+        if (currentContrast) {
+          this.updateContrast(currentContrast);
+        }
+      },
+    );
 
-  fontColorClass$: BehaviorSubject<string> = new BehaviorSubject(
-    this.fontColors.light,
-  );
+    //Get Current Temperature Units from Local Storage
+    this.persistenceService.currentTemperatureUnits$.subscribe(
+      (currentTemperatureUnits: any) => {
+        if (currentTemperatureUnits) {
+          this.updateTemperatureUnits(currentTemperatureUnits);
+        }
+      },
+    );
 
-  private backgroundFontColorMap: Record<string, string> = {
-    'clear-night-0': this.fontColors.light,
-    'clear-night-1': this.fontColors.light,
-    'fog-day-0': this.fontColors.dark,
-    'fog-day-1': this.fontColors.dark,
-    'fog-night-0': this.fontColors.light,
-    'fog-night-1': this.fontColors.light,
-    'heavy-rain-day-0': this.fontColors.light,
-    'heavy-rain-day-1': this.fontColors.light,
-    'heavy-rain-night-0': this.fontColors.light,
-    'heavy-rain-night-1': this.fontColors.light,
-    'overcast-day-0': this.fontColors.dark,
-    'overcast-day-1': this.fontColors.dark,
-    'overcast-night-0': this.fontColors.light,
-    'overcast-night-1': this.fontColors.light,
-    'partly-cloudy-0': this.fontColors.light,
-    'partly-cloudy-1': this.fontColors.light,
-    'partly-sunny-0': this.fontColors.dark,
-    'partly-sunny-1': this.fontColors.dark,
-    'showers-day-0': this.fontColors.light,
-    'showers-day-1': this.fontColors.light,
-    'showers-night-0': this.fontColors.light,
-    'showers-night-1': this.fontColors.light,
-    'sleet-day-0': this.fontColors.light,
-    'sleet-day-1': this.fontColors.light,
-    'sleet-night-0': this.fontColors.light,
-    'sleet-night-1': this.fontColors.light,
-    'snowy-day-0': this.fontColors.dark,
-    'snowy-day-1': this.fontColors.dark,
-    'snowy-night-0': this.fontColors.light,
-    'snowy-night-1': this.fontColors.light,
-    'sunny-0': this.fontColors.dark,
-    'sunny-1': this.fontColors.dark,
-    'thunderstorm-day-0': this.fontColors.light,
-    'thunderstorm-day-1': this.fontColors.light,
-    'thunderstorm-night-0': this.fontColors.light,
-    'thunderstorm-night-1': this.fontColors.light,
-  };
+    //Get Current Speed Units from Local Storage
+    this.persistenceService.currentSpeedUnits$.subscribe(
+      (currentSpeedUnits: any) => {
+        if (currentSpeedUnits) {
+          this.updateSpeedUnits(currentSpeedUnits);
+        }
+      },
+    );
 
-  constructor(private httpClient: HttpClient) {}
+    //Get Current Time Format from Local Storage
+    this.persistenceService.currentTimeFormat$.subscribe(
+      (currentTimeFormat: any) => {
+        if (currentTimeFormat) {
+          this.updateTimeFormat(currentTimeFormat);
+        }
+      },
+    );
+
+    //Get Current Weather Icon Collection from Local Storage
+    this.persistenceService.weatherIconCollection$.subscribe(
+      (weatherIconCollection: any) => {
+        if (weatherIconCollection) {
+          this.updateWeatherIconCollection(weatherIconCollection);
+        }
+      },
+    );
+
+    //Get Current Theme from Local Storage
+    this.persistenceService.theme$.subscribe((theme: any) => {
+      if (theme) {
+        this.updateTheme(theme);
+      }
+    });
+  }
 
   updateFont(fontName: string) {
     this.currentFont$.next(fontName);
-  }
-  getLocalTime(dateTime: Date, timezone: string) {
-    if (timezone) {
-      const date = new Date(dateTime);
-
-      const convertedo = parseAbsolute(date.toISOString(), timezone);
-      const heh = toCalendarDateTime(convertedo);
-      return new Date(heh.toString());
-    }
-
-    return;
+    this.persistenceService.setFont(fontName);
   }
 
   updateContrast(contrast: string) {
     this.currentContrast$.next(contrast);
+    this.persistenceService.setContrast(contrast);
+  }
+
+  updateTemperatureUnits(units: string) {
+    this.currentTemperatureUnits$.next(units);
+    this.persistenceService.setTemperatureUnits(units);
+  }
+
+  updateSpeedUnits(units: string) {
+    this.currentSpeedUnits$.next(units);
+    this.persistenceService.setSpeedUnits(units);
+  }
+
+  updateTimeFormat(format: number) {
+    this.currentTimeFormat$.next(format);
+    this.persistenceService.setTimeFormat(format);
+  }
+
+  updateWeatherIconCollection(collection: string) {
+    this.currentWeatherIconCollection$.next(collection);
+    this.persistenceService.setWeatherIconCollection(collection);
+  }
+
+  updateTheme(theme: string) {
+    this.currentTheme$.next(theme);
+    this.persistenceService.setTheme(theme);
   }
 }

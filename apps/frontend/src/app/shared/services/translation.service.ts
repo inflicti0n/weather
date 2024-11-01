@@ -14,7 +14,7 @@ export class TranslationService {
     private persistenceService: PersistenceService,
   ) {
     //Get Active Language from Local Storage
-    this.persistenceService.activeLanguage.subscribe((languageKey: any) => {
+    this.persistenceService.activeLanguage$.subscribe((languageKey: any) => {
       if (languageKey) {
         this.setLanguage(languageKey);
       }

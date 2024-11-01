@@ -11,27 +11,24 @@ import {
 import { UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import {
-  getLocalTimeZone,
   now,
   parseAbsolute,
   toCalendarDateTime,
 } from '@internationalized/date';
 import { TranslocoService } from '@ngneat/transloco';
 import { colorSets } from '@swimlane/ngx-charts';
-import { Chart, ChartArea, Interaction } from 'chart.js/auto';
-
-import { getRelativePosition } from 'chart.js/helpers';
+import { Chart, ChartArea } from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import * as shape from 'd3-shape';
+import { of, switchMap } from 'rxjs';
 
 import { Location } from '../../../shared/models/location';
 import { locationTimezoneMap } from '../../../shared/models/location-timezone-map';
 import { Weather } from '../../../shared/models/weather';
 import { LocationService } from '../../../shared/services/location.service';
-import { crossplugin, interpolate } from '../../../utils/crosshair-plugin';
-import { ThemeService } from '../../../shared/services/theme.service';
-import { map, of, switchMap } from 'rxjs';
 import { SettingsService } from '../../../shared/services/settings.service';
+import { ThemeService } from '../../../shared/services/theme.service';
+import { crossplugin } from '../../../utils/crosshair-plugin';
 
 @Component({
   selector: 'weather-location-details-component',
@@ -198,6 +195,9 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
   selectedGraphType: 'temperature' | 'precipitation' | 'wind' = 'temperature';
 
   currentFontColorClass: string = 'text-white';
+  currentTemperatureUnits: string = 'celsius';
+  currentSpeedUnits: string = 'kilometers';
+  currentTimeFormat: number = 24;
 
   constructor(
     private router: Router,
@@ -223,6 +223,17 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
     });
     this.themeService.fontColorClass$.subscribe((fontColor: string) => {
       this.currentFontColorClass = fontColor;
+    });
+
+    this.settingsService.currentTemperatureUnits$.subscribe((units: string) => {
+      this.currentTemperatureUnits = units;
+    });
+
+    this.settingsService.currentSpeedUnits$.subscribe((units: string) => {
+      this.currentSpeedUnits = units;
+    });
+    this.settingsService.currentTimeFormat$.subscribe((format: number) => {
+      this.currentTimeFormat = format;
     });
   }
 
@@ -342,8 +353,32 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
               fill: false,
               pointRadius: pointRadii,
               pointHoverRadius: pointRadii,
-              pointBorderColor: 'white',
-              backgroundColor: 'white',
+              pointBorderColor: () => {
+                switch (this.currentFontColorClass) {
+                  case 'text-white': {
+                    return 'white';
+                  }
+                  case 'text-sky-950': {
+                    return '#082f49';
+                  }
+                  default: {
+                    return 'white';
+                  }
+                }
+              },
+              backgroundColor: () => {
+                switch (this.currentFontColorClass) {
+                  case 'text-white': {
+                    return 'white';
+                  }
+                  case 'text-sky-950': {
+                    return '#082f49';
+                  }
+                  default: {
+                    return 'white';
+                  }
+                }
+              },
               borderColor: (context) => {
                 const chart = context.chart;
                 const { ctx, chartArea } = chart;
@@ -459,12 +494,15 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
               },
               formatter: (value: any) => {
                 switch (this.selectedGraphType) {
-                  case 'temperature':
-                    return Math.round(value) + '°';
+                  case 'temperature': {
+                    return this.getUnitAdjustedTemperature(value) + '°';
+                  }
                   case 'precipitation':
                     return value + '%';
                   case 'wind':
-                    return value + 'km/h';
+                    return this.currentSpeedUnits === 'kilometers'
+                      ? this.getUnitAdjustedSpeed(value) + 'km/h'
+                      : this.getUnitAdjustedSpeed(value) + 'mph';
                 }
 
                 return Math.round;
@@ -683,11 +721,6 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
           labelsToDisplay.push(false);
           pointRadii.push(2);
         }
-        /*if (myChart.data.datasets[0].data[i] > 100) {
-            pointBackgroundColors.push("#90cd8a");
-        } else {
-            pointBackgroundColors.push("#f58368");
-        }*/
       }
       for (
         let i = 0;
@@ -701,11 +734,6 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
           labelsToDisplay.push(false);
           pointRadii.push(2);
         }
-        /*if (myChart.data.datasets[0].data[i] > 100) {
-            pointBackgroundColors.push("#90cd8a");
-        } else {
-            pointBackgroundColors.push("#f58368");
-        }*/
       }
       this.updateChartData();
       this.hourlyWeatherChart.update();
@@ -894,7 +922,7 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
     );
 
     if (temperatures && temperatures.length > 0) {
-      return Math.max(...temperatures);
+      return this.getUnitAdjustedTemperature(Math.max(...temperatures));
     }
     return 0;
   }
@@ -905,7 +933,7 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
     );
 
     if (temperatures && temperatures.length > 0) {
-      return Math.min(...temperatures);
+      return this.getUnitAdjustedTemperature(Math.min(...temperatures));
     }
     return 0;
   }
@@ -1304,5 +1332,17 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
 
   getCurrentFont() {
     return this.settingsService.currentFont$;
+  }
+
+  getUnitAdjustedTemperature(temperature: number) {
+    return this.currentTemperatureUnits === 'celsius'
+      ? Math.round(temperature)
+      : Math.round((temperature * 9) / 5 + 32);
+  }
+
+  getUnitAdjustedSpeed(speed: number) {
+    return this.currentSpeedUnits === 'kilometers'
+      ? speed
+      : Math.round(speed * 0.621371);
   }
 }

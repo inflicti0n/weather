@@ -15,6 +15,7 @@ import { LocationService } from '../../shared/services/location.service';
 import { TranslocoService } from '@ngneat/transloco';
 import { DatePipe } from '@angular/common';
 import { ThemeService } from '../../shared/services/theme.service';
+import { SettingsService } from '../../shared/services/settings.service';
 
 @Component({
   selector: 'weather-location-component',
@@ -31,6 +32,8 @@ export class LocationComponent implements OnInit {
   currentTimezone: string | null = null;
 
   currentFontColorClass: string = 'text-white';
+  currentTemperatureUnits: string = 'celsius';
+  currentTimeFormat: number = 24;
 
   constructor(
     private router: Router,
@@ -39,6 +42,7 @@ export class LocationComponent implements OnInit {
     private themeService: ThemeService,
     private translocoService: TranslocoService,
     private datePipe: DatePipe,
+    private settingsService: SettingsService,
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +59,14 @@ export class LocationComponent implements OnInit {
 
     this.themeService.fontColorClass$.subscribe((fontColor: string) => {
       this.currentFontColorClass = fontColor;
+    });
+
+    this.settingsService.currentTemperatureUnits$.subscribe((units: string) => {
+      this.currentTemperatureUnits = units;
+    });
+
+    this.settingsService.currentTimeFormat$.subscribe((format: number) => {
+      this.currentTimeFormat = format;
     });
   }
 
@@ -104,7 +116,7 @@ export class LocationComponent implements OnInit {
     );
 
     if (temperatures && temperatures.length > 0) {
-      return Math.max(...temperatures);
+      return this.getUnitAdjustedTemperature(Math.max(...temperatures));
     }
     return 0;
   }
@@ -115,7 +127,7 @@ export class LocationComponent implements OnInit {
     );
 
     if (temperatures && temperatures.length > 0) {
-      return Math.min(...temperatures);
+      return this.getUnitAdjustedTemperature(Math.min(...temperatures));
     }
     return 0;
   }
@@ -210,5 +222,11 @@ export class LocationComponent implements OnInit {
     }
 
     return condition;
+  }
+
+  getUnitAdjustedTemperature(temperature: number) {
+    return this.currentTemperatureUnits === 'celsius'
+      ? Math.round(temperature)
+      : Math.round((temperature * 9) / 5 + 32);
   }
 }

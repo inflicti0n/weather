@@ -138,7 +138,11 @@
 </div>
 
 <!-- Navigation for Screen > sm -->
-<div *transloco="let t" class="flex sm:hidden flex-col px-6 -mt-2">
+<div
+  *transloco="let t"
+  [ngClass]="currentFontColorClass"
+  class="flex sm:hidden flex-col px-6 -mt-2"
+>
   <!-- Search Bar for Screen < sm -->
   <div
     class="flex flex-row w-full backdrop-blur-[30px] backdrop-brightness-[1.15] justify-center h-10 gap-4 items-center py-3 px-4 rounded-full"

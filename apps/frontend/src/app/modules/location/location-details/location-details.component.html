@@ -10,6 +10,10 @@
     class="w-full h-full hidden lg:flex justify-center items-center flex-row gap-8"
   >
     <div
+      [ngClass]="{
+        'backdrop-brightness-[1.15]': currentFontColorClass === 'text-sky-950',
+        'backdrop-brightness-[0.9]': currentFontColorClass === 'text-white'
+      }"
       class="backdrop-blur-[30px] backdrop-brightness-[1.15] rounded-3xl flex justify-center items-start flex-row gap-8 p-6 tall:p-8"
     >
       <div
@@ -19,6 +23,10 @@
         <div class="absolute top-5">
           <!-- Back Button-->
           <button
+            [ngClass]="{
+              'bg-white/50': currentFontColorClass === 'text-sky-950',
+              'bg-black/50': currentFontColorClass === 'text-white'
+            }"
             routerLink=".."
             class="bg-white/50 rounded-full h-11 w-11 shrink-0 flex mt-3 flex items-center justify-center"
           >
@@ -52,9 +60,15 @@
                 [svgClass]="'w-20 h-20'"
               ></svg-icon>
               <div class="ml-2 text-8xl tall:text-9xl">
-                {{ currentlySelectedSingularWeather.temperatureCelsius }}
+                {{
+                  getUnitAdjustedTemperature(
+                    currentlySelectedSingularWeather.temperatureCelsius
+                  )
+                }}
               </div>
-              <div class="text-2xl tall:text-3xl font-semibold">°C</div>
+              <div class="text-2xl self-start tall:text-3xl font-semibold">
+                °{{ this.currentTemperatureUnits === 'celsius' ? 'C' : 'F' }}
+              </div>
             </div>
             <div class="text-xl tall:text-2xl font-semibold">
               {{
@@ -69,7 +83,11 @@
             >
               <div>
                 {{
-                  currentlySelectedSingularWeather.dateTime | date: 'shortTime'
+                  this.currentTimeFormat === 12
+                    ? (currentlySelectedSingularWeather.dateTime
+                      | date: 'h:mm a')
+                    : (currentlySelectedSingularWeather.dateTime
+                      | date: 'H:mm a')
                 }}&nbsp;
               </div>
               <div>H : {{ getHighestLocationTemperature() }}°&nbsp;</div>
@@ -185,7 +203,12 @@
                   <div
                     class="flex flex-row text-2xl tall:text-3xl font-semibold items-center justify-start whitespace-nowrap"
                   >
-                    {{ currentlySelectedSingularWeather.windSpeedKmh }} km/h
+                    {{
+                      getUnitAdjustedSpeed(
+                        currentlySelectedSingularWeather.windSpeedKmh
+                      )
+                    }}
+                    {{ currentSpeedUnits === 'kilometers' ? 'km/h' : 'mph' }}
                   </div>
                 </div>
                 <div
@@ -206,7 +229,12 @@
                   <div
                     class="flex flex-row text-2xl tall:text-3xl font-semibold items-center justify-start"
                   >
-                    {{ currentlySelectedSingularWeather.windGustsKmh }} km/h
+                    {{
+                      getUnitAdjustedSpeed(
+                        currentlySelectedSingularWeather.windGustsKmh
+                      )
+                    }}
+                    {{ currentSpeedUnits === 'kilometers' ? 'km/h' : 'mph' }}
                   </div>
                 </div>
               </div>
@@ -340,7 +368,9 @@
               [svgClass]="'w-14 h-14'"
             ></svg-icon>
             <div class="text-2xl font-semibold">
-              &nbsp;{{ weather.temperatureCelsius }}°
+              &nbsp;{{
+                getUnitAdjustedTemperature(weather.temperatureCelsius)
+              }}°
             </div>
           </button>
         </div>
@@ -392,13 +422,17 @@
             class="text-xl h-12 px-3 py-2 font-semibold w-full flex flex-row justify-start items-center gap-5 hover:bg-white/50 rounded-xl"
           >
             <div class="w-[3%] items-center flex flex-row justify-end">
-              {{ weather.dateTime | date: 'h' }}
+              {{
+                this.currentTimeFormat === 12
+                  ? (weather.dateTime | date: 'h')
+                  : (weather.dateTime | date: 'H')
+              }}
             </div>
             <div class="w-[4%] -ml-2 items-center flex flex-row justify-start">
               {{ weather.dateTime | date: 'a' }}
             </div>
             <div class="w-[10%] items-center flex flex-row justify-center">
-              {{ weather.temperatureCelsius }}°
+              {{ getUnitAdjustedTemperature(weather.temperatureCelsius) }}°
             </div>
             <div class="w-[35%] items-center flex flex-row justify-start gap-2">
               <svg-icon
@@ -425,9 +459,11 @@
               <svg-icon name="wind" [svgClass]="'w-4 h-4'"></svg-icon>
 
               <div class="w-[15%] self-end flex flex-row justify-center">
-                {{ weather.windSpeedKmh }}
+                {{ getUnitAdjustedSpeed(weather.windSpeedKmh) }}
               </div>
-              <div>km/h</div>
+              <div>
+                {{ currentSpeedUnits === 'kilometers' ? 'km/h' : 'mph' }}
+              </div>
             </div>
           </button>
         </div>
@@ -513,6 +549,7 @@
             <canvas id="myChart"></canvas>
           </div>
           <div
+            *ngIf="currentTimeFormat === 12"
             class="w-full h-12 justify-center grid grid-cols-7 gap-4 h-12 bg-white/25 items-center text-center"
           >
             <div>12</div>
@@ -522,6 +559,18 @@
             <div>4</div>
             <div>8</div>
             <div>12</div>
+          </div>
+          <div
+            *ngIf="currentTimeFormat === 24"
+            class="w-full h-12 justify-center grid grid-cols-7 gap-4 h-12 bg-white/25 items-center text-center"
+          >
+            <div>0</div>
+            <div>4</div>
+            <div>8</div>
+            <div>12</div>
+            <div>16</div>
+            <div>20</div>
+            <div>0</div>
           </div>
         </div>
       </div>
@@ -564,7 +613,11 @@
               ></svg-icon>
               <div class="flex flex-row justify-center items-start">
                 <div class="ml-2 text-4xl">
-                  {{ currentlySelectedSingularWeather.temperatureCelsius }}
+                  {{
+                    getUnitAdjustedTemperature(
+                      currentlySelectedSingularWeather.temperatureCelsius
+                    )
+                  }}
                 </div>
                 <div class="text-lg font-semibold">°C</div>
               </div>
@@ -617,9 +670,16 @@
               <svg-icon name="wind" [svgClass]="'w-4 h-4'"></svg-icon>
 
               <div class="flex flex-row justify-center">
-                {{ currentlySelectedSingularWeather.windSpeedKmh }}
+                {{
+                  getUnitAdjustedSpeed(
+                    currentlySelectedSingularWeather.windSpeedKmh
+                  )
+                }}
+                {{ currentSpeedUnits === 'kilometers' ? 'km/h' : 'mph' }}
               </div>
-              <div>km/h</div>
+              <div>
+                {{ currentSpeedUnits === 'kilometers' ? 'km/h' : 'mph' }}
+              </div>
               <div
                 [ngClass]="
                   getCompassArrowRotationClass(
@@ -718,6 +778,7 @@
             <canvas id="myChart2"></canvas>
           </div>
           <div
+            *ngIf="currentTimeFormat === 12"
             class="w-full h-12 justify-center grid grid-cols-7 gap-4 px-2 h-8 bg-white/25 items-center text-center"
           >
             <div>12</div>
@@ -727,6 +788,18 @@
             <div>4</div>
             <div>8</div>
             <div>12</div>
+          </div>
+          <div
+            *ngIf="currentTimeFormat === 24"
+            class="w-full h-12 justify-center grid grid-cols-7 gap-4 px-2 h-8 bg-white/25 items-center text-center"
+          >
+            <div>0</div>
+            <div>4</div>
+            <div>8</div>
+            <div>12</div>
+            <div>16</div>
+            <div>20</div>
+            <div>0</div>
           </div>
         </div>
 
@@ -784,7 +857,9 @@
               [svgClass]="'w-8 h-8'"
             ></svg-icon>
             <div class="font-semibold">
-              &nbsp;{{ weather.temperatureCelsius }}°
+              &nbsp;{{
+                getUnitAdjustedTemperature(weather.temperatureCelsius)
+              }}°
             </div>
           </button>
         </div>

@@ -97,7 +97,7 @@ export class LayoutComponent implements OnInit {
       this.currentFontColorClass = fontColor;
     });
 
-    this.persistenceService.recentLocations.subscribe(
+    this.persistenceService.recentLocations$.subscribe(
       (locations) => (this.currentRecentLocationIds = locations),
     );
   }

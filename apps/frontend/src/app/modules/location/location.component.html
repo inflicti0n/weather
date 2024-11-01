@@ -30,9 +30,13 @@
             [svgClass]="'w-28 h-28'"
           ></svg-icon>
           <div class="ml-2 text-9xl">
-            {{ location.weather[0].temperatureCelsius }}
+            {{
+              getUnitAdjustedTemperature(location.weather[0].temperatureCelsius)
+            }}
           </div>
-          <div class="text-3xl font-semibold">°C</div>
+          <div class="text-3xl font-semibold">
+            °{{ this.currentTemperatureUnits === 'celsius' ? 'C' : 'F' }}
+          </div>
         </div>
         <div class="text-2xl font-semibold">
           {{
@@ -43,7 +47,13 @@
           }}
         </div>
         <div class="text-2xl font-semibold flex flex-row gap-2 justify-center">
-          <div>{{ time | date: 'shortTime' }}&nbsp;</div>
+          <div>
+            {{
+              this.currentTimeFormat === 12
+                ? (time | date: 'h:mm a')
+                : (time | date: 'H:mm a')
+            }}&nbsp;
+          </div>
           <div>H : {{ getHighestLocationTemperature() }}°&nbsp;</div>
           <div>L : {{ getLowestLocationTemperature() }}°</div>
         </div>
@@ -70,7 +80,9 @@
             [svgClass]="'w-20 h-20'"
           ></svg-icon>
           <div class="ml-2 text-8xl">
-            {{ location.weather[0].temperatureCelsius }}
+            {{
+              getUnitAdjustedTemperature(location.weather[0].temperatureCelsius)
+            }}
           </div>
           <div class="text-2xl font-semibold">°C</div>
         </div>
@@ -83,7 +95,13 @@
           }}
         </div>
         <div class="text-xl font-semibold flex flex-row gap-2">
-          <div>{{ time | date: 'shortTime' }}&nbsp;</div>
+          <div>
+            {{
+              this.currentTimeFormat === 12
+                ? (time | date: 'h:mm a')
+                : (time | date: 'H:mm a')
+            }}&nbsp;
+          </div>
           <div>H : {{ getHighestLocationTemperature() }}°&nbsp;</div>
           <div>L : {{ getLowestLocationTemperature() }}°</div>
         </div>
@@ -111,7 +129,11 @@
           ></svg-icon>
           <div class="flex flex-row justify-center mt-2 items-start">
             <div class="ml-2 text-6xl">
-              {{ location.weather[0].temperatureCelsius }}
+              {{
+                getUnitAdjustedTemperature(
+                  location.weather[0].temperatureCelsius
+                )
+              }}
             </div>
             <div class="text-2xl font-semibold">°C</div>
           </div>
@@ -125,7 +147,13 @@
           }}
         </div>
         <div class="text-xl font-semibold flex flex-row gap-2">
-          <div>{{ time | date: 'shortTime' }}&nbsp;</div>
+          <div>
+            {{
+              this.currentTimeFormat === 12
+                ? (time | date: 'h:mm a')
+                : (time | date: 'H:mm a')
+            }}&nbsp;
+          </div>
           <div>H : {{ getHighestLocationTemperature() }}°&nbsp;</div>
           <div>L : {{ getLowestLocationTemperature() }}°</div>
         </div>
@@ -162,7 +190,9 @@
               {{
                 first
                   ? t('location.now')
-                  : (getLocalTime(weather.dateTime) | date: 'h a')
+                  : this.currentTimeFormat === 12
+                    ? (getLocalTime(weather.dateTime) | date: 'h a')
+                    : (getLocalTime(weather.dateTime) | date: 'H:mm')
               }}
             </div>
             <svg-icon
@@ -175,7 +205,9 @@
               [svgClass]="'w-14 h-14'"
             ></svg-icon>
             <div class="text-2xl font-semibold">
-              &nbsp;{{ weather.temperatureCelsius }}°
+              &nbsp;{{
+                getUnitAdjustedTemperature(weather.temperatureCelsius)
+              }}°
             </div>
           </div>
         </div>
@@ -218,7 +250,9 @@
               {{
                 first
                   ? t('location.now')
-                  : (getLocalTime(weather.dateTime) | date: 'h a')
+                  : this.currentTimeFormat === 12
+                    ? (getLocalTime(weather.dateTime) | date: 'h a')
+                    : (getLocalTime(weather.dateTime) | date: 'H:mm')
               }}
             </div>
             <svg-icon
@@ -231,7 +265,9 @@
               [svgClass]="'w-10 h-10'"
             ></svg-icon>
             <div class="text-md font-semibold">
-              &nbsp;{{ weather.temperatureCelsius }}°
+              &nbsp;{{
+                getUnitAdjustedTemperature(weather.temperatureCelsius)
+              }}°
             </div>
           </div>
         </div>
