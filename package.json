@@ -18,10 +18,15 @@
     "@nestjs/common": "^10.0.2",
     "@nestjs/core": "^10.0.2",
     "@nestjs/platform-express": "^10.0.2",
+    "@nestjs/swagger": "^7.1.17",
+    "@nestjs/typeorm": "^10.0.1",
     "axios": "^1.0.0",
+    "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
+    "sqlite3": "^5.1.7",
     "tslib": "^2.3.0",
+    "typeorm": "^0.3.19",
     "zone.js": "~0.14.0"
   },
   "devDependencies": {

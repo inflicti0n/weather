@@ -1,0 +1,20 @@
+{
+  "name": "Api (NestJS BFF)",
+  "type": "node",
+  "request": "launch",
+  "runtimeExecutable": "npx",
+  "runtimeArgs": ["nx", "run", "api:serve", "--inspect"],
+  "preLaunchTask": "tsc: watch - apps/api/tsconfig.json",
+  "cwd": "apps",
+  "internalConsoleOptions": "neverOpen",
+  "env": {
+    "NODE_ENV": "local",
+    "NODE_PORT": "8080",
+    "IS_DEBUG_MODE": "true",
+    "TS_NODE_PROJECT": "apps/api/tsconfig.app.json"
+  },
+  "sourceMaps": true,
+  "console": "internalConsole",
+  "outputCapture": "std",
+  "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"]
+}
