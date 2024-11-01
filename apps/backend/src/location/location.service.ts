@@ -21,4 +21,26 @@ export class LocationService {
         })
       : this.locationRepository.find();
   }
+
+  async getLocationWeather(
+    locationId: string,
+    startTime?: Date,
+    endTime?: Date
+  ): Promise<Weather[]> {
+    const locationWeather = (
+      await this.locationRepository
+        .createQueryBuilder('location')
+        .where('location.id = :locationId', { locationId: locationId })
+        .leftJoinAndSelect('location.weather', 'weather')
+        .where('weather.dateTime > :startTime', {
+          startTime: startTime,
+        })
+        .andWhere('weather.dateTime < :endTime', {
+          endTime: endTime,
+        })
+        .getOne()
+    )?.weather;
+
+    return locationWeather;
+  }
 }

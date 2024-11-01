@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger/dist/decorators/api-property.decorator';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Location } from './location.entity';
 
 export enum WeatherConditions {

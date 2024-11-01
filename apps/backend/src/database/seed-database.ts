@@ -26,5 +26,19 @@ export async function SeedDatabase() {
     windSpeedKmh: 10,
   });
 
+  await WeatherDataSource.manager.insert(Weather, {
+    id: '2',
+    location: location1,
+    dateTime: new Date().toISOString(),
+    airQualityIndex: 5,
+    humidityPercent: 50,
+    precipitationProbabilityPercent: 70,
+    temperatureCelsius: 15,
+    uvIndex: 26,
+    weatherCondition: WeatherConditions.clear,
+    windGustsKmh: 20,
+    windSpeedKmh: 10,
+  });
+
   Logger.log(`🌱 Database seeding completed`);
 }
