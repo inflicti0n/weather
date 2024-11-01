@@ -8,10 +8,11 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AppComponent } from './app.component';
 import { appRoutes } from './app.routes';
 import { IconsModule } from './modules/icons/icons.module';
-import { TranslocoRootModule } from './modules/transloco/transloco-root.module';
 import { LayoutModule } from './modules/layout/layout.module';
-import { LocationModule } from './modules/location/location.module';
+import { LocationDetailsModule } from './modules/location/location-details/location-details.module';
+import { TranslocoRootModule } from './modules/transloco/transloco-root.module';
 import { SharedModule } from './shared/shared.module';
+import { LocationModule } from './modules/location/location.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +27,7 @@ import { SharedModule } from './shared/shared.module';
     LayoutModule,
     HttpClientModule,
     LocationModule,
+    LocationDetailsModule,
   ],
   bootstrap: [AppComponent],
 })

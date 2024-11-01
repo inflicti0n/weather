@@ -10,7 +10,7 @@ export const appRoutes: Route[] = [
     component: LayoutComponent,
     children: [
       {
-        path: ':location-name',
+        path: ':location-id',
         component: LocationComponent,
       },
     ],

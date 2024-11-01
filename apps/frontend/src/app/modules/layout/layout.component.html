@@ -14,7 +14,7 @@
   </div>
   <div
     [ngClass]="centerSearchBar ? 'mt-[46vh]' : 'mt-0'"
-    class="w-4/12 h-full z-10 flex flex-col gap-2"
+    class="w-[45rem] h-full z-10 flex flex-col gap-2"
   >
     <!-- Search Bar -->
     <div
@@ -25,12 +25,13 @@
         [svgClass]="'w-7 h-7 stroke-2'"
       ></svg-icon>
       <input
+        #searchInput="matInput"
         matInput
         class="search-input text-xl w-full border-none bg-transparent placeholder-gray-700 focus:bg-transparent focus:border-none focus:shadow-none focus:outline-none"
         placeholder="{{ t('overlay.search') }}"
-        autofocus
         [autocomplete]="'off'"
         [formControl]="searchInputControl"
+        [spellcheck]="false"
       />
       <svg-icon
         name="location"
@@ -38,9 +39,30 @@
         [svgClass]="'w-7 h-7'"
       ></svg-icon>
     </div>
+    <div
+      class="absolute scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25 overflow-y-auto self-center mt-14 z-20 rounded-2xl items-center justify-start flex flex-col max-h-[20rem] backdrop-blur-[30px] backdrop-brightness-[1.15] w-[42rem]"
+      *ngIf="searchInput.focused && searchInput.value.length > 0"
+    >
+      <div class="mt-2"></div>
+      <button
+        (pointerup)="viewLocation(location)"
+        (pointerdown)="preventEvent($event)"
+        *ngFor="let location of locationResults"
+        class="text-2xl self-center py-2 px-4 w-[98%] text-start hover:bg-white/25 rounded-xl"
+      >
+        <a>{{ t('locations.' + location) }}</a>
+      </button>
+      <div
+        *ngIf="locationResults?.length === 0"
+        class="text-2xl self-center py-2 px-4 w-[98%] text-start"
+      >
+        No location found
+      </div>
+      <div class="mb-2"></div>
+    </div>
     <!-- Recent Locations -->
     <div
-      class="flex flex-wrap flex-row text-md font-medium items-center gap-2 w-full pl-6"
+      class="flex flex-wrap flex-row text-md font-medium items-center gap-2 w-full pl-7"
     >
       {{ t('overlay.recent-locations') }} :
       <div

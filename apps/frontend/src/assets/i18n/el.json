@@ -3,8 +3,35 @@
     "search": "Search location",
     "recent-locations": "Recent Locations"
   },
+  "location": {
+    "now": "Now",
+    "view-full-forecast": "View Full Forecast",
+    "weather-conditions": {
+      "sunny": "Sunny",
+      "partly-sunny": "Partly Sunny",
+      "clear": "Clear",
+      "partly-cloudy": "Partly Cloudy",
+      "overcast": "Overcast",
+      "thunderstorm": "Thunderstorm",
+      "fog": "Fog",
+      "showers": "Showers",
+      "heavy-rain": "Heavy Rain",
+      "rain-with-sun": "Rain With Sun",
+      "snowy": "Snowy",
+      "sleet": "Sleet"
+    }
+  },
   "locations": {
     "athens-greece": "Athens, Greece",
-    "larissa-greece": "Larissa, Greece"
+    "larissa-greece": "Larissa, Greece",
+    "thessaloniki-greece": "Thessaloniki, Greece",
+    "tokyo-japan": "Tokyo, Japan",
+    "paris-france": "Paris, France",
+    "london-england": "London, England",
+    "stockholm-sweden": "Stockhol, Sweden",
+    "amsterdam-netherlands": "Amsterdam, Netherlands",
+    "berlin-germany": "Berlin, Germany",
+    "rome-italy": "Rome, Italy",
+    "vienna-austria": "Vienna, Austria"
   }
 }

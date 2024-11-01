@@ -1,23 +1,42 @@
 <div
   *transloco="let t"
-  class="w-[60vw] relative sm:fixed z-1 -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2"
+  class="w-[85vw] relative sm:fixed z-1 -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2"
 >
-  <div class="w-full h-full flex justify-center items-center flex-row gap-8">
+  <div
+    *ngIf="location"
+    class="w-full h-full flex justify-center items-center flex-row gap-8"
+  >
     <div
       class="items-center justify-center flex flex-col p-4 text-center gap-3"
     >
       <div class="w-full text-4xl font-semibold">
-        {{ t('locations.athens-greece') }}
+        {{ t('locations.' + location.id) }}
       </div>
-      <div class="text-2xl font-semibold">Wednesday, January 17</div>
+      <div class="text-2xl font-semibold">
+        {{ time | date: 'EEEE, MMMM d' }}
+      </div>
       <div class="flex flex-row justify-center mt-4">
-        <svg-icon name="sunny" [svgClass]="'w-28 h-28'"></svg-icon>
-        <div class="ml-2 text-9xl">25</div>
+        <svg-icon
+          name="{{ location.weather[0].weatherCondition }}"
+          [svgClass]="'w-28 h-28'"
+        ></svg-icon>
+        <div class="ml-2 text-9xl">
+          {{ location.weather[0].temperatureCelsius }}
+        </div>
         <div class="text-3xl font-semibold">°C</div>
       </div>
-      <div class="text-2xl font-semibold">Sunny</div>
       <div class="text-2xl font-semibold">
-        6:45 PM &nbsp; H : 25° &nbsp; L : 21°
+        {{
+          t(
+            'location.weather-conditions.' +
+              location.weather[0].weatherCondition
+          )
+        }}
+      </div>
+      <div class="text-2xl font-semibold">
+        {{ time | date: 'shortTime' }}&nbsp; H :
+        {{ getHighestLocationTemperature() }}°&nbsp;L :
+        {{ getLowestLocationTemperature() }}°
       </div>
     </div>
     <div
@@ -34,45 +53,33 @@
       <div
         class="flex items-center justify-center flex-row w-full h-4/6 gap-10 my-6"
       >
-        <div class="flex flex-col h-full justify-center items-center gap-4">
-          <div class="font-semibold">Now</div>
-          <svg-icon name="sunny" [svgClass]="'w-14 h-14'"></svg-icon>
-          <div class="text-2xl font-semibold">&nbsp;25°</div>
-        </div>
-        <div class="flex flex-col h-full justify-center items-center gap-4">
-          <div class="font-semibold">7 PM</div>
-          <svg-icon name="sunny" [svgClass]="'w-14 h-14'"></svg-icon>
-          <div class="text-2xl font-semibold">&nbsp;25°</div>
-        </div>
-        <div class="flex flex-col h-full justify-center items-center gap-4">
-          <div class="font-semibold">8 PM</div>
-          <svg-icon name="sunny" [svgClass]="'w-14 h-14'"></svg-icon>
-          <div class="text-2xl font-semibold">&nbsp;25°</div>
-        </div>
-        <div class="flex flex-col h-full justify-center items-center gap-4">
-          <div class="font-semibold">9 PM</div>
-          <svg-icon name="sunny" [svgClass]="'w-14 h-14'"></svg-icon>
-          <div class="text-2xl font-semibold">&nbsp;25°</div>
-        </div>
-        <div class="flex flex-col h-full justify-center items-center gap-4">
-          <div class="font-semibold">10 PM</div>
-          <svg-icon name="sunny" [svgClass]="'w-14 h-14'"></svg-icon>
-          <div class="text-2xl font-semibold">&nbsp;25°</div>
-        </div>
-        <div class="flex flex-col h-full justify-center items-center gap-4">
-          <div class="font-semibold">11 PM</div>
-          <svg-icon name="sunny" [svgClass]="'w-14 h-14'"></svg-icon>
-          <div class="text-2xl font-semibold">&nbsp;25°</div>
-        </div>
-        <div class="flex flex-col h-full justify-center items-center gap-4">
-          <div class="font-semibold">12 AM</div>
-          <svg-icon name="sunny" [svgClass]="'w-14 h-14'"></svg-icon>
-          <div class="text-2xl font-semibold">&nbsp;25°</div>
+        <div
+          *ngFor="
+            let weather of location.weather;
+            let first = first;
+            let last = last
+          "
+          class="flex flex-col h-full justify-center items-center gap-4"
+        >
+          <div class="font-semibold">
+            {{
+              first
+                ? t('location.now')
+                : (getLocalTime(weather.dateTime) | date: 'h a')
+            }}
+          </div>
+          <svg-icon
+            name="{{ weather.weatherCondition }}"
+            [svgClass]="'w-14 h-14'"
+          ></svg-icon>
+          <div class="text-2xl font-semibold">
+            &nbsp;{{ weather.temperatureCelsius }}°
+          </div>
         </div>
       </div>
       <div class="flex flex-row items-center justify-end w-full h-1/6">
         <button
-          class="flex flex-row items-center justify-center h-12 text-xl px-6 py-5 rounded-full bg-sky-100/50 drop-shadow-lg"
+          class="flex flex-row items-center justify-center h-12 text-xl px-6 py-5 rounded-full bg-white/50 drop-shadow-lg"
         >
           View Full Forecast
         </button>

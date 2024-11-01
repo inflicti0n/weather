@@ -14,6 +14,30 @@ export class IconsModule {
       ?.subscribe();
 
     this.iconReg?.loadSvg('assets/icons/sunny.svg', 'sunny')?.subscribe();
+    this.iconReg?.loadSvg('assets/icons/overcast.svg', 'overcast')?.subscribe();
+    this.iconReg?.loadSvg('assets/icons/clear.svg', 'clear')?.subscribe();
+    this.iconReg
+      ?.loadSvg('assets/icons/partly-sunny.svg', 'partly-sunny')
+      ?.subscribe();
+
+    this.iconReg
+      ?.loadSvg('assets/icons/partly-cloudy.svg', 'partly-cloudy')
+      ?.subscribe();
+
+    this.iconReg?.loadSvg('assets/icons/fog.svg', 'fog')?.subscribe();
+    this.iconReg?.loadSvg('assets/icons/snowy.svg', 'snowy')?.subscribe();
+    this.iconReg?.loadSvg('assets/icons/showers.svg', 'showers')?.subscribe();
+    this.iconReg
+      ?.loadSvg('assets/icons/heavy-rain.svg', 'heavy-rain')
+      ?.subscribe();
+    this.iconReg
+      ?.loadSvg('assets/icons/rain-with-sun.svg', 'rain-with-sun')
+      ?.subscribe();
+
+    this.iconReg
+      ?.loadSvg('assets/icons/thunderstorm.svg', 'thunderstorm')
+      ?.subscribe();
+    this.iconReg?.loadSvg('assets/icons/sleet.svg', 'sleet')?.subscribe();
 
     this.iconReg?.loadSvg('assets/icons/location.svg', 'location')?.subscribe();
     this.iconReg?.loadSvg('assets/icons/uk-flag.svg', 'uk-flag')?.subscribe();
