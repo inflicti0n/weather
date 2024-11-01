@@ -13,7 +13,6 @@ export class SettingsService {
   currentTemperatureUnits$ = new BehaviorSubject('celsius'); //fahrenheit
   currentSpeedUnits$ = new BehaviorSubject('kilometers'); //miles
   currentTimeFormat$ = new BehaviorSubject(24); // 12
-  currentWeatherIconCollection$ = new BehaviorSubject('solid'); //outline
   currentTheme$ = new BehaviorSubject('default'); // iridescent, leafy
 
   constructor(
@@ -63,15 +62,6 @@ export class SettingsService {
       },
     );
 
-    //Get Current Weather Icon Collection from Local Storage
-    this.persistenceService.weatherIconCollection$.subscribe(
-      (weatherIconCollection: any) => {
-        if (weatherIconCollection) {
-          this.updateWeatherIconCollection(weatherIconCollection);
-        }
-      },
-    );
-
     //Get Current Theme from Local Storage
     this.persistenceService.theme$.subscribe((theme: any) => {
       if (theme) {
@@ -103,11 +93,6 @@ export class SettingsService {
   updateTimeFormat(format: number) {
     this.currentTimeFormat$.next(format);
     this.persistenceService.setTimeFormat(format);
-  }
-
-  updateWeatherIconCollection(collection: string) {
-    this.currentWeatherIconCollection$.next(collection);
-    this.persistenceService.setWeatherIconCollection(collection);
   }
 
   updateTheme(theme: string) {

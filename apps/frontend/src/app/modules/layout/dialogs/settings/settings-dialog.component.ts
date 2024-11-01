@@ -72,10 +72,6 @@ export class SettingsDialogComponent implements OnInit {
     return this.settingsService.currentTimeFormat$.value;
   }
 
-  getCurrentWeatherIconCollection() {
-    return this.settingsService.currentWeatherIconCollection$.value;
-  }
-
   getCurrentTheme() {
     return this.settingsService.currentTheme$.value;
   }
@@ -90,10 +86,6 @@ export class SettingsDialogComponent implements OnInit {
 
   updateTimeFormat(format: number) {
     this.settingsService.updateTimeFormat(format);
-  }
-
-  updateWeatherIconCollection(collection: string) {
-    this.settingsService.updateWeatherIconCollection(collection);
   }
 
   updateTheme(theme: string) {
