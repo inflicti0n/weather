@@ -17,6 +17,8 @@ import {
 } from '@internationalized/date';
 import { TranslocoService } from '@ngneat/transloco';
 import { colorSets } from '@swimlane/ngx-charts';
+import { Chart, ChartArea } from 'chart.js/auto';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import * as shape from 'd3-shape';
 
 import { Location } from '../../../shared/models/location';
@@ -193,6 +195,31 @@ export class LocationDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    let width: number | null;
+    let height: number | null;
+    let gradient: CanvasGradient | null;
+
+    function getGradient(ctx: CanvasRenderingContext2D, chartArea: ChartArea) {
+      const chartWidth = chartArea.right - chartArea.left;
+      const chartHeight = chartArea.bottom - chartArea.top;
+      if (!gradient || width !== chartWidth || height !== chartHeight) {
+        // Create the gradient because this is either the first render
+        // or the size of the chart has changed
+        width = chartWidth;
+        height = chartHeight;
+        gradient = ctx.createLinearGradient(
+          0,
+          chartArea.bottom,
+          0,
+          chartArea.top,
+        );
+        gradient.addColorStop(0, 'rgb(54, 162, 235)');
+        gradient.addColorStop(0.5, 'rgb(255, 205, 86)');
+        gradient.addColorStop(1, 'rgb(255, 99, 132)');
+      }
+
+      return gradient;
+    }
     console.log('Location Details Component Initialized');
 
     this.route.paramMap.subscribe((params: ParamMap) => {
@@ -203,6 +230,78 @@ export class LocationDetailsComponent implements OnInit {
         this.getLocationMonthlyWeather(id);
       }
     });
+
+    Chart.register(ChartDataLabels);
+
+    setTimeout(() => {
+      const element = <HTMLCanvasElement>document.getElementById('myChart');
+      if (!element) {
+        return;
+      }
+      const context = element?.getContext('2d');
+      if (!context) {
+        return;
+      }
+      const myChart = new Chart(context, {
+        type: 'line',
+        data: {
+          labels: ['Ma', 'Ju', 'Bo', 'Lo', 'Mo', 'Gu', 'Gi'],
+          datasets: [
+            {
+              label: 'My First Dataset',
+              cubicInterpolationMode: 'monotone',
+              data: [10, 10, -15, 25, 30, 30, 40],
+              fill: false,
+
+              pointRadius: 7,
+              pointHoverRadius: 7,
+              pointBorderColor: 'white',
+              backgroundColor: 'white',
+              borderColor: function (context) {
+                const chart = context.chart;
+                const { ctx, chartArea } = chart;
+
+                if (!chartArea) {
+                  // This case happens on initial chart load
+                  return;
+                }
+                return getGradient(ctx, chartArea);
+              },
+              tension: 0.1,
+              datalabels: {
+                align: 'end',
+                anchor: 'end',
+              },
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            legend: {
+              display: false,
+            },
+            datalabels: {
+              /*backgroundColor: 'rgb(75, 192, 192)',
+              borderRadius: 4,*/
+              color: 'white',
+              font: {
+                weight: 'bold',
+              },
+              formatter: Math.round,
+              //padding: 6,
+            },
+          },
+          scales: {
+            x: { display: false },
+            y: {
+              display: false,
+              min: -20,
+              max: 50,
+            },
+          },
+        },
+      });
+    }, 1000);
   }
 
   private getLocationMonthlyWeather(locationId: string) {
