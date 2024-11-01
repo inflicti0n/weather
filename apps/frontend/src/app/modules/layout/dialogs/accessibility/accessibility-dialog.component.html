@@ -6,12 +6,12 @@
     'text-white': currentFontColorClass === 'text-white'
   }"
 >
-  <div class="flex flex-row w-full items-center">
+  <div class="hidden md:flex flex-row w-full items-center">
     <div class="w-full text-2xl md:text-4xl font-semibold">Accessibility</div>
     <!-- Close Button-->
     <button
       (click)="closeDialog()"
-      class="bg-white/50 hidden sm:flex rounded-full h-11 w-11 shrink-0 items-center justify-center"
+      class="bg-white/50 flex rounded-full h-11 w-11 shrink-0 items-center justify-center"
     >
       <svg-icon name="x" [svgClass]="'w-8 h-8'"></svg-icon>
     </button>
@@ -21,18 +21,23 @@
 
   <div class="flex flex-wrap -mt-2 flex-row w-full basis-1 gap-2">
     <button
+      [ngClass]="{ 'bg-white/75': getCurrentFont() === 'comfortaa' }"
       (click)="updateFont('comfortaa')"
       class="flex flex-row items-center justify-center h-8 text-lg px-4 py-4 rounded-full bg-white/50 drop-shadow-lg"
     >
       Default
     </button>
     <button
+      [ngClass]="{
+        'bg-white/75': getCurrentFont() === 'atkinson-hyperlegible'
+      }"
       (click)="updateFont('atkinson-hyperlegible')"
       class="flex flex-row items-center atkinson-hyperlegible justify-center h-8 text-lg px-6 py-4 rounded-full bg-white/50 drop-shadow-lg"
     >
       Atkinson Hyperlegible
     </button>
     <button
+      [ngClass]="{ 'bg-white/75': getCurrentFont() === 'opendyslexic' }"
       (click)="updateFont('opendyslexic')"
       class="flex flex-row items-center opendyslexic justify-center h-8 text-lg px-4 py-4 rounded-full bg-white/50 drop-shadow-lg"
     >
@@ -40,7 +45,29 @@
     </button>
   </div>
 
-  <div class="flex mt-auto mb-4 pr-3 flex-row w-full items-center justify-end">
+  <div class="w-full text- xl md:text-3xl font-semibold mt-2">Contrast</div>
+  <div class="flex flex-wrap -mt-2 flex-row w-full basis-1 gap-2">
+    <button
+      [ngClass]="{ 'bg-white/75': getCurrentContrast() === 'default' }"
+      (click)="updateContrast('default')"
+      class="flex flex-row items-center justify-center h-8 text-lg px-4 py-4 rounded-full bg-white/50 drop-shadow-lg"
+    >
+      Default
+    </button>
+    <button
+      [ngClass]="{
+        'bg-white/75': getCurrentContrast() === 'high'
+      }"
+      (click)="updateContrast('high')"
+      class="flex flex-row items-center atkinson-hyperlegible justify-center h-8 text-lg px-6 py-4 rounded-full bg-white/50 drop-shadow-lg"
+    >
+      High
+    </button>
+  </div>
+
+  <div
+    class="flex md:hidden mt-auto mb-4 pr-3 flex-row w-full items-center justify-end"
+  >
     <!-- Close Button for Screens < md-->
 
     <button

@@ -427,19 +427,31 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
                 switch (this.selectedGraphType) {
                   case 'temperature':
                     return {
-                      family: 'comfortaa',
+                      family:
+                        this.settingsService.currentFont$.value ===
+                        'atkinson-hyperlegible'
+                          ? 'Atkinson Hyperlegible'
+                          : this.settingsService.currentFont$.value,
                       weight: 'bold',
                       size: 20,
                     };
                   case 'precipitation':
                     return {
-                      family: 'comfortaa',
+                      family:
+                        this.settingsService.currentFont$.value ===
+                        'atkinson-hyperlegible'
+                          ? 'Atkinson Hyperlegible'
+                          : this.settingsService.currentFont$.value,
                       weight: 'bold',
                       size: 18,
                     };
                   case 'wind':
                     return {
-                      family: 'comfortaa',
+                      family:
+                        this.settingsService.currentFont$.value ===
+                        'atkinson-hyperlegible'
+                          ? 'Atkinson Hyperlegible'
+                          : this.settingsService.currentFont$.value,
                       weight: 'bold',
                       size: 14,
                     };
@@ -594,26 +606,36 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
               display: false,
             },
             datalabels: {
-              /*backgroundColor: 'rgb(75, 192, 192)',
-              borderRadius: 4,*/
               color: 'white',
               font: (context) => {
                 switch (this.selectedGraphType) {
                   case 'temperature':
                     return {
-                      family: 'comfortaa',
+                      family:
+                        this.settingsService.currentFont$.value ===
+                        'atkinson-hyperlegible'
+                          ? 'Atkinson Hyperlegible'
+                          : this.settingsService.currentFont$.value,
                       weight: 'bold',
                       size: 16,
                     };
                   case 'precipitation':
                     return {
-                      family: 'comfortaa',
+                      family:
+                        this.settingsService.currentFont$.value ===
+                        'atkinson-hyperlegible'
+                          ? 'Atkinson Hyperlegible'
+                          : this.settingsService.currentFont$.value,
                       weight: 'bold',
                       size: 12,
                     };
                   case 'wind':
                     return {
-                      family: 'comfortaa',
+                      family:
+                        this.settingsService.currentFont$.value ===
+                        'atkinson-hyperlegible'
+                          ? 'Atkinson Hyperlegible'
+                          : this.settingsService.currentFont$.value,
                       weight: 'bold',
                       size: 12,
                     };

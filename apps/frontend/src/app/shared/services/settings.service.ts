@@ -16,6 +16,7 @@ import { DOCUMENT } from '@angular/common';
 })
 export class SettingsService {
   currentFont$ = new BehaviorSubject('comfortaa');
+  currentContrast$ = new BehaviorSubject('default');
 
   currentLocationWeatherCondition: BehaviorSubject<string> =
     new BehaviorSubject('sunny-1');
@@ -80,5 +81,9 @@ export class SettingsService {
     }
 
     return;
+  }
+
+  updateContrast(contrast: string) {
+    this.currentContrast$.next(contrast);
   }
 }

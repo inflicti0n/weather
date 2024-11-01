@@ -18,7 +18,8 @@ import { TranslocoService } from '../transloco/transloco-service';
 import { AvailableLangs } from '@ngneat/transloco';
 import { TranslationService } from '../../shared/services/translation.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AccessibilityDialogComponent } from './dialogs/accessibility-dialog.component';
+import { AccessibilityDialogComponent } from './dialogs/accessibility/accessibility-dialog.component';
+import { SettingsDialogComponent } from './dialogs/settings/settings-dialog.component';
 
 @Component({
   selector: 'weather-layout-component',
@@ -133,6 +134,23 @@ export class LayoutComponent implements OnInit {
 
   openAccessibilityDialog() {
     this.dialog.open(AccessibilityDialogComponent, {
+      panelClass: [
+        'w-[100vw]',
+        'h-[80vh]',
+        'lg:w-2/3',
+        'lg:h-2/4',
+        'xl:w-2/4',
+        '2xl:w-1/3',
+        '2xl:h-1/3',
+        'rounded-full',
+      ],
+      autoFocus: false,
+      restoreFocus: false,
+    });
+  }
+
+  openSettingsDialog() {
+    this.dialog.open(SettingsDialogComponent, {
       panelClass: [
         'w-[100vw]',
         'h-[80vh]',

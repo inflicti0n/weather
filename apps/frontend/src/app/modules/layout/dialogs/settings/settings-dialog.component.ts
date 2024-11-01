@@ -1,29 +1,19 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  BehaviorSubject,
-  Subject,
-  distinctUntilChanged,
-  of,
-  switchMap,
-  takeUntil,
-} from 'rxjs';
+import { Subject } from 'rxjs';
 
-import { AvailableLangs } from '@ngneat/transloco';
-
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ThemeService } from '../../../shared/services/theme.service';
-import { PersistenceService } from '../../../shared/services/persistence.service';
-import { TranslationService } from '../../../shared/services/translation.service';
-import { SettingsService } from '../../../shared/services/settings.service';
+import { PersistenceService } from '../../../../shared/services/persistence.service';
+import { SettingsService } from '../../../../shared/services/settings.service';
+import { ThemeService } from '../../../../shared/services/theme.service';
+import { TranslationService } from '../../../../shared/services/translation.service';
 
 @Component({
-  selector: 'weather-layout-component',
-  templateUrl: './accessibility-dialog.component.html',
+  templateUrl: './settings-dialog.component.html',
   encapsulation: ViewEncapsulation.None,
 })
-export class AccessibilityDialogComponent implements OnInit {
+export class SettingsDialogComponent implements OnInit {
   centerSearchBar: boolean = true;
 
   locationResults: string[] = [];
@@ -53,7 +43,7 @@ export class AccessibilityDialogComponent implements OnInit {
     private persistenceService: PersistenceService,
     private translationService: TranslationService,
     private settingsService: SettingsService,
-    private dialogRef: MatDialogRef<AccessibilityDialogComponent>,
+    private dialogRef: MatDialogRef<SettingsDialogComponent>,
   ) {}
 
   ngOnInit(): void {
@@ -97,6 +87,18 @@ export class AccessibilityDialogComponent implements OnInit {
 
   updateFont(fontClass: string) {
     this.settingsService.updateFont(fontClass);
+  }
+
+  getCurrentFont() {
+    return this.settingsService.currentFont$.value;
+  }
+
+  updateContrast(contrast: string) {
+    this.settingsService.updateContrast(contrast);
+  }
+
+  getCurrentContrast() {
+    return this.settingsService.currentContrast$.value;
   }
 
   closeDialog() {
