@@ -30,6 +30,8 @@ export class LocationComponent implements OnInit {
   location: Location | null = null;
   currentTimezone: string | null = null;
 
+  currentFontColorClass: string = 'text-white';
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -49,6 +51,10 @@ export class LocationComponent implements OnInit {
         this.currentTimezone = locationTimezoneMap[id];
         this.getLocationHourlyWeather(id);
       }
+    });
+
+    this.themeService.fontColorClass$.subscribe((fontColor: string) => {
+      this.currentFontColorClass = fontColor;
     });
   }
 

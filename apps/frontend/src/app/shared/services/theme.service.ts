@@ -17,7 +17,50 @@ export class ThemeService {
   currentLocationWeatherCondition: BehaviorSubject<string> =
     new BehaviorSubject('sunny-1');
 
-  useLightFont: boolean = true;
+  private fontColors = { light: 'text-white', dark: 'text-sky-950' };
+
+  fontColorClass$: BehaviorSubject<string> = new BehaviorSubject(
+    this.fontColors.light,
+  );
+
+  private backgroundFontColorMap: Record<string, string> = {
+    'clear-night-0': this.fontColors.light,
+    'clear-night-1': this.fontColors.light,
+    'fog-day-0': this.fontColors.dark,
+    'fog-day-1': this.fontColors.dark,
+    'fog-night-0': this.fontColors.light,
+    'fog-night-1': this.fontColors.light,
+    'heavy-rain-day-0': this.fontColors.light,
+    'heavy-rain-day-1': this.fontColors.light,
+    'heavy-rain-night-0': this.fontColors.light,
+    'heavy-rain-night-1': this.fontColors.light,
+    'overcast-day-0': this.fontColors.dark,
+    'overcast-day-1': this.fontColors.dark,
+    'overcast-night-0': this.fontColors.dark,
+    'overcast-night-1': this.fontColors.dark,
+    'partly-cloudy-0': this.fontColors.light,
+    'partly-cloudy-1': this.fontColors.light,
+    'partly-sunny-0': this.fontColors.dark,
+    'partly-sunny-1': this.fontColors.dark,
+    'showers-day-0': this.fontColors.light,
+    'showers-day-1': this.fontColors.light,
+    'showers-night-0': this.fontColors.light,
+    'showers-night-1': this.fontColors.light,
+    'sleet-day-0': this.fontColors.light,
+    'sleet-day-1': this.fontColors.light,
+    'sleet-night-0': this.fontColors.light,
+    'sleet-night-1': this.fontColors.light,
+    'snowy-day-0': this.fontColors.dark,
+    'snowy-day-1': this.fontColors.dark,
+    'snowy-night-0': this.fontColors.light,
+    'snowy-night-1': this.fontColors.light,
+    'sunny-0': this.fontColors.dark,
+    'sunny-1': this.fontColors.dark,
+    'thunderstorm-day-0': this.fontColors.dark,
+    'thunderstorm-day-1': this.fontColors.light,
+    'thunderstorm-night-0': this.fontColors.light,
+    'thunderstorm-night-1': this.fontColors.light,
+  };
 
   constructor(private httpClient: HttpClient) {}
 
@@ -45,12 +88,14 @@ export class ThemeService {
           `${weather.weatherCondition}-day-${Math.floor(Math.random() * 2)}`,
         );
       }
-
-      return;
+    } else {
+      this.currentLocationWeatherCondition.next(
+        `${weather.weatherCondition}-night-${Math.floor(Math.random() * 2)}`,
+      );
     }
 
-    this.currentLocationWeatherCondition.next(
-      `${weather.weatherCondition}-night-${Math.floor(Math.random() * 2)}`,
+    this.fontColorClass$.next(
+      this.backgroundFontColorMap[this.currentLocationWeatherCondition.value],
     );
   }
   getLocalTime(dateTime: Date, timezone: string) {

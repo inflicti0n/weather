@@ -25,6 +25,8 @@ export class LayoutComponent implements OnInit {
 
   currentBackgroundDaytime: 'day' | 'night' = 'day';
 
+  currentFontColorClass: string = 'text-white';
+
   constructor(
     private locationService: LocationService,
     private router: Router,
@@ -51,6 +53,10 @@ export class LayoutComponent implements OnInit {
         this.currentBackgroundDaytime = 'night';
       }
       this.currentBackgroundImageClass = condition;
+    });
+
+    this.themeService.fontColorClass$.subscribe((fontColor: string) => {
+      this.currentFontColorClass = fontColor;
     });
   }
 

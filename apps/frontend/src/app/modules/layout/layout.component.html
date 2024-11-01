@@ -15,6 +15,7 @@
 <div
   *transloco="let t"
   class="flex flex-row gap-4 px-6 py-4 w-full h-full items-start justify-center"
+  [ngClass]="currentFontColorClass"
 >
   <div
     class="w-1/3 z-10 mr-auto text-3xl md:text-5xl lg:text-6xl font-bold mt-1 md:mt-0 lg:-mt-2 text-slate-100"
@@ -36,17 +37,16 @@
       <input
         #searchInput="matInput"
         matInput
-        class="search-input text-xl w-full border-none bg-transparent placeholder-primary focus:bg-transparent focus:border-none focus:shadow-none focus:outline-none"
+        class="search-input text-xl w-full border-none bg-transparent focus:bg-transparent focus:border-none focus:shadow-none focus:outline-none"
+        [ngClass]="{
+          'placeholder-sky-950': currentFontColorClass === 'text-sky-950',
+          'placeholder-white': currentFontColorClass === 'text-white'
+        }"
         placeholder="{{ t('overlay.search') }}"
         [autocomplete]="'off'"
         [formControl]="searchInputControl"
         [spellcheck]="false"
       />
-      <svg-icon
-        name="location"
-        class="ml-auto"
-        [svgClass]="'w-7 h-7'"
-      ></svg-icon>
     </div>
     <div
       class="absolute scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25 overflow-y-auto self-center mt-14 z-20 rounded-2xl items-center justify-start flex flex-col max-h-[20rem] backdrop-blur-[30px] backdrop-brightness-[1.15] w-[42rem]"
@@ -110,6 +110,10 @@
       #searchInput="matInput"
       matInput
       class="search-input text-xl w-full border-none bg-transparent placeholder-gray-700 focus:bg-transparent focus:border-none focus:shadow-none focus:outline-none"
+      [ngClass]="{
+        'placeholder-sky-950': currentFontColorClass === 'text-sky-950',
+        'placeholder-white': currentFontColorClass === 'text-white'
+      }"
       placeholder="{{ t('overlay.search') }}"
       [autocomplete]="'off'"
       [formControl]="searchInputControl"
@@ -138,7 +142,6 @@
     <div class="mb-2"></div>
   </div>
 </div>
-
-<div class="w-[100vw] h-[83vh] sm:h-[90vh]">
+<div [ngClass]="currentFontColorClass">
   <router-outlet></router-outlet>
 </div>

@@ -2,7 +2,7 @@
 
 <div
   *transloco="let t"
-  class="w-full h-full z-10 items-center justify-center overflow-hidden"
+  class="w-[100vw] h-[83vh] sm:h-[90vh] -mt-2 sm:-mt-10 flex z-10 items-center justify-center"
 >
   <!-- Weather Details from Screen > lg -->
   <div
@@ -38,8 +38,9 @@
                 currentlySelectedSingularWeather.dateTime | date: 'EEEE, MMMM d'
               }}
             </div>
-            <div class="flex flex-row justify-center mt-4">
+            <div class="flex flex-row items-center justify-center mt-4">
               <svg-icon
+                class="-mt-2"
                 name="{{
                   getTimeAdjustedWeatherIconName(
                     currentlySelectedSingularWeather.weatherCondition,
@@ -165,7 +166,11 @@
                   </div>
                 </div>
                 <div
-                  class="border-solid border-black rounded-full border-[1.5px] w-full"
+                  [ngClass]="{
+                    'border-sky-950': currentFontColorClass === 'text-sky-950',
+                    'border-white': currentFontColorClass === 'text-white'
+                  }"
+                  class="border-solid rounded-full border-[1.5px] w-full"
                 ></div>
                 <!-- Gusts -->
                 <div class="flex flex-col py-4 tall:py-4 gap-2">
@@ -407,9 +412,11 @@
                 matTooltip="Temperature"
                 (click)="selectGraphType('temperature')"
                 [ngClass]="{
-                  'bg-white/50': selectedGraphType === 'temperature'
+                  'bg-white/50': selectedGraphType === 'temperature',
+                  'border-sky-950': currentFontColorClass === 'text-sky-950',
+                  'border-white': currentFontColorClass === 'text-white'
                 }"
-                class="p-1 pr-2 flex flex-row items-center pl-3 border-r border-solid border-black justify-center bg-white/25 rounded-s-full"
+                class="p-1 pr-2 flex flex-row items-center pl-3 border-r border-solid justify-center bg-white/25 rounded-s-full"
               >
                 <svg-icon
                   name="temperature"
@@ -445,9 +452,11 @@
                 matTooltip="Wind"
                 (click)="selectGraphType('wind')"
                 [ngClass]="{
-                  'bg-white/50': selectedGraphType === 'wind'
+                  'bg-white/50': selectedGraphType === 'wind',
+                  'border-sky-950': currentFontColorClass === 'text-sky-950',
+                  'border-white': currentFontColorClass === 'text-white'
                 }"
-                class="p-1 pr-3 flex flex-row items-center pl-2 border-l border-solid border-black justify-center bg-white/25 rounded-e-full"
+                class="p-1 pr-3 flex flex-row items-center pl-2 border-l border-solid justify-center bg-white/25 rounded-e-full"
               >
                 <svg-icon
                   name="wind"

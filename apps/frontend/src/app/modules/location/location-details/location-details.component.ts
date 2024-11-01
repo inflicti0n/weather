@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  OnDestroy,
   OnInit,
   ViewChild,
   ViewEncapsulation,
@@ -28,6 +29,7 @@ import { locationTimezoneMap } from '../../../shared/models/location-timezone-ma
 import { Weather } from '../../../shared/models/weather';
 import { LocationService } from '../../../shared/services/location.service';
 import { crossplugin, interpolate } from '../../../utils/crosshair-plugin';
+import { ThemeService } from '../../../shared/services/theme.service';
 
 @Component({
   selector: 'weather-location-details-component',
@@ -35,7 +37,7 @@ import { crossplugin, interpolate } from '../../../utils/crosshair-plugin';
   styleUrl: './location-details.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class LocationDetailsComponent implements OnInit {
+export class LocationDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('mainCanvas') canvas: ElementRef | null = null;
 
   multi = [
@@ -193,12 +195,15 @@ export class LocationDetailsComponent implements OnInit {
 
   selectedGraphType: 'temperature' | 'precipitation' | 'wind' = 'temperature';
 
+  currentFontColorClass: string = 'text-white';
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private locationService: LocationService,
     private translocoService: TranslocoService,
     private datePipe: DatePipe,
+    private themeService: ThemeService,
     private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
@@ -213,10 +218,13 @@ export class LocationDetailsComponent implements OnInit {
         this.getLocationMonthlyWeather(id);
       }
     });
+    this.themeService.fontColorClass$.subscribe((fontColor: string) => {
+      this.currentFontColorClass = fontColor;
+    });
+  }
 
-    //Interaction.modes.point = interpolate;
-    //Chart.register(CrosshairPlugin);
-    //Interaction.modes = Interpolate;
+  ngOnDestroy(): void {
+    //DO UNSUBSCRIBE ALL HERE
   }
 
   getGradient(ctx: CanvasRenderingContext2D, chartArea: ChartArea) {
