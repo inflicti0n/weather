@@ -79,6 +79,13 @@ export class IconsModule {
     this.iconReg?.loadSvg('assets/icons/el.svg', 'el')?.subscribe();
 
     this.iconReg.addSvg(
+      'x',
+      `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+  </svg>`,
+    );
+
+    this.iconReg.addSvg(
       'showers',
       `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="18.707" viewBox="0 0 20 18.707">
     <path id="Path_39" data-name="Path 39" d="M16.985,12.968H5.661A4.663,4.663,0,1,1,6.72,3.763a4.663,4.663,0,0,1,8.933,1.445,4,4,0,1,1,1.332,7.76Zm-14.848,3.8L3.469,15.44a.669.669,0,0,0-.946-.946L1.191,15.826a.669.669,0,1,0,.946.946ZM3.664,19.4a.666.666,0,0,1-.473-1.139l1.565-1.525a.666.666,0,0,1,.939.939L4.137,19.208A.666.666,0,0,1,3.664,19.4Zm4.784-1.427a.666.666,0,0,1-.473-1.139L9.86,14.95a.669.669,0,1,1,.946.946L8.921,17.781A.666.666,0,0,1,8.448,17.974Zm3.46,1.471L14.43,16.86a.669.669,0,1,0-.946-.946L10.962,18.5a.669.669,0,1,0,.946.946Zm5.017-1.338a.666.666,0,0,1-.473-1.139l1.885-1.885a.669.669,0,0,1,.946.946L17.4,17.915A.666.666,0,0,1,16.925,18.108Z" transform="translate(-0.994 -0.936)" fill="currentColor"/>

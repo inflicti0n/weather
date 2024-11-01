@@ -183,7 +183,7 @@
                     <svg-icon name="wind" [svgClass]="'w-6 h-6'"></svg-icon>Wind
                   </div>
                   <div
-                    class="flex flex-row text-2xl tall:text-3xl font-semibold items-center justify-start"
+                    class="flex flex-row text-2xl tall:text-3xl font-semibold items-center justify-start whitespace-nowrap"
                   >
                     {{ currentlySelectedSingularWeather.windSpeedKmh }} km/h
                   </div>
@@ -507,19 +507,21 @@
               </button>
             </div>
           </div>
-          <div class="w-full px-7 flex items-center justify-center h-[21rem]">
+          <div
+            class="w-full lg:px-0 xl:px-3 2xl:px-5 3xl:px-7 flex items-center justify-center h-[21rem]"
+          >
             <canvas id="myChart"></canvas>
           </div>
           <div
             class="w-full h-12 justify-center grid grid-cols-7 gap-4 h-12 bg-white/25 items-center text-center"
           >
-            <div>12 AM</div>
-            <div>4 AM</div>
-            <div>8 AM</div>
-            <div>12 PM</div>
-            <div>16 PM</div>
-            <div>20 PM</div>
-            <div>12 AM</div>
+            <div>12</div>
+            <div>4</div>
+            <div>8</div>
+            <div>12</div>
+            <div>4</div>
+            <div>8</div>
+            <div>12</div>
           </div>
         </div>
       </div>
@@ -710,7 +712,9 @@
               </button>
             </div>
           </div>
-          <div class="w-full px-2 flex items-center justify-center h-full">
+          <div
+            class="w-full px-2 sm:px-6 md:px-9 flex items-center justify-center h-full"
+          >
             <canvas id="myChart2"></canvas>
           </div>
           <div
@@ -720,8 +724,8 @@
             <div>4</div>
             <div>8</div>
             <div>12</div>
-            <div>16</div>
-            <div>20</div>
+            <div>4</div>
+            <div>8</div>
             <div>12</div>
           </div>
         </div>

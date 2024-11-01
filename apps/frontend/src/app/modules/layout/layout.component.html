@@ -120,7 +120,13 @@
         >
       </button>
     </mat-menu>
-    <svg-icon name="accessibility" [svgClass]="'w-9 h-9'"></svg-icon>
+    <svg-icon
+      mat-button
+      class="cursor-pointer"
+      (click)="openAccessibilityDialog()"
+      name="accessibility"
+      [svgClass]="'w-9 h-9'"
+    ></svg-icon>
     <svg-icon name="cog" [svgClass]="'w-11 h-11'"></svg-icon>
   </div>
 </div>

@@ -8,9 +8,17 @@
 @import 'tailwindcss/utilities';
 
 @import '@fontsource/comfortaa';
+@import '@fontsource/atkinson-hyperlegible';
+@import '@fontsource/opendyslexic';
 
-body {
-  font-family: 'Comfortaa';
+.comfortaa {
+  font-family: 'Comfortaa' !important;
+}
+.atkinson-hyperlegible {
+  font-family: 'Atkinson Hyperlegible' !important;
+}
+.opendyslexic {
+  font-family: 'OpenDyslexic' !important;
 }
 
 @layer utilities {
@@ -44,4 +52,12 @@ g.line-chart > g:last-of-type > g:nth-child(1) g.line-series > g > path {
 g.line-chart.chart {
   padding-top: 100px !important;
   //stroke: black !important;
+}
+
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-shape: 24px;
+}
+
+.mat-mdc-dialog-surface {
+  background-color: transparent !important;
 }

@@ -31,6 +31,7 @@ import { LocationService } from '../../../shared/services/location.service';
 import { crossplugin, interpolate } from '../../../utils/crosshair-plugin';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { map, of, switchMap } from 'rxjs';
+import { SettingsService } from '../../../shared/services/settings.service';
 
 @Component({
   selector: 'weather-location-details-component',
@@ -206,6 +207,7 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe,
     private themeService: ThemeService,
     private changeDetectorRef: ChangeDetectorRef,
+    private settingsService: SettingsService,
   ) {}
 
   ngOnInit(): void {
@@ -460,7 +462,9 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
             },
           },
           scales: {
-            x: { display: false },
+            x: {
+              display: false,
+            },
             y: {
               display: false,
               min: -20,
@@ -632,7 +636,9 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
             },
           },
           scales: {
-            x: { display: false },
+            x: {
+              display: false,
+            },
             y: {
               display: false,
               min: -20,
@@ -724,7 +730,9 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
     switch (this.selectedGraphType) {
       case 'temperature':
         const temperatureScales = {
-          x: { display: false },
+          x: {
+            display: false,
+          },
           y: {
             display: false,
             min: -20,
@@ -737,7 +745,9 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
         break;
       case 'precipitation':
         const precipitationScales = {
-          x: { display: false },
+          x: {
+            display: false,
+          },
           y: {
             display: false,
             min: -5,
@@ -751,7 +761,9 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
         break;
       case 'wind':
         const windScales = {
-          x: { display: false },
+          x: {
+            display: false,
+          },
           y: {
             display: false,
             min: -5,
@@ -1266,5 +1278,9 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
   selectGraphType(type: 'temperature' | 'precipitation' | 'wind') {
     this.selectedGraphType = type;
     this.updateChartData();
+  }
+
+  getCurrentFont() {
+    return this.settingsService.currentFont$;
   }
 }

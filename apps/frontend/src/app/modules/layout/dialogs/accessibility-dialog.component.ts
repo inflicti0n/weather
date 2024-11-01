@@ -10,23 +10,20 @@ import {
   takeUntil,
 } from 'rxjs';
 
-import { LocationService } from '../../shared/services/location.service';
-import { Weather } from '../../shared/models/weather';
-import { ThemeService } from '../../shared/services/theme.service';
-import { PersistenceService } from '../../shared/services/persistence.service';
-import { TranslocoService } from '../transloco/transloco-service';
 import { AvailableLangs } from '@ngneat/transloco';
-import { TranslationService } from '../../shared/services/translation.service';
-import { MatDialog } from '@angular/material/dialog';
-import { AccessibilityDialogComponent } from './dialogs/accessibility-dialog.component';
+
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ThemeService } from '../../../shared/services/theme.service';
+import { PersistenceService } from '../../../shared/services/persistence.service';
+import { TranslationService } from '../../../shared/services/translation.service';
+import { SettingsService } from '../../../shared/services/settings.service';
 
 @Component({
   selector: 'weather-layout-component',
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss',
+  templateUrl: './accessibility-dialog.component.html',
   encapsulation: ViewEncapsulation.None,
 })
-export class LayoutComponent implements OnInit {
+export class AccessibilityDialogComponent implements OnInit {
   centerSearchBar: boolean = true;
 
   locationResults: string[] = [];
@@ -45,44 +42,21 @@ export class LayoutComponent implements OnInit {
 
   isCountrySelectOpen: boolean = false;
 
-  availableTranslationKeys: string[];
-
   currentTranslationKey: any;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
-    private locationService: LocationService,
     private router: Router,
     private route: ActivatedRoute,
     private themeService: ThemeService,
     private persistenceService: PersistenceService,
     private translationService: TranslationService,
-    private dialog: MatDialog,
-  ) {
-    this.availableTranslationKeys =
-      this.translationService.getAvailableLanguageKeys() as string[];
-
-    this.translationService.activeLanguageKey
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((key) => {
-        this.currentTranslationKey = key;
-        console.log(this.currentTranslationKey);
-      });
-  }
+    private settingsService: SettingsService,
+    private dialogRef: MatDialogRef<AccessibilityDialogComponent>,
+  ) {}
 
   ngOnInit(): void {
-    this.searchInputControl.valueChanges.subscribe((query) => {
-      this.searchForLocations(query);
-    });
-
-    //Check if user has navigated to a child route and move the search bar accordingly
-    this.router.events
-      .pipe(switchMap(() => of(this.route.children.length > 0)))
-      .subscribe((result) => {
-        this.centerSearchBar = result ? false : true;
-      });
-
     this.themeService.currentLocationWeatherCondition.subscribe((condition) => {
       if (condition.includes('day') || condition.includes('sunny')) {
         this.currentBackgroundDaytime = 'day';
@@ -95,10 +69,6 @@ export class LayoutComponent implements OnInit {
     this.themeService.fontColorClass$.subscribe((fontColor: string) => {
       this.currentFontColorClass = fontColor;
     });
-
-    this.persistenceService.recentLocations.subscribe(
-      (locations) => (this.currentRecentLocationIds = locations),
-    );
   }
 
   getBackgroundImageClass() {
@@ -121,30 +91,15 @@ export class LayoutComponent implements OnInit {
     event.preventDefault();
   }
 
-  private searchForLocations(query: string) {
-    this.locationService
-      .getLocations(query)
-      .subscribe((result) => (this.locationResults = result));
-  }
-
   onSelectLanguage(key: string) {
     this.translationService.setLanguage(key);
   }
 
-  openAccessibilityDialog() {
-    this.dialog.open(AccessibilityDialogComponent, {
-      panelClass: [
-        'w-[100vw]',
-        'h-[80vh]',
-        'lg:w-2/3',
-        'lg:h-2/4',
-        'xl:w-2/4',
-        '2xl:w-1/3',
-        '2xl:h-1/3',
-        'rounded-full',
-      ],
-      autoFocus: false,
-      restoreFocus: false,
-    });
+  updateFont(fontClass: string) {
+    this.settingsService.updateFont(fontClass);
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
   }
 }
