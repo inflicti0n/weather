@@ -61,3 +61,26 @@ g.line-chart.chart {
 .mat-mdc-dialog-surface {
   background-color: transparent !important;
 }
+
+.iridescent {
+  background: rgb(131, 58, 180);
+  background: -moz-linear-gradient(
+    52deg,
+    rgba(131, 58, 180, 0.5580357142857143) 0%,
+    rgba(228, 29, 253, 0.5048144257703081) 34%,
+    rgba(252, 176, 69, 0.5188200280112045) 100%
+  );
+  background: -webkit-linear-gradient(
+    52deg,
+    rgba(131, 58, 180, 0.5580357142857143) 0%,
+    rgba(228, 29, 253, 0.5048144257703081) 34%,
+    rgba(252, 176, 69, 0.5188200280112045) 100%
+  );
+  background: linear-gradient(
+    52deg,
+    rgba(131, 58, 180, 0.5580357142857143) 0%,
+    rgba(228, 29, 253, 0.5048144257703081) 34%,
+    rgba(252, 176, 69, 0.5188200280112045) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#833ab4",endColorstr="#fcb045",GradientType=1);
+}

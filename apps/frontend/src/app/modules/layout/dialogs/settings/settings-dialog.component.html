@@ -3,7 +3,8 @@
   class="w-full h-full backdrop-blur-[30px] backdrop-brightness-[1.2] px-6 py-4 md:px-8 md:py-6 flex flex-col gap-2 md:gap-6"
   [ngClass]="{
     'text-sky-950': currentFontColorClass === 'text-sky-950',
-    'text-white': currentFontColorClass === 'text-white'
+    'text-white': currentFontColorClass === 'text-white',
+    iridescent: getCurrentTheme() === 'iridescent'
   }"
 >
   <div class="hidden md:flex flex-row w-full items-center">
@@ -114,19 +115,21 @@
       <div class="w-full text-xl md:text-3xl font-semibold mt-2">Theme</div>
       <div class="flex flex-wrap -mt-2 flex-row w-full basis-1 gap-2">
         <button
-          [ngClass]="{ 'bg-white/75': getCurrentTheme() === 'default' }"
+          [ngClass]="{
+            'border-white': getCurrentTheme() === 'default',
+            'border-slate-400': getCurrentTheme() !== 'default'
+          }"
           (click)="updateTheme('default')"
-          class="flex flex-row items-center justify-center h-8 text-lg px-4 py-4 rounded-full bg-white/50 drop-shadow-lg"
-        >
-          Default
-        </button>
+          class="flex flex-row border-2 border-solid items-center justify-center h-12 w-12 bg-gradient-to-r from-slate-200 text-lg rounded-full drop-shadow-lg"
+        ></button>
         <button
-          [ngClass]="{ 'bg-white/75': getCurrentTheme() === 'iridescent' }"
+          [ngClass]="{
+            'border-white': getCurrentTheme() === 'iridescent',
+            'border-slate-400': getCurrentTheme() !== 'iridescent'
+          }"
           (click)="updateTheme('iridescent')"
-          class="flex flex-row items-center justify-center h-8 text-lg px-6 py-4 rounded-full bg-white/50 drop-shadow-lg"
-        >
-          Iridescent
-        </button>
+          class="flex flex-row border-2 border-solid items-center justify-center h-12 w-12 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-lg rounded-full drop-shadow-lg"
+        ></button>
       </div>
     </div>
   </div>
