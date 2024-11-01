@@ -32,6 +32,23 @@
       "heavy-rain": "Heavy rain expected at",
       "snowy": "Snow expected at",
       "sleet": "Sleet expected at"
+    },
+    "details": {
+      "uvi-low": "Low",
+      "uvi-moderate": "Moderate",
+      "uvi-high": "High",
+      "uvi-very-high": "Very High",
+      "uvi-extreme": "Extreme",
+      "aqi-good": "Good",
+      "aqi-moderate": "Moderate",
+      "aqi-poor": "Poor",
+      "aqi-unhealthy": "Unhealthy",
+      "aqi-very-unhealthy": "Very Unhealthy",
+      "aqi-hazardous": "Hazardous",
+      "compass-north": "N",
+      "compass-south": "S",
+      "compass-west": "W",
+      "compass-east": "E"
     }
   },
   "locations": {

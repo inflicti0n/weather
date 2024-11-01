@@ -54,6 +54,9 @@ export class IconsModule {
       ?.subscribe();
     this.iconReg?.loadSvg('assets/icons/sleet.svg', 'sleet')?.subscribe();
 
+    this.iconReg?.loadSvg('assets/icons/graph.svg', 'graph')?.subscribe();
+    this.iconReg?.loadSvg('assets/icons/list.svg', 'list')?.subscribe();
+
     this.iconReg
       ?.loadSvg('assets/icons/arrow-left.svg', 'arrow-left')
       ?.subscribe();

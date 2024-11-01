@@ -83,7 +83,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
   return timeOfDay == 'day'
     ? {
         1: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (15 - 0 + 1)) + 0,
@@ -104,7 +104,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         2: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (1 - 0 + 1)) + 0,
@@ -125,7 +125,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         3: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (30 - 10 + 1)) + 10,
@@ -146,7 +146,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         4: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (60 - 30 + 1)) + 30,
@@ -167,7 +167,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         5: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (90 - 60 + 1)) + 60,
@@ -188,7 +188,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         6: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (100 - 80 + 1)) + 80,
@@ -209,7 +209,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         7: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (100 - 80 + 1)) + 80,
@@ -230,7 +230,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         8: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (100 - 70 + 1)) + 70,
@@ -251,7 +251,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         9: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (100 - 80 + 1)) + 80,
@@ -274,7 +274,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
       }
     : {
         1: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (10 - 0 + 1)) + 0,
@@ -295,7 +295,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         2: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (20 - 10 + 1)) + 10,
@@ -316,7 +316,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         3: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (30 - 10 + 1)) + 10,
@@ -337,7 +337,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         4: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (60 - 30 + 1)) + 30,
@@ -358,7 +358,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         5: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (90 - 60 + 1)) + 60,
@@ -379,7 +379,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         6: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (100 - 80 + 1)) + 80,
@@ -400,7 +400,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         7: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (100 - 80 + 1)) + 80,
@@ -421,7 +421,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         8: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (100 - 70 + 1)) + 70,
@@ -442,7 +442,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           ][Math.floor(Math.random() * 8)],
         },
         9: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+          airQualityIndex: Math.floor(Math.random() * (250 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
             Math.floor(Math.random() * (100 - 80 + 1)) + 80,

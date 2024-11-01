@@ -1,5 +1,12 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import {
@@ -9,6 +16,8 @@ import {
   toCalendarDateTime,
 } from '@internationalized/date';
 import { TranslocoService } from '@ngneat/transloco';
+import { colorSets } from '@swimlane/ngx-charts';
+import * as shape from 'd3-shape';
 
 import { Location } from '../../../shared/models/location';
 import { locationTimezoneMap } from '../../../shared/models/location-timezone-map';
@@ -19,8 +28,131 @@ import { LocationService } from '../../../shared/services/location.service';
   selector: 'weather-location-details-component',
   templateUrl: './location-details.component.html',
   styleUrl: './location-details.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class LocationDetailsComponent implements OnInit {
+  @ViewChild('mainCanvas') canvas: ElementRef | null = null;
+
+  multi = [
+    {
+      name: 'Germany',
+      series: [
+        {
+          name: '0',
+          value: 8,
+        },
+        {
+          name: '1',
+          value: 4,
+        },
+        {
+          name: '2',
+          value: 7,
+        },
+        {
+          name: '3',
+          value: 10,
+        },
+        {
+          name: '4',
+          value: 12,
+        },
+        {
+          name: '5',
+          value: 15,
+        },
+        {
+          name: '6',
+          value: 18,
+        },
+        {
+          name: '7',
+          value: 13,
+        },
+        {
+          name: '8',
+          value: 15,
+        },
+        {
+          name: '9',
+          value: 13,
+        },
+        {
+          name: '10',
+          value: 10,
+        },
+        {
+          name: '11',
+          value: 10,
+        },
+        {
+          name: '12',
+          value: 10,
+        },
+        {
+          name: '13',
+          value: 9,
+        },
+        {
+          name: '14',
+          value: 8,
+        },
+        {
+          name: '15',
+          value: 6,
+        },
+        {
+          name: '16',
+          value: 6,
+        },
+        {
+          name: '17',
+          value: 4,
+        },
+        {
+          name: '18',
+          value: 4,
+        },
+        {
+          name: '19',
+          value: 3,
+        },
+        {
+          name: '20',
+          value: 3,
+        },
+        {
+          name: '21',
+          value: 3,
+        },
+        {
+          name: '22',
+          value: 3,
+        },
+        {
+          name: '23',
+          value: 3,
+        },
+      ],
+    },
+  ];
+
+  // Line Chart Options
+  legend: boolean = true;
+  showLabels: boolean = true;
+  animations: boolean = true;
+  xAxis: boolean = true;
+  yAxis: boolean = true;
+  showYAxisLabel: boolean = true;
+  showXAxisLabel: boolean = true;
+  xAxisLabel: string = 'Year';
+  yAxisLabel: string = 'Population';
+  timeline: boolean = true;
+
+  curveShape = shape.curveMonotoneX;
+
+  color = colorSets[4];
+
   currentIntervalId: number | null = null;
   time: Date = new Date(); // global variable for string interpolation on html
   centerSearchBar: boolean = true;
@@ -32,6 +164,8 @@ export class LocationDetailsComponent implements OnInit {
   searchInputControl = new UntypedFormControl();
 
   location: Location | null = null;
+
+  hourlyWeatherStyleToggle: 'list' | 'graph' = 'graph';
 
   currentMonthlyWeather: Record<string, Weather[]> = {};
 
@@ -55,6 +189,7 @@ export class LocationDetailsComponent implements OnInit {
     private locationService: LocationService,
     private translocoService: TranslocoService,
     private datePipe: DatePipe,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -448,18 +583,89 @@ export class LocationDetailsComponent implements OnInit {
     return daysWithWeather;
   }
 
+  getUvIndexSliderClass(uvi: number): string {
+    if (!uvi) {
+      return '';
+    }
+
+    const uvIndexSlideAmount = (Math.min(Math.max(uvi, 1), 10) / 10) * 9;
+
+    return uvIndexSlideAmount.toString() + 'rem';
+  }
+
+  getUvIndexClassification(uvi: number): string {
+    if (!uvi) {
+      return '';
+    }
+
+    switch (true) {
+      case uvi > 0 && uvi < 3:
+        return this.translocoService.translate('location.details.uvi-low');
+      case uvi > 2 && uvi < 6:
+        return this.translocoService.translate('location.details.uvi-moderate');
+      case uvi > 5 && uvi < 8:
+        return this.translocoService.translate('location.details.uvi-high');
+      case uvi > 7 && uvi < 11:
+        return this.translocoService.translate(
+          'location.details.uvi-very-high',
+        );
+      case uvi > 10:
+        return this.translocoService.translate('location.details.uvi-extreme');
+      default:
+        return '';
+    }
+  }
+
   getAirQualityIndexSliderClass(aqi: number): string {
     if (!aqi) {
       return '';
     }
 
-    (val: number, max: number, min: number) => (val - min) / (max - min);
+    const airQualityIndexSlideAmount = (aqi / 500) * 13;
 
-    console.log(`left-[${aqi / 13}rem]`);
-    //return 5;
-    const heh = aqi / 13;
-    const slideAmount = 'left-[' + heh.toString() + 'rem]';
-    console.log(slideAmount);
-    return slideAmount;
+    return airQualityIndexSlideAmount.toString() + 'rem';
+  }
+
+  getAirQualityIndexClassification(aqi: number): string {
+    if (!aqi) {
+      return '';
+    }
+
+    switch (true) {
+      case aqi > 0 && aqi < 51:
+        return this.translocoService.translate('location.details.aqi-good');
+      case aqi > 50 && aqi < 101:
+        return this.translocoService.translate('location.details.aqi-moderate');
+      case aqi > 100 && aqi < 151:
+        return this.translocoService.translate('location.details.aqi-poor');
+      case aqi > 150 && aqi < 201:
+        return this.translocoService.translate(
+          'location.details.aqi-unhealthy',
+        );
+      case aqi > 200 && aqi < 301:
+        return this.translocoService.translate(
+          'location.details.aqi-very-unhealthy',
+        );
+      case aqi > 300 && aqi < 501:
+        return this.translocoService.translate('location.details.hazardous');
+      default:
+        return '';
+    }
+  }
+
+  onWheel(event: WheelEvent): void {
+    const container = document.getElementById('day-weather-container');
+
+    if (!container) {
+      return;
+    }
+
+    container.scrollLeft += event.deltaY * 2;
+  }
+
+  onChangeHourlyWeatherStyle(event: Event) {
+    const isChecked = (<HTMLInputElement>event.target).checked;
+
+    this.hourlyWeatherStyleToggle = isChecked === true ? 'graph' : 'list';
   }
 }

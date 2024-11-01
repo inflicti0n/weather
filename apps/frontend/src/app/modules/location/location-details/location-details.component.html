@@ -116,12 +116,23 @@
                 class="flex flex-row text-3xl gap-2 font-semibold items-center justify-start"
               >
                 {{ currentlySelectedSingularWeather.uvIndex }}
-                <div class="text-xl">Moderate</div>
+                <div class="text-xl">
+                  {{
+                    getUvIndexClassification(
+                      currentlySelectedSingularWeather.uvIndex
+                    )
+                  }}
+                </div>
               </div>
               <div
                 class="uv-index-gradient w-30 h-3 rounded-full flex flex-row items-center"
               >
                 <div
+                  [ngStyle]="{
+                    left: getUvIndexSliderClass(
+                      currentlySelectedSingularWeather.uvIndex
+                    )
+                  }"
                   class="bg-white rounded-full h-5 w-5 relative left-[2rem]"
                 ></div>
               </div>
@@ -170,9 +181,9 @@
                 class="grid grid-cols-3 grid-rows-3 h-20 w-20 shrink-0 gap-x-2 outline gap-y-1 outline-[2.5px] pl-[0.4rem] font-semibold rounded-full"
               >
                 <div></div>
-                <div class="">N</div>
+                <div class="">{{ t('location.details.compass-north') }}</div>
                 <div></div>
-                <div>W</div>
+                <div>{{ t('location.details.compass-west') }}</div>
                 <div
                   [ngClass]="
                     getCompassArrowRotationClass(
@@ -186,9 +197,9 @@
                     [svgClass]="'w-7 h-7'"
                   ></svg-icon>
                 </div>
-                <div>E</div>
+                <div>{{ t('location.details.compass-east') }}</div>
                 <div></div>
-                <div>S</div>
+                <div>{{ t('location.details.compass-south') }}</div>
                 <div></div>
               </div>
             </div>
@@ -207,17 +218,23 @@
                 class="flex flex-row text-3xl gap-2 font-semibold items-center justify-start"
               >
                 {{ currentlySelectedSingularWeather.airQualityIndex }}
-                <div class="text-xl">Good</div>
+                <div class="text-xl">
+                  {{
+                    getAirQualityIndexClassification(
+                      currentlySelectedSingularWeather.airQualityIndex
+                    )
+                  }}
+                </div>
               </div>
               <div
                 class="air-quality-index-gradient w-30 h-3 rounded-full flex flex-row items-center"
               >
                 <div
-                  [ngClass]="
-                    getAirQualityIndexSliderClass(
+                  [ngStyle]="{
+                    left: getAirQualityIndexSliderClass(
                       currentlySelectedSingularWeather.airQualityIndex
                     )
-                  "
+                  }"
                   class="bg-white rounded-full h-5 w-5 relative"
                 ></div>
               </div>
@@ -233,6 +250,8 @@
         <div class="text-4xl font-semibold">30 Day Forecast</div>
         <!-- 30 Day Forecast Container -->
         <div
+          (wheel)="onWheel($event)"
+          id="day-weather-container"
           class="flex items-start scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25 justify-start flex-row w-full h-4/6 gap-5 py-3 overflow-x-auto"
         >
           <button
@@ -281,11 +300,34 @@
             </div>
           </button>
         </div>
+        <!-- Weather Graph-List Toggle -->
         <div class="flex flex-row w-full items-end justify-end">
-          <button class="p-2 bg-white/25 rounded-full">S --------- G</button>
+          <label class="switch">
+            <input
+              (change)="onChangeHourlyWeatherStyle($event)"
+              [checked]="hourlyWeatherStyleToggle === 'graph'"
+              type="checkbox"
+            />
+            <span class="slider round"
+              ><div
+                class="flex flex-row w-full h-full text-xl items-center justify-start gap-6 px-4"
+              >
+                <svg-icon
+                  name="list"
+                  class="z-10"
+                  [svgClass]="'w-6 h-6'"
+                ></svg-icon>
+                <svg-icon
+                  name="graph"
+                  class="z-10"
+                  [svgClass]="'w-5 h-5'"
+                ></svg-icon></div
+            ></span>
+          </label>
         </div>
         <!-- Hourly Weather Graph - List -->
         <div
+          *ngIf="hourlyWeatherStyleToggle === 'list'"
           class="gap-2 flex flex-col max-w-[40rem] items-start rounded-3xl w-full h-[23.6rem] px-3 py-3 bg-white/50 overflow-y-auto scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25"
         >
           <button
@@ -339,6 +381,91 @@
               <svg-icon name="arrow-down" [svgClass]="'w-6 h-6'"></svg-icon>
             </div>
           </button>
+        </div>
+        <!-- Graph-->
+        <div
+          *ngIf="hourlyWeatherStyleToggle === 'graph'"
+          class="overflow-hidden flex flex-col max-w-[40rem] items-start justify-center rounded-3xl w-full h-[23.6rem] bg-black/25"
+        >
+          <div class="w-full h-20 bg-white">Nono</div>
+          <div class="w-full h-full">
+            <ngx-charts-line-chart
+              class="z-10 overflow-hidden custom-chart absolute"
+              [scheme]="color"
+              [xAxis]="false"
+              [yAxis]="false"
+              [timeline]="false"
+              [results]="multi"
+              [showGridLines]="false"
+              [tooltipDisabled]="true"
+              [autoScale]="true"
+              [curve]="curveShape"
+              [tooltipDisabled]="false"
+            >
+            </ngx-charts-line-chart>
+          </div>
+          <div
+            class="w-full grid grid-cols-7 gap-4 h-12 bg-white/25 items-center text-center"
+          >
+            <div>12 AM</div>
+            <div>4 AM</div>
+            <div>8 AM</div>
+            <div>12 PM</div>
+            <div>16 PM</div>
+            <div>20 PM</div>
+            <div>12 AM</div>
+          </div>
+          <!--<button
+            *ngFor="
+              let weather of currentlySelectedWeather;
+              let first = first;
+              let last = last
+            "
+            (click)="selectHourWeather(weather.dateTime)"
+            class="text-xl h-12 px-3 py-2 font-semibold w-full flex flex-row justify-start items-center gap-5 hover:bg-white/50 rounded-xl"
+          >
+            <div class="w-[3%] items-center flex flex-row justify-end">
+              {{ getLocalTime(weather.dateTime) | date: 'h' }}
+            </div>
+            <div class="w-[4%] -ml-2 items-center flex flex-row justify-start">
+              {{ getLocalTime(weather.dateTime) | date: 'a' }}
+            </div>
+            <div class="w-[10%] items-center flex flex-row justify-center">
+              {{ weather.temperatureCelsius }}°
+            </div>
+            <div class="w-[30%] items-center flex flex-row justify-start gap-2">
+              <svg-icon
+                name="{{
+                  getTimeAdjustedWeatherIconName(
+                    weather.weatherCondition,
+                    weather.dateTime
+                  )
+                }}"
+                [svgClass]="'w-5 h-5'"
+              ></svg-icon>
+
+              {{ t('location.weather-conditions.' + weather.weatherCondition) }}
+            </div>
+            <div class="w-[13%] items-center flex flex-row justify-start gap-2">
+              <svg-icon name="humidity" [svgClass]="'w-4 h-4'"></svg-icon>
+
+              <div class="w-[30%] self-end flex flex-row justify-center">
+                {{ weather.humidityPercent }}
+              </div>
+              <div>%</div>
+            </div>
+            <div class="w-[18%] items-center flex flex-row justify-start gap-2">
+              <svg-icon name="wind" [svgClass]="'w-4 h-4'"></svg-icon>
+
+              <div class="w-[15%] self-end flex flex-row justify-center">
+                {{ weather.windSpeedKmh }}
+              </div>
+              <div>km/h</div>
+            </div>
+            <div class="w-[4%] items-center flex flex-row justify-start">
+              <svg-icon name="arrow-down" [svgClass]="'w-6 h-6'"></svg-icon>
+            </div>
+          </button>-->
         </div>
       </div>
     </div>

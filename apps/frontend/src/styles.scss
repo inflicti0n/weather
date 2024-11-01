@@ -28,3 +28,20 @@ body {
     @apply absolute inset-0 -z-10;
   }
 }
+
+/* Make lines in line chart thick, with rounded ends */
+g.line-chart.chart > g:last-of-type > g:nth-child(1) g.line-series > path {
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+
+g.line-chart > g:last-of-type > g:nth-child(1) g.line-series > g > path {
+  stroke-width: 5px;
+  stroke-linecap: round;
+  //stroke: black !important;
+}
+
+g.line-chart.chart {
+  padding-top: 100px !important;
+  //stroke: black !important;
+}
