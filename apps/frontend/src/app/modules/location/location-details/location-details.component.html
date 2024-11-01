@@ -47,7 +47,8 @@
             </div>
             <div class="text-xl tall:text-2xl font-semibold">
               {{
-                currentlySelectedSingularWeather.dateTime | date: 'EEEE, MMMM d'
+                currentlySelectedSingularWeather.dateTime
+                  | date: 'EEEE, MMMM d' : undefined : currentLocale
               }}
             </div>
             <div class="flex flex-row items-center justify-center mt-4">
@@ -87,9 +88,9 @@
                 {{
                   this.currentTimeFormat === 12
                     ? (currentlySelectedSingularWeather.dateTime
-                      | date: 'h:mm a')
+                      | date: 'h:mm a' : undefined : currentLocale)
                     : (currentlySelectedSingularWeather.dateTime
-                      | date: 'H:mm a')
+                      | date: 'H:mm a' : undefined : currentLocale)
                 }}&nbsp;
               </div>
               <div>H : {{ getHighestLocationTemperature() }}°&nbsp;</div>
@@ -353,7 +354,10 @@
             <div class="flex flex-col gap-0.5 items-center justify-center">
               <div class="font-semibold text-lg">
                 {{
-                  first ? t('location.today') : (weather.dateTime | date: 'EEE')
+                  first
+                    ? t('location.today')
+                    : (weather.dateTime
+                      | date: 'EEE' : undefined : currentLocale)
                 }}
               </div>
               <div class="font-semibold text-sm">
@@ -432,20 +436,23 @@
             >
               {{
                 this.currentTimeFormat === 12
-                  ? (weather.dateTime | date: 'h')
-                  : (weather.dateTime | date: 'H:mm')
+                  ? (weather.dateTime | date: 'h' : undefined : currentLocale)
+                  : (weather.dateTime
+                    | date: 'H:mm' : undefined : currentLocale)
               }}
             </div>
             <div
               *ngIf="this.currentTimeFormat === 12"
               class="w-[4%] -ml-2 items-center flex flex-row justify-start"
             >
-              {{ weather.dateTime | date: 'a' }}
+              {{ weather.dateTime | date: 'a' : undefined : currentLocale }}
             </div>
             <div class="w-[10%] items-center flex flex-row justify-center">
               {{ getUnitAdjustedTemperature(weather.temperatureCelsius) }}°
             </div>
-            <div class="w-[35%] items-center flex flex-row justify-start gap-2">
+            <div
+              class="w-[35%] items-center flex flex-row truncate justify-start gap-2"
+            >
               <svg-icon
                 name="{{
                   getTimeAdjustedWeatherIconName(
@@ -851,7 +858,10 @@
             <div class="flex flex-col gap-0.5 items-center justify-center">
               <div class="font-semibold text-sm">
                 {{
-                  first ? t('location.now') : (weather.dateTime | date: 'EEE')
+                  first
+                    ? t('location.now')
+                    : (weather.dateTime
+                      | date: 'EEE' : undefined : currentLocale)
                 }}
               </div>
               <div class="font-semibold text-sm">

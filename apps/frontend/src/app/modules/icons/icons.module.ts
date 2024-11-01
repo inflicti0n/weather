@@ -4,7 +4,6 @@ import { SvgIconRegistryService } from 'angular-svg-icon';
 @NgModule()
 export class IconsModule {
   constructor(private iconReg: SvgIconRegistryService) {
-    console.log('Registering icons');
     this.registerIcons();
   }
 

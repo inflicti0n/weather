@@ -36,7 +36,7 @@ export class AccessibilityDialogComponent implements OnInit {
 
   currentTheme: string = 'default';
 
-  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  private unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private router: Router,

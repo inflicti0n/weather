@@ -82,6 +82,7 @@ export class ThemeService {
           'overcast',
           'showers',
           'heavy-rain',
+          'sleet',
         ].includes(weather.weatherCondition)
       ) {
         this.currentLocationWeatherCondition.next(

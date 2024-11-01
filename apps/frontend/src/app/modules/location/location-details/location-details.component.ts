@@ -20,7 +20,7 @@ import { colorSets } from '@swimlane/ngx-charts';
 import { Chart, ChartArea } from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import * as shape from 'd3-shape';
-import { of, switchMap } from 'rxjs';
+import { Subject, of, switchMap, takeUntil } from 'rxjs';
 
 import { Location } from '../../../shared/models/location';
 import { locationTimezoneMap } from '../../../shared/models/location-timezone-map';
@@ -38,110 +38,6 @@ import { crossplugin } from '../../../utils/crosshair-plugin';
 })
 export class LocationDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('mainCanvas') canvas: ElementRef | null = null;
-
-  multi = [
-    {
-      name: 'Germany',
-      series: [
-        {
-          name: '0',
-          value: 8,
-        },
-        {
-          name: '1',
-          value: 4,
-        },
-        {
-          name: '2',
-          value: 7,
-        },
-        {
-          name: '3',
-          value: 10,
-        },
-        {
-          name: '4',
-          value: 12,
-        },
-        {
-          name: '5',
-          value: 15,
-        },
-        {
-          name: '6',
-          value: 18,
-        },
-        {
-          name: '7',
-          value: 13,
-        },
-        {
-          name: '8',
-          value: 15,
-        },
-        {
-          name: '9',
-          value: 13,
-        },
-        {
-          name: '10',
-          value: 10,
-        },
-        {
-          name: '11',
-          value: 10,
-        },
-        {
-          name: '12',
-          value: 10,
-        },
-        {
-          name: '13',
-          value: 9,
-        },
-        {
-          name: '14',
-          value: 8,
-        },
-        {
-          name: '15',
-          value: 6,
-        },
-        {
-          name: '16',
-          value: 6,
-        },
-        {
-          name: '17',
-          value: 4,
-        },
-        {
-          name: '18',
-          value: 4,
-        },
-        {
-          name: '19',
-          value: 3,
-        },
-        {
-          name: '20',
-          value: 3,
-        },
-        {
-          name: '21',
-          value: 3,
-        },
-        {
-          name: '22',
-          value: 3,
-        },
-        {
-          name: '23',
-          value: 3,
-        },
-      ],
-    },
-  ];
 
   // Line Chart Options
   legend: boolean = true;
@@ -200,6 +96,10 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
   currentTimeFormat: number = 24;
   currentTheme: string = 'default';
 
+  currentLocale: string = 'en-US';
+
+  private unsubscribeAll: Subject<any> = new Subject<any>();
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -212,37 +112,63 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log('Location Details Component Initialized');
+    this.route.paramMap
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe((params: ParamMap) => {
+        // Access individual route parameters using params.get('parameterName')
+        const id = params.get('location-id');
+        if (id) {
+          this.currentTimezone = locationTimezoneMap[id];
+          this.getLocationMonthlyWeather(id);
+        }
+      });
+    this.themeService.fontColorClass$
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe((fontColor: string) => {
+        this.currentFontColorClass = fontColor;
+      });
 
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      // Access individual route parameters using params.get('parameterName')
-      const id = params.get('location-id');
-      if (id) {
-        this.currentTimezone = locationTimezoneMap[id];
-        this.getLocationMonthlyWeather(id);
-      }
-    });
-    this.themeService.fontColorClass$.subscribe((fontColor: string) => {
-      this.currentFontColorClass = fontColor;
-    });
+    this.settingsService.currentTemperatureUnits$
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe((units: string) => {
+        this.currentTemperatureUnits = units;
+      });
 
-    this.settingsService.currentTemperatureUnits$.subscribe((units: string) => {
-      this.currentTemperatureUnits = units;
-    });
+    this.settingsService.currentSpeedUnits$
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe((units: string) => {
+        this.currentSpeedUnits = units;
+      });
+    this.settingsService.currentTimeFormat$
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe((format: number) => {
+        this.currentTimeFormat = format;
+      });
+    this.settingsService.currentTheme$
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe((theme: string) => {
+        this.currentTheme = theme;
+      });
 
-    this.settingsService.currentSpeedUnits$.subscribe((units: string) => {
-      this.currentSpeedUnits = units;
-    });
-    this.settingsService.currentTimeFormat$.subscribe((format: number) => {
-      this.currentTimeFormat = format;
-    });
-    this.settingsService.currentTheme$.subscribe((theme: string) => {
-      this.currentTheme = theme;
-    });
+    this.currentLocale =
+      this.translocoService.getActiveLang() === 'en' ? 'en-US' : 'el-GR';
+
+    this.translocoService.langChanges$
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe(
+        (newLanguage) =>
+          (this.currentLocale =
+            this.translocoService.getActiveLang() === 'en' ? 'en-US' : 'el-GR'),
+      );
   }
 
   ngOnDestroy(): void {
-    //DO UNSUBSCRIBE ALL HERE
+    // Unsubscribe from all subscriptions
+    this.unsubscribeAll.next(null);
+    this.unsubscribeAll.complete();
+
+    this.hourlyWeatherChart?.destroy();
+    this.hourlyWeatherChart2?.destroy();
   }
 
   getGradient(ctx: CanvasRenderingContext2D, chartArea: ChartArea) {
@@ -847,8 +773,6 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
       )
       .pipe(
         switchMap((location: Location) => {
-          console.log(location);
-
           location.weather = [
             ...location.weather.map((weather: Weather) => {
               if (this.currentTimezone) {
@@ -858,18 +782,16 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
                 );
 
                 const heh = toCalendarDateTime(convertedo);
-                // console.log(new Date(heh.toString()));
 
                 weather.dateTime = new Date(heh.toString());
               }
-              //const localizedTime = this.getLocalTime(weather.dateTime);
-
               return weather;
             }),
           ];
 
           return of(location);
         }),
+        takeUntil(this.unsubscribeAll),
       )
       .subscribe((result) => {
         if (!result) {
@@ -881,8 +803,6 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
           this.initializeClock(this.currentTimezone);
         }
         this.currentMonthlyWeather = this.getMonthlyWeather(result.weather);
-
-        console.log(this.currentMonthlyWeather);
 
         this.selectDayWeather(
           this.currentMonthlyWeather[
@@ -1143,7 +1063,6 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
   selectDayWeather(dateTime: Date) {
     const dayDate = this.datePipe.transform(dateTime, 'M-d-y');
 
-    console.log(dayDate);
     if (!dayDate) {
       return;
     }

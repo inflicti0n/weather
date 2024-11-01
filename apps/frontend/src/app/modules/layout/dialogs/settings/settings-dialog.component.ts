@@ -34,7 +34,7 @@ export class SettingsDialogComponent implements OnInit {
 
   currentTranslationKey: any;
 
-  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  private unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private router: Router,

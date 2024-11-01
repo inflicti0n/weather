@@ -16,6 +16,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { DatePipe } from '@angular/common';
 import { ThemeService } from '../../shared/services/theme.service';
 import { SettingsService } from '../../shared/services/settings.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'weather-location-component',
@@ -36,6 +37,10 @@ export class LocationComponent implements OnInit {
   currentTimeFormat: number = 24;
   currentTheme: string = 'default';
 
+  currentLocale: string = 'en-US';
+
+  private unsubscribeAll: Subject<any> = new Subject<any>();
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -47,8 +52,6 @@ export class LocationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('Location Component Initialized');
-
     this.route.paramMap.subscribe((params: ParamMap) => {
       // Access individual route parameters using params.get('parameterName')
       const id = params.get('location-id');
@@ -72,6 +75,14 @@ export class LocationComponent implements OnInit {
     this.settingsService.currentTheme$.subscribe((theme: string) => {
       this.currentTheme = theme;
     });
+
+    this.translocoService.langChanges$
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe(
+        (newLanguage) =>
+          (this.currentLocale =
+            this.translocoService.getActiveLang() === 'en' ? 'en-US' : 'el-GR'),
+      );
   }
 
   private getLocationHourlyWeather(locationId: string) {

@@ -21,6 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AccessibilityDialogComponent } from './dialogs/accessibility/accessibility-dialog.component';
 import { SettingsDialogComponent } from './dialogs/settings/settings-dialog.component';
 import { SettingsService } from '../../shared/services/settings.service';
+import slugify from 'slugify';
 
 @Component({
   selector: 'weather-layout-component',
@@ -55,7 +56,7 @@ export class LayoutComponent implements OnInit {
 
   currentContrast: string = 'default';
 
-  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  private unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private locationService: LocationService,
@@ -71,10 +72,9 @@ export class LayoutComponent implements OnInit {
       this.translationService.getAvailableLanguageKeys() as string[];
 
     this.translationService.activeLanguageKey
-      .pipe(takeUntil(this._unsubscribeAll))
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((key) => {
         this.currentTranslationKey = key;
-        console.log(this.currentTranslationKey);
       });
 
     this.settingsService.currentTheme$.subscribe((theme: string) => {
@@ -137,8 +137,10 @@ export class LayoutComponent implements OnInit {
   }
 
   private searchForLocations(query: string) {
+    const searchSlug = slugify(query, { lower: true });
+
     this.locationService
-      .getLocations(query)
+      .getLocations(searchSlug)
       .subscribe((result) => (this.locationResults = result));
   }
 

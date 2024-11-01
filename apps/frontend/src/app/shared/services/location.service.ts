@@ -10,9 +10,7 @@ export class LocationService {
   constructor(private httpClient: HttpClient) {}
 
   getLocations(query: string): Observable<string[]> {
-    return this.httpClient
-      .get<string[]>(`/backend/location?search=${query}`)
-      .pipe(tap((locations) => console.log('Got locations : ', locations)));
+    return this.httpClient.get<string[]>(`/backend/location?search=${query}`);
   }
 
   getLocationWeather(
@@ -20,12 +18,8 @@ export class LocationService {
     startTimeIsoString: string,
     endTimeIsoString?: string,
   ) {
-    return this.httpClient
-      .get<Location>(
-        `/backend/location/${locationId}/weather?startTime=${startTimeIsoString}&${endTimeIsoString ? 'endTime=' + endTimeIsoString : ''}`,
-      )
-      .pipe(
-        tap((location) => console.log('Got location weather : ', location)),
-      );
+    return this.httpClient.get<Location>(
+      `/backend/location/${locationId}/weather?startTime=${startTimeIsoString}&${endTimeIsoString ? 'endTime=' + endTimeIsoString : ''}`,
+    );
   }
 }

@@ -17,7 +17,7 @@
           {{ t('locations.' + location.id) }}
         </div>
         <div class="text-2xl font-semibold">
-          {{ time | date: 'EEEE, MMMM d' }}
+          {{ time | date: 'EEEE, MMMM d' : undefined : currentLocale }}
         </div>
         <div class="flex flex-row justify-center mt-4">
           <svg-icon
@@ -50,8 +50,8 @@
           <div>
             {{
               this.currentTimeFormat === 12
-                ? (time | date: 'h:mm a')
-                : (time | date: 'H:mm a')
+                ? (time | date: 'h:mm a' : undefined : currentLocale)
+                : (time | date: 'H:mm a' : undefined : currentLocale)
             }}&nbsp;
           </div>
           <div>H : {{ getHighestLocationTemperature() }}°&nbsp;</div>
@@ -67,7 +67,7 @@
           {{ t('locations.' + location.id) }}
         </div>
         <div class="text-xl font-semibold">
-          {{ time | date: 'EEEE, MMMM d' }}
+          {{ time | date: 'EEEE, MMMM d' : undefined : currentLocale }}
         </div>
         <div class="flex flex-row justify-center mt-2">
           <svg-icon
@@ -98,8 +98,8 @@
           <div>
             {{
               this.currentTimeFormat === 12
-                ? (time | date: 'h:mm a')
-                : (time | date: 'H:mm a')
+                ? (time | date: 'h:mm a' : undefined : currentLocale)
+                : (time | date: 'H:mm a' : undefined : currentLocale)
             }}&nbsp;
           </div>
           <div>H : {{ getHighestLocationTemperature() }}°&nbsp;</div>
@@ -115,7 +115,7 @@
           {{ t('locations.' + location.id) }}
         </div>
         <div class="text-xl font-semibold">
-          {{ time | date: 'EEEE, MMMM d' }}
+          {{ time | date: 'EEEE, MMMM d' : undefined : currentLocale }}
         </div>
         <div class="flex flex-row items-center justify-center mt-1">
           <svg-icon
@@ -150,8 +150,8 @@
           <div>
             {{
               this.currentTimeFormat === 12
-                ? (time | date: 'h:mm a')
-                : (time | date: 'H:mm a')
+                ? (time | date: 'h:mm a' : undefined : currentLocale)
+                : (time | date: 'H:mm a' : undefined : currentLocale)
             }}&nbsp;
           </div>
           <div>H : {{ getHighestLocationTemperature() }}°&nbsp;</div>
@@ -195,8 +195,10 @@
                 first
                   ? t('location.now')
                   : this.currentTimeFormat === 12
-                    ? (getLocalTime(weather.dateTime) | date: 'h a')
-                    : (getLocalTime(weather.dateTime) | date: 'H:mm')
+                    ? (getLocalTime(weather.dateTime)
+                      | date: 'h a' : undefined : currentLocale)
+                    : (getLocalTime(weather.dateTime)
+                      | date: 'H:mm' : undefined : currentLocale)
               }}
             </div>
             <svg-icon
@@ -255,8 +257,10 @@
                 first
                   ? t('location.now')
                   : this.currentTimeFormat === 12
-                    ? (getLocalTime(weather.dateTime) | date: 'h a')
-                    : (getLocalTime(weather.dateTime) | date: 'H:mm')
+                    ? (getLocalTime(weather.dateTime)
+                      | date: 'h a' : undefined : currentLocale)
+                    : (getLocalTime(weather.dateTime)
+                      | date: 'H:mm' : undefined : currentLocale)
               }}
             </div>
             <svg-icon

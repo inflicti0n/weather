@@ -1,6 +1,7 @@
-import { provideTransloco, TranslocoModule } from '@ngneat/transloco';
-import { TranslocoService } from './transloco-service';
 import { isDevMode, NgModule } from '@angular/core';
+import { provideTransloco, TranslocoModule } from '@ngneat/transloco';
+
+import { TranslocoService } from './transloco-service';
 
 @NgModule({
   exports: [TranslocoModule],
