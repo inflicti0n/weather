@@ -30,6 +30,7 @@ import { Weather } from '../../../shared/models/weather';
 import { LocationService } from '../../../shared/services/location.service';
 import { crossplugin, interpolate } from '../../../utils/crosshair-plugin';
 import { ThemeService } from '../../../shared/services/theme.service';
+import { map, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'weather-location-details-component',
@@ -767,13 +768,42 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
   }
 
   private getLocationMonthlyWeather(locationId: string) {
-    const localTime = now(getLocalTimeZone());
+    if (!this.currentTimezone) {
+      return;
+    }
+    const localTime = now(this.currentTimezone);
     localTime.set({ hour: 0 });
     this.locationService
       .getLocationWeather(
         locationId,
         localTime.subtract({ days: 1 }).toAbsoluteString(),
         localTime.add({ days: 30 }).set({ hour: 1 }).toAbsoluteString(),
+      )
+      .pipe(
+        switchMap((location: Location) => {
+          console.log(location);
+
+          location.weather = [
+            ...location.weather.map((weather: Weather) => {
+              if (this.currentTimezone) {
+                const convertedo = parseAbsolute(
+                  new Date(weather.dateTime).toISOString(),
+                  this.currentTimezone,
+                );
+
+                const heh = toCalendarDateTime(convertedo);
+                // console.log(new Date(heh.toString()));
+
+                weather.dateTime = new Date(heh.toString());
+              }
+              //const localizedTime = this.getLocalTime(weather.dateTime);
+
+              return weather;
+            }),
+          ];
+
+          return of(location);
+        }),
       )
       .subscribe((result) => {
         if (!result) {
@@ -786,9 +816,19 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
         }
         this.currentMonthlyWeather = this.getMonthlyWeather(result.weather);
 
-        this.selectDayWeather(this.location.weather[2].dateTime);
+        console.log(this.currentMonthlyWeather);
 
-        this.selectHourWeather(this.location.weather[2].dateTime);
+        this.selectDayWeather(
+          this.currentMonthlyWeather[
+            Object.keys(this.currentMonthlyWeather)[1]
+          ][0].dateTime,
+        );
+
+        this.selectHourWeather(
+          this.currentMonthlyWeather[
+            Object.keys(this.currentMonthlyWeather)[1]
+          ][this.time.getHours()].dateTime,
+        );
 
         this.dayAveragedWeather = this.getDayAveragedWeather();
 
@@ -914,7 +954,7 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
   }
 
   getTimeAdjustedWeatherIconName(condition: string, dateTime: Date) {
-    const hour = this.getLocalTime(dateTime)?.getHours();
+    const hour = dateTime.getHours();
 
     if (
       hour &&
@@ -1035,11 +1075,9 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
   }
 
   selectDayWeather(dateTime: Date) {
-    const dayDate = this.datePipe.transform(
-      new Date(dateTime.toString()),
-      'M-d-y',
-    );
+    const dayDate = this.datePipe.transform(dateTime, 'M-d-y');
 
+    console.log(dayDate);
     if (!dayDate) {
       return;
     }

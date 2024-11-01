@@ -69,8 +69,7 @@
             >
               <div>
                 {{
-                  getLocalTime(currentlySelectedSingularWeather.dateTime)
-                    | date: 'shortTime'
+                  currentlySelectedSingularWeather.dateTime | date: 'shortTime'
                 }}&nbsp;
               </div>
               <div>H : {{ getHighestLocationTemperature() }}°&nbsp;</div>
@@ -294,13 +293,11 @@
             <div class="flex flex-col gap-0.5 items-center justify-center">
               <div class="font-semibold text-lg">
                 {{
-                  first
-                    ? t('location.today')
-                    : (getLocalTime(weather.dateTime) | date: 'EEE')
+                  first ? t('location.today') : (weather.dateTime | date: 'EEE')
                 }}
               </div>
               <div class="font-semibold text-sm">
-                {{ getLocalTime(weather.dateTime) | date: 'M/d' }}
+                {{ weather.dateTime | date: 'M/d' }}
               </div>
             </div>
             <svg-icon
@@ -357,10 +354,10 @@
             class="text-xl h-12 px-3 py-2 font-semibold w-full flex flex-row justify-start items-center gap-5 hover:bg-white/50 rounded-xl"
           >
             <div class="w-[3%] items-center flex flex-row justify-end">
-              {{ getLocalTime(weather.dateTime) | date: 'h' }}
+              {{ weather.dateTime | date: 'h' }}
             </div>
             <div class="w-[4%] -ml-2 items-center flex flex-row justify-start">
-              {{ getLocalTime(weather.dateTime) | date: 'a' }}
+              {{ weather.dateTime | date: 'a' }}
             </div>
             <div class="w-[10%] items-center flex flex-row justify-center">
               {{ weather.temperatureCelsius }}°
@@ -541,8 +538,7 @@
             <div class="font-semibold flex flex-row gap-2">
               <div>
                 {{
-                  getLocalTime(currentlySelectedSingularWeather.dateTime)
-                    | date: 'shortTime'
+                  currentlySelectedSingularWeather.dateTime | date: 'shortTime'
                 }}&nbsp;
               </div>
             </div>
@@ -721,13 +717,11 @@
             <div class="flex flex-col gap-0.5 items-center justify-center">
               <div class="font-semibold text-sm">
                 {{
-                  first
-                    ? t('location.now')
-                    : (getLocalTime(weather.dateTime) | date: 'EEE')
+                  first ? t('location.now') : (weather.dateTime | date: 'EEE')
                 }}
               </div>
               <div class="font-semibold text-sm">
-                {{ getLocalTime(weather.dateTime) | date: 'M/d' }}
+                {{ weather.dateTime | date: 'M/d' }}
               </div>
             </div>
             <svg-icon
