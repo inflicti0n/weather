@@ -431,8 +431,14 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
                     return value + '%';
                   case 'wind':
                     return this.currentSpeedUnits === 'kilometers'
-                      ? this.getUnitAdjustedSpeed(value) + 'km/h'
-                      : this.getUnitAdjustedSpeed(value) + 'mph';
+                      ? this.getUnitAdjustedSpeed(value) +
+                          this.translocoService.translate(
+                            'location.details.kmh',
+                          )
+                      : this.getUnitAdjustedSpeed(value) +
+                          this.translocoService.translate(
+                            'location.details.mph',
+                          );
                 }
 
                 return Math.round;

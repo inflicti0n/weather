@@ -9,7 +9,9 @@
   }"
 >
   <div class="hidden md:flex flex-row w-full items-center">
-    <div class="w-full text-2xl md:text-4xl font-semibold">Settings</div>
+    <div class="w-full text-2xl md:text-4xl font-semibold">
+      {{ t('overlay.settings.title') }}
+    </div>
     <!-- Close Button-->
     <button
       (click)="closeDialog()"
@@ -22,7 +24,7 @@
   <div class="flex flex-row gap-2 md:gap-6 flex-wrap">
     <div class="flex flex-col gap-6">
       <div class="w-full text-xl md:text-3xl font-semibold mt-2">
-        Temperature
+        {{ t('overlay.settings.temperature') }}
       </div>
       <div class="flex flex-wrap -mt-2 flex-row w-full basis-1 gap-2">
         <button
@@ -32,7 +34,7 @@
           (click)="updateTemperatureUnits('celsius')"
           class="flex flex-row items-center justify-center h-8 text-lg px-4 py-4 rounded-full bg-white/50 drop-shadow-lg"
         >
-          Celsius
+          {{ t('overlay.settings.celsius') }}
         </button>
         <button
           [ngClass]="{
@@ -41,26 +43,28 @@
           (click)="updateTemperatureUnits('fahrenheit')"
           class="flex flex-row items-center justify-center h-8 text-lg px-6 py-4 rounded-full bg-white/50 drop-shadow-lg"
         >
-          Fahrenheit
+          {{ t('overlay.settings.fahrenheit') }}
         </button>
       </div>
     </div>
     <div class="flex flex-col gap-6">
-      <div class="text-xl md:text-3xl font-semibold mt-2">Speed</div>
+      <div class="text-xl md:text-3xl font-semibold mt-2">
+        {{ t('overlay.settings.speed') }}
+      </div>
       <div class="flex flex-wrap -mt-2 flex-row w-full basis-1 gap-2">
         <button
           [ngClass]="{ 'bg-white/75': getCurrentSpeedUnits() === 'kilometers' }"
           (click)="updateSpeedUnits('kilometers')"
           class="flex flex-row items-center justify-center h-8 text-lg px-4 py-4 rounded-full bg-white/50 drop-shadow-lg"
         >
-          Kilometers
+          {{ t('overlay.settings.kilometers') }}
         </button>
         <button
           [ngClass]="{ 'bg-white/75': getCurrentSpeedUnits() === 'miles' }"
           (click)="updateSpeedUnits('miles')"
           class="flex flex-row items-center justify-center h-8 text-lg px-6 py-4 rounded-full bg-white/50 drop-shadow-lg"
         >
-          Miles
+          {{ t('overlay.settings.miles') }}
         </button>
       </div>
     </div>
@@ -68,21 +72,23 @@
 
   <div class="flex flex-row gap-2 md:gap-6 flex-wrap">
     <div class="flex flex-col gap-6">
-      <div class="w-full text-xl md:text-3xl font-semibold mt-2">Time</div>
+      <div class="w-full text-xl md:text-3xl font-semibold mt-2">
+        {{ t('overlay.settings.time') }}
+      </div>
       <div class="flex flex-wrap -mt-2 flex-row w-full basis-1 gap-2">
         <button
           [ngClass]="{ 'bg-white/75': getCurrentTimeFormat() === 24 }"
           (click)="updateTimeFormat(24)"
           class="flex flex-row items-center justify-center h-8 text-lg px-4 py-4 rounded-full bg-white/50 drop-shadow-lg"
         >
-          24-hour
+          {{ t('overlay.settings.24') }}
         </button>
         <button
           [ngClass]="{ 'bg-white/75': getCurrentTimeFormat() === 12 }"
           (click)="updateTimeFormat(12)"
           class="flex flex-row items-center justify-center h-8 text-lg px-6 py-4 rounded-full bg-white/50 drop-shadow-lg"
         >
-          12-hour
+          {{ t('overlay.settings.12') }}
         </button>
       </div>
     </div>
@@ -90,7 +96,9 @@
 
   <div class="flex flex-row gap-2 md:gap-6 flex-wrap">
     <div class="flex flex-col gap-6">
-      <div class="w-full text-xl md:text-3xl font-semibold mt-2">Theme</div>
+      <div class="w-full text-xl md:text-3xl font-semibold mt-2">
+        {{ t('overlay.settings.theme') }}
+      </div>
       <div class="flex flex-wrap -mt-2 flex-row w-full basis-1 gap-2">
         <button
           [ngClass]="{
@@ -129,7 +137,7 @@
       (click)="closeDialog()"
       class="flex flex-row items-center justify-center h-12 text-xl px-6 py-5 rounded-full bg-white/50 drop-shadow-lg"
     >
-      Close
+      {{ t('overlay.close') }}
     </button>
   </div>
 </div>

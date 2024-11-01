@@ -2,9 +2,30 @@
   "overlay": {
     "search": "Αναζήτηση Τοποθεσίας",
     "recent-locations": "Πρόσφατες Τοποθεσίες",
+    "close": "Close",
     "languages": {
       "el": "Ελληνικά",
       "en": "Αγγλικά"
+    },
+    "accessibility": {
+      "title": "Προσβασιμότητα",
+      "font": "Γραμματοσειρά",
+      "contrast": "Αντίθεση",
+      "default": "Προκαθορισμένη",
+      "contrast-high": "Υψηλή"
+    },
+    "settings": {
+      "title": "Ρυθμίσεις",
+      "temperature": "Θερμοκρασία",
+      "celsius": "Κελσίου",
+      "fahrenheit": "Φαρενάιτ",
+      "speed": "Ταχύτητα",
+      "kilometers": "Χιλιόμετρα",
+      "miles": "Μίλια",
+      "time": "Ώρα",
+      "24": "24ωρο",
+      "12": "12ωρο",
+      "theme": "Θέμα"
     }
   },
   "location": {
@@ -38,6 +59,15 @@
       "sleet": "Επικείμενο χιονόνερο στις "
     },
     "details": {
+      "30-day-forecast": "Πρόβλεψη 30 ημερών",
+      "high": "Υ",
+      "low": "Χ",
+      "precipitation": "Κατακρήμνιση",
+      "humidity": "Υγρασία",
+      "wind": "Άνεμος",
+      "gusts": "Ριπές",
+      "uvi": "Δείκτης UV",
+      "aqi": "Δείκτης Ποιότητας Αέρα",
       "uvi-low": "Χαμηλός",
       "uvi-moderate": "Μέτριος",
       "uvi-high": "Υψηλός",
@@ -52,7 +82,10 @@
       "compass-north": "Β",
       "compass-south": "Ν",
       "compass-west": "Δ",
-      "compass-east": "Α"
+      "compass-east": "Α",
+      "mph": "μαω",
+      "kmh": "χλμ/h",
+      "temperature": "Θερμοκρασία"
     }
   },
   "locations": {

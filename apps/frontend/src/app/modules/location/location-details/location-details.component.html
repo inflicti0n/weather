@@ -93,8 +93,14 @@
                       | date: 'H:mm a' : undefined : currentLocale)
                 }}&nbsp;
               </div>
-              <div>H : {{ getHighestLocationTemperature() }}°&nbsp;</div>
-              <div>L : {{ getLowestLocationTemperature() }}°</div>
+              <div>
+                {{ t('location.details.high') }} :
+                {{ getHighestLocationTemperature() }}°&nbsp;
+              </div>
+              <div>
+                {{ t('location.details.low') }} :
+                {{ getLowestLocationTemperature() }}°
+              </div>
             </div>
           </div>
         </div>
@@ -114,7 +120,7 @@
                 class="flex flex-row items-center justify-start gap-2 text-xl font-semibold"
               >
                 <svg-icon name="precipitation" [svgClass]="'w-6 h-6'"></svg-icon
-                >Precipitation
+                >{{ t('location.details.precipitation') }}
               </div>
               <div
                 class="flex flex-row text-2xl tall:text-3xl font-semibold items-center justify-start"
@@ -136,7 +142,7 @@
                 class="flex flex-row items-center justify-start gap-2 text-lg tall:text-xl font-semibold"
               >
                 <svg-icon name="humidity" [svgClass]="'w-6 h-6'"></svg-icon
-                >Humidity
+                >{{ t('location.details.humidity') }}
               </div>
               <div
                 class="flex flex-row text-2xl tall:text-3xl font-semibold items-center justify-start"
@@ -155,8 +161,8 @@
               <div
                 class="flex flex-row items-center justify-start gap-2 text-lg tall:text-xl font-semibold"
               >
-                <svg-icon name="uv-index" [svgClass]="'w-6 h-6'"></svg-icon>UV
-                Index
+                <svg-icon name="uv-index" [svgClass]="'w-6 h-6'"></svg-icon
+                >{{ t('location.details.uvi') }}
               </div>
               <div
                 class="flex flex-row text-2xl tall:text-3xl gap-2 font-semibold items-center justify-start"
@@ -201,7 +207,8 @@
                   <div
                     class="flex flex-row items-center justify-start gap-2 text-lg tall:text-xl font-semibold"
                   >
-                    <svg-icon name="wind" [svgClass]="'w-6 h-6'"></svg-icon>Wind
+                    <svg-icon name="wind" [svgClass]="'w-6 h-6'"></svg-icon
+                    >{{ t('location.details.wind') }}
                   </div>
                   <div
                     class="flex flex-row text-2xl tall:text-3xl font-semibold items-center justify-start whitespace-nowrap"
@@ -211,7 +218,11 @@
                         currentlySelectedSingularWeather.windSpeedKmh
                       )
                     }}
-                    {{ currentSpeedUnits === 'kilometers' ? 'km/h' : 'mph' }}
+                    {{
+                      currentSpeedUnits === 'kilometers'
+                        ? t('location.details.kmh')
+                        : t('location.details.mph')
+                    }}
                   </div>
                 </div>
                 <div
@@ -227,7 +238,7 @@
                     class="flex flex-row items-center justify-start gap-2 text-lg tall:text-xl font-semibold"
                   >
                     <svg-icon name="gusts" [svgClass]="'w-6 h-6'"></svg-icon
-                    >Gusts
+                    >{{ t('location.details.gusts') }}
                   </div>
                   <div
                     class="flex flex-row text-2xl tall:text-3xl font-semibold items-center justify-start"
@@ -237,7 +248,11 @@
                         currentlySelectedSingularWeather.windGustsKmh
                       )
                     }}
-                    {{ currentSpeedUnits === 'kilometers' ? 'km/h' : 'mph' }}
+                    {{
+                      currentSpeedUnits === 'kilometers'
+                        ? t('location.details.kmh')
+                        : t('location.details.mph')
+                    }}
                   </div>
                 </div>
               </div>
@@ -282,7 +297,7 @@
                   name="air-quality-index"
                   [svgClass]="'w-6 h-6'"
                 ></svg-icon
-                >Air Quality Index
+                >{{ t('location.details.aqi') }}
               </div>
               <div
                 class="flex flex-row text-2xl tall:text-3xl gap-2 font-semibold items-center justify-start"
@@ -317,7 +332,9 @@
       <div
         class="flex flex-col max-h-[85vh] max-w-[30vw] items-start justify-start rounded-full gap-2"
       >
-        <div class="text-2xl tall:text-4xl font-semibold">30 Day Forecast</div>
+        <div class="text-2xl tall:text-4xl font-semibold">
+          {{ t('location.details.30-day-forecast') }}
+        </div>
         <!-- 30 Day Forecast Container -->
         <div
           (wheel)="onWheel($event)"
@@ -480,7 +497,11 @@
                 {{ getUnitAdjustedSpeed(weather.windSpeedKmh) }}
               </div>
               <div>
-                {{ currentSpeedUnits === 'kilometers' ? 'km/h' : 'mph' }}
+                {{
+                  currentSpeedUnits === 'kilometers'
+                    ? t('location.details.kmh')
+                    : t('location.details.mph')
+                }}
               </div>
             </div>
           </button>
@@ -504,7 +525,7 @@
                 "
                 [matTooltipPosition]="'below'"
                 #tooltip="matTooltip"
-                matTooltip="Temperature"
+                matTooltip="{{ t('location.details.temperature') }}"
                 (click)="selectGraphType('temperature')"
                 [ngClass]="{
                   'bg-white/50': selectedGraphType === 'temperature',
@@ -525,7 +546,7 @@
                 "
                 [matTooltipPosition]="'below'"
                 #tooltip="matTooltip"
-                matTooltip="Precipitation"
+                matTooltip="{{ t('location.details.precipitation') }}"
                 (click)="selectGraphType('precipitation')"
                 [ngClass]="{
                   'bg-white/50': selectedGraphType === 'precipitation'
@@ -544,7 +565,7 @@
                 "
                 [matTooltipPosition]="'below'"
                 #tooltip="matTooltip"
-                matTooltip="Wind"
+                matTooltip="{{ t('location.details.wind') }}"
                 (click)="selectGraphType('wind')"
                 [ngClass]="{
                   'bg-white/50': selectedGraphType === 'wind',
@@ -693,7 +714,11 @@
                     currentlySelectedSingularWeather.windSpeedKmh
                   )
                 }}
-                {{ currentSpeedUnits === 'kilometers' ? 'km/h' : 'mph' }}
+                {{
+                  currentSpeedUnits === 'kilometers'
+                    ? t('location.details.kmh')
+                    : t('location.details.mph')
+                }}
               </div>
               <div
                 [ngClass]="
@@ -734,7 +759,7 @@
                 "
                 [matTooltipPosition]="'below'"
                 #tooltip="matTooltip"
-                matTooltip="Temperature"
+                matTooltip="{{ t('location.details.temperature') }}"
                 (click)="selectGraphType('temperature')"
                 [ngClass]="{
                   'bg-white/50': selectedGraphType === 'temperature'
@@ -753,7 +778,7 @@
                 "
                 [matTooltipPosition]="'below'"
                 #tooltip="matTooltip"
-                matTooltip="Precipitation"
+                matTooltip="{{ t('location.details.precipitation') }}"
                 (click)="selectGraphType('precipitation')"
                 [ngClass]="{
                   'bg-white/50': selectedGraphType === 'precipitation'
@@ -772,7 +797,7 @@
                 "
                 [matTooltipPosition]="'below'"
                 #tooltip="matTooltip"
-                matTooltip="Wind"
+                matTooltip="{{ t('location.details.wind') }}"
                 (click)="selectGraphType('wind')"
                 [ngClass]="{
                   'bg-white/50': selectedGraphType === 'wind'
@@ -818,7 +843,9 @@
           </div>
         </div>
 
-        <div class="text-lg mt-1 font-semibold">30 Day Forecast</div>
+        <div class="text-lg mt-1 font-semibold">
+          {{ t('location.details.30-day-forecast') }}
+        </div>
         <!-- 30 Day Forecast Container -->
         <div
           (wheel)="onWheel($event)"

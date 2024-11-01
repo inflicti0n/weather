@@ -2,9 +2,30 @@
   "overlay": {
     "search": "Search location",
     "recent-locations": "Recent Locations",
+    "close": "Close",
     "languages": {
       "el": "Greek",
       "en": "English"
+    },
+    "accessibility": {
+      "title": "Accessibility",
+      "font": "Font",
+      "contrast": "Contrast",
+      "default": "Default",
+      "contrast-high": "High"
+    },
+    "settings": {
+      "title": "Settings",
+      "temperature": "Temperature",
+      "celsius": "Celsius",
+      "fahrenheit": "Fahrhenheit",
+      "speed": "Speed",
+      "kilometers": "Kilometers",
+      "miles": "Miles",
+      "time": "Time",
+      "24": "24-hour",
+      "12": "12-hour",
+      "theme": "Theme"
     }
   },
   "location": {
@@ -38,6 +59,15 @@
       "sleet": "Sleet expected at"
     },
     "details": {
+      "30-day-forecast": "30 Day Forecast",
+      "high": "H",
+      "low": "L",
+      "precipitation": "Precipitation",
+      "humidity": "Humidity",
+      "wind": "Wind",
+      "gusts": "Gusts",
+      "uvi": "UV Index",
+      "aqi": "Air Quality Index",
       "uvi-low": "Low",
       "uvi-moderate": "Moderate",
       "uvi-high": "High",
@@ -52,7 +82,10 @@
       "compass-north": "N",
       "compass-south": "S",
       "compass-west": "W",
-      "compass-east": "E"
+      "compass-east": "E",
+      "mph": "mph",
+      "kmh": "km/h",
+      "temperature": "Temperature"
     }
   },
   "locations": {
