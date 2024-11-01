@@ -14,7 +14,7 @@ export class SettingsService {
   currentSpeedUnits$ = new BehaviorSubject('kilometers'); //miles
   currentTimeFormat$ = new BehaviorSubject(24); // 12
   currentWeatherIconCollection$ = new BehaviorSubject('solid'); //outline
-  currentTheme$ = new BehaviorSubject('default'); // iridescent
+  currentTheme$ = new BehaviorSubject('default'); // iridescent, leafy
 
   constructor(
     private httpClient: HttpClient,

@@ -3,7 +3,9 @@
   class="w-full h-full backdrop-blur-[30px] backdrop-brightness-[1.2] px-6 py-4 md:px-8 md:py-6 flex flex-col gap-6"
   [ngClass]="{
     'text-sky-950': currentFontColorClass === 'text-sky-950',
-    'text-white': currentFontColorClass === 'text-white'
+    'text-white': currentFontColorClass === 'text-white',
+    iridescent: currentTheme === 'iridescent',
+    leafy: currentTheme === 'leafy'
   }"
 >
   <div class="hidden md:flex flex-row w-full items-center">
@@ -59,7 +61,7 @@
         'bg-white/75': getCurrentContrast() === 'high'
       }"
       (click)="updateContrast('high')"
-      class="flex flex-row items-center atkinson-hyperlegible justify-center h-8 text-lg px-6 py-4 rounded-full bg-white/50 drop-shadow-lg"
+      class="flex flex-row items-center justify-center h-8 text-lg px-6 py-4 rounded-full bg-white/50 drop-shadow-lg"
     >
       High
     </button>

@@ -20,6 +20,7 @@ import { TranslationService } from '../../shared/services/translation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AccessibilityDialogComponent } from './dialogs/accessibility/accessibility-dialog.component';
 import { SettingsDialogComponent } from './dialogs/settings/settings-dialog.component';
+import { SettingsService } from '../../shared/services/settings.service';
 
 @Component({
   selector: 'weather-layout-component',
@@ -50,6 +51,10 @@ export class LayoutComponent implements OnInit {
 
   currentTranslationKey: any;
 
+  currentTheme: string = 'default';
+
+  currentContrast: string = 'default';
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
@@ -60,6 +65,7 @@ export class LayoutComponent implements OnInit {
     private persistenceService: PersistenceService,
     private translationService: TranslationService,
     private dialog: MatDialog,
+    private settingsService: SettingsService,
   ) {
     this.availableTranslationKeys =
       this.translationService.getAvailableLanguageKeys() as string[];
@@ -70,6 +76,14 @@ export class LayoutComponent implements OnInit {
         this.currentTranslationKey = key;
         console.log(this.currentTranslationKey);
       });
+
+    this.settingsService.currentTheme$.subscribe((theme: string) => {
+      this.currentTheme = theme;
+    });
+
+    this.settingsService.currentContrast$.subscribe((contrast: string) => {
+      this.currentContrast = contrast;
+    });
   }
 
   ngOnInit(): void {
@@ -153,12 +167,13 @@ export class LayoutComponent implements OnInit {
     this.dialog.open(SettingsDialogComponent, {
       panelClass: [
         'w-[100vw]',
-        'h-[80vh]',
+        'h-[90vh]',
+        'sm:h-[80vh]',
         'lg:w-2/3',
-        'lg:h-2/4',
+        'lg:h-4/6',
         'xl:w-2/4',
         '2xl:w-1/3',
-        '2xl:h-1/3',
+        '2xl:h-2/4',
         'rounded-full',
       ],
       autoFocus: false,

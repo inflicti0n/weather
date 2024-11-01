@@ -162,6 +162,10 @@
       <!-- Hourly Weather Summary for Screens > md -->
       <div
         class="backdrop-blur-[30px] backdrop-brightness-[1.15] rounded-3xl flex flex-col gap-3 px-8 py-6 hidden md:flex"
+        [ngClass]="{
+          iridescent: currentTheme === 'iridescent',
+          leafy: currentTheme === 'leafy'
+        }"
       >
         <div class="flex flex-row items-center justify-start text-xl w-full">
           {{ getWeatherForecast() }}

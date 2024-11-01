@@ -4,7 +4,8 @@
   [ngClass]="{
     'text-sky-950': currentFontColorClass === 'text-sky-950',
     'text-white': currentFontColorClass === 'text-white',
-    iridescent: getCurrentTheme() === 'iridescent'
+    iridescent: getCurrentTheme() === 'iridescent',
+    leafy: getCurrentTheme() === 'leafy'
   }"
 >
   <div class="hidden md:flex flex-row w-full items-center">
@@ -120,7 +121,7 @@
             'border-slate-400': getCurrentTheme() !== 'default'
           }"
           (click)="updateTheme('default')"
-          class="flex flex-row border-2 border-solid items-center justify-center h-12 w-12 bg-gradient-to-r from-slate-200 text-lg rounded-full drop-shadow-lg"
+          class="flex flex-row border-2 border-solid items-center justify-center h-12 w-12 bg-gradient-to-r from-slate-400 to-slate-200 text-lg rounded-full drop-shadow-lg"
         ></button>
         <button
           [ngClass]="{
@@ -128,7 +129,15 @@
             'border-slate-400': getCurrentTheme() !== 'iridescent'
           }"
           (click)="updateTheme('iridescent')"
-          class="flex flex-row border-2 border-solid items-center justify-center h-12 w-12 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-lg rounded-full drop-shadow-lg"
+          class="flex flex-row border-2 border-solid items-center justify-center h-12 w-12 iridescent text-lg rounded-full drop-shadow-lg"
+        ></button>
+        <button
+          [ngClass]="{
+            'border-white': getCurrentTheme() === 'leafy',
+            'border-slate-400': getCurrentTheme() !== 'leafy'
+          }"
+          (click)="updateTheme('leafy')"
+          class="flex flex-row border-2 border-solid items-center justify-center h-12 w-12 leafy text-lg rounded-full drop-shadow-lg"
         ></button>
       </div>
     </div>

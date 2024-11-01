@@ -198,6 +198,7 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
   currentTemperatureUnits: string = 'celsius';
   currentSpeedUnits: string = 'kilometers';
   currentTimeFormat: number = 24;
+  currentTheme: string = 'default';
 
   constructor(
     private router: Router,
@@ -234,6 +235,9 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
     });
     this.settingsService.currentTimeFormat$.subscribe((format: number) => {
       this.currentTimeFormat = format;
+    });
+    this.settingsService.currentTheme$.subscribe((theme: string) => {
+      this.currentTheme = theme;
     });
   }
 

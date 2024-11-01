@@ -34,6 +34,7 @@ export class LocationComponent implements OnInit {
   currentFontColorClass: string = 'text-white';
   currentTemperatureUnits: string = 'celsius';
   currentTimeFormat: number = 24;
+  currentTheme: string = 'default';
 
   constructor(
     private router: Router,
@@ -67,6 +68,9 @@ export class LocationComponent implements OnInit {
 
     this.settingsService.currentTimeFormat$.subscribe((format: number) => {
       this.currentTimeFormat = format;
+    });
+    this.settingsService.currentTheme$.subscribe((theme: string) => {
+      this.currentTheme = theme;
     });
   }
 
@@ -178,7 +182,7 @@ export class LocationComponent implements OnInit {
 
         return `${this.translocoService.translate(
           'location.forecast.' + disruptiveWeather?.weatherCondition,
-        )} ${this.datePipe.transform(new Date(calendarDateTime.toString()), 'h:mm a')}`;
+        )} ${this.currentTimeFormat === 24 ? this.datePipe.transform(new Date(calendarDateTime.toString()), 'H:mm') : this.datePipe.transform(new Date(calendarDateTime.toString()), 'h:mm a')}`;
       }
 
       const conditionOccurences = [

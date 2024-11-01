@@ -34,6 +34,8 @@ export class AccessibilityDialogComponent implements OnInit {
 
   currentTranslationKey: any;
 
+  currentTheme: string = 'default';
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
@@ -49,6 +51,10 @@ export class AccessibilityDialogComponent implements OnInit {
   ngOnInit(): void {
     this.themeService.fontColorClass$.subscribe((fontColor: string) => {
       this.currentFontColorClass = fontColor;
+    });
+
+    this.settingsService.currentTheme$.subscribe((theme: string) => {
+      this.currentTheme = theme;
     });
   }
 

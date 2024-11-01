@@ -4,7 +4,14 @@
   [ngStyle]="getBackgroundImageClass()"
 >
   <div
-    class="w-full h-full backdrop-blur-md sm:backdrop-blur-sm backdrop-brightness-[0.95]"
+    [ngClass]="{
+      'iridescent-background': currentTheme === 'iridescent',
+      'leafy-background': currentTheme === 'leafy',
+      'backdrop-blur-md sm:backdrop-blur-sm backdrop-brightness-[0.95]':
+        currentContrast === 'default',
+      'backdrop-blur-xl backdrop-brightness-[0.6]': currentContrast === 'high'
+    }"
+    class="w-full h-full"
   ></div>
 </div>
 
@@ -28,6 +35,10 @@
   >
     <!-- Search Bar for Screen > sm -->
     <div
+      [ngClass]="{
+        iridescent: currentTheme === 'iridescent',
+        leafy: currentTheme === 'leafy'
+      }"
       class="hidden sm:flex flex-row w-full backdrop-blur-[30px] backdrop-brightness-[1.15] justify-start h-12 gap-4 items-center py-3 px-4 rounded-full"
     >
       <svg-icon
@@ -50,6 +61,10 @@
     </div>
     <!-- Search Results -->
     <div
+      [ngClass]="{
+        iridescent: currentTheme === 'iridescent',
+        leafy: currentTheme === 'leafy'
+      }"
       class="absolute scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25 overflow-y-auto self-center mt-14 z-20 rounded-2xl items-center justify-start flex flex-col max-h-[20rem] backdrop-blur-[30px] backdrop-brightness-[1.15] w-[42rem]"
       *ngIf="searchInput.focused && searchInput.value.length > 0"
     >
@@ -76,6 +91,10 @@
     >
       {{ t('overlay.recent-locations') }} :
       <div
+        [ngClass]="{
+          iridescent: currentTheme === 'iridescent',
+          leafy: currentTheme === 'leafy'
+        }"
         *ngFor="let locationId of currentRecentLocationIds"
         [routerLink]="['/', locationId]"
         class="rounded-full text-center h-7 backdrop-blur-[30px] backdrop-brightness-[1.15] px-3 pt-0.5 pb-0.5 cursor-pointer"
@@ -106,7 +125,12 @@
         class="flex w-20 flex-row items-center justify-center"
       >
         <span
-          [ngClass]="{ 'rounded-t-lg': first, 'rounded-b-lg': last }"
+          [ngClass]="{
+            'rounded-t-lg': first,
+            'rounded-b-lg': last,
+            iridescent: currentTheme === 'iridescent',
+            leafy: currentTheme === 'leafy'
+          }"
           class="bg-white/25 hover:bg-white/50 p-3 flex items-center justify-start text-lg gap-2 w-36"
         >
           <svg-icon [name]="key" [svgClass]="'w-7 h-7'"></svg-icon>
@@ -145,6 +169,10 @@
 >
   <!-- Search Bar for Screen < sm -->
   <div
+    [ngClass]="{
+      iridescent: currentTheme === 'iridescent',
+      leafy: currentTheme === 'leafy'
+    }"
     class="flex flex-row w-full backdrop-blur-[30px] backdrop-brightness-[1.15] justify-center h-10 gap-4 items-center py-3 px-4 rounded-full"
   >
     <svg-icon
@@ -166,6 +194,10 @@
     />
   </div>
   <div
+    [ngClass]="{
+      iridescent: currentTheme === 'iridescent',
+      leafy: currentTheme === 'leafy'
+    }"
     class="absolute scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25 overflow-y-auto self-center mt-14 z-20 rounded-2xl items-center justify-start flex flex-col max-h-[14rem] backdrop-blur-[30px] backdrop-brightness-[1.15] w-5/6"
     *ngIf="searchInput.focused && searchInput.value.length > 0"
   >
