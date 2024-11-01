@@ -1,11 +1,11 @@
 <div
   class="w-[100vw] h-[100vh] min-w-[100vw] min-h-[100vh] fixed bg-no-repeat bg-center bg-cover -z-10"
-  [ngClass]="[getBackgroundImageClass()]"
+  style="background-image: url('../../assets/backgrounds/sunny-1.png')"
+  [ngStyle]="getBackgroundImageClass()"
 >
   <div
     class="w-full h-full backdrop-blur-md sm:backdrop-blur-sm backdrop-brightness-[0.95]"
   ></div>
-  <responsive-component></responsive-component>
 </div>
 
 <div
