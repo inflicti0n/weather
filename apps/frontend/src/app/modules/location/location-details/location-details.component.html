@@ -82,7 +82,13 @@
           <!-- Precipitation, Humidity & UV Index -->
           <div class="flex flex-col gap-2 tall:gap-3">
             <!-- Precipitation -->
-            <div class="bg-white/50 py-4 px-5 rounded-3xl flex flex-col gap-2">
+            <div
+              [ngClass]="{
+                'bg-white/50': currentFontColorClass === 'text-sky-950',
+                'bg-black/50': currentFontColorClass === 'text-white'
+              }"
+              class="py-4 px-5 rounded-3xl flex flex-col gap-2"
+            >
               <div
                 class="flex flex-row items-center justify-start gap-2 text-xl font-semibold"
               >
@@ -98,7 +104,13 @@
               </div>
             </div>
             <!-- Humidity -->
-            <div class="bg-white/50 py-4 px-5 rounded-3xl flex flex-col gap-2">
+            <div
+              [ngClass]="{
+                'bg-white/50': currentFontColorClass === 'text-sky-950',
+                'bg-black/50': currentFontColorClass === 'text-white'
+              }"
+              class="py-4 px-5 rounded-3xl flex flex-col gap-2"
+            >
               <div
                 class="flex flex-row items-center justify-start gap-2 text-lg tall:text-xl font-semibold"
               >
@@ -112,7 +124,13 @@
               </div>
             </div>
             <!-- UV Index -->
-            <div class="bg-white/50 py-4 px-5 rounded-3xl flex flex-col gap-2">
+            <div
+              [ngClass]="{
+                'bg-white/50': currentFontColorClass === 'text-sky-950',
+                'bg-black/50': currentFontColorClass === 'text-white'
+              }"
+              class="py-4 px-5 rounded-3xl flex flex-col gap-2"
+            >
               <div
                 class="flex flex-row items-center justify-start gap-2 text-lg tall:text-xl font-semibold"
               >
@@ -150,11 +168,15 @@
             <!-- Wind & Gusts -->
 
             <div
-              class="bg-white/50 rounded-3xl flex flex-row items-center px-5 gap-6"
+              [ngClass]="{
+                'bg-white/50': currentFontColorClass === 'text-sky-950',
+                'bg-black/50': currentFontColorClass === 'text-white'
+              }"
+              class="rounded-3xl flex flex-row items-center px-5 gap-6"
             >
               <div class="flex flex-col items-start gap-[0.3rem]">
                 <!-- Wind -->
-                <div class="flex flex-col py-3.5 tall:py-4 gap-2">
+                <div class="flex flex-col py-3.5 tall:py-4 gap-2 w-32">
                   <div
                     class="flex flex-row items-center justify-start gap-2 text-lg tall:text-xl font-semibold"
                   >
@@ -215,7 +237,13 @@
               </div>
             </div>
             <!-- Air Quality Index -->
-            <div class="bg-white/50 py-4 px-5 rounded-3xl flex flex-col gap-2">
+            <div
+              [ngClass]="{
+                'bg-white/50': currentFontColorClass === 'text-sky-950',
+                'bg-black/50': currentFontColorClass === 'text-white'
+              }"
+              class="py-4 px-5 rounded-3xl flex flex-col gap-2"
+            >
               <div
                 class="flex flex-row items-center justify-start gap-2 text-lg tall:text-xl font-semibold"
               >
@@ -287,7 +315,9 @@
                 (currentlySelectedWeather[0].dateTime | date: 'M-d-y'),
               'border-[4px]':
                 (weather.dateTime | date: 'M-d-y') ===
-                (currentlySelectedWeather[0].dateTime | date: 'M-d-y')
+                (currentlySelectedWeather[0].dateTime | date: 'M-d-y'),
+              'bg-white/50': currentFontColorClass === 'text-sky-950',
+              'bg-black/50': currentFontColorClass === 'text-white'
             }"
           >
             <div class="flex flex-col gap-0.5 items-center justify-center">
@@ -324,7 +354,11 @@
             />
             <span class="slider round"
               ><div
-                class="flex flex-row w-full h-full text-xl items-center justify-start gap-6 px-4"
+                [ngClass]="{
+                  'bg-white/50': currentFontColorClass === 'text-sky-950',
+                  'bg-black/50': currentFontColorClass === 'text-white'
+                }"
+                class="flex flex-row w-full h-full text-xl items-center justify-start gap-6 px-4 rounded-full"
               >
                 <svg-icon
                   name="list"
@@ -342,7 +376,11 @@
         <!-- Hourly Weather List -->
         <div
           *ngIf="hourlyWeatherStyleToggle === 'list'"
-          class="gap-2 flex flex-col w-full items-start rounded-3xl w-full h-[23.6rem] px-3 py-3 bg-white/50 overflow-y-auto scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25"
+          [ngClass]="{
+            'bg-white/50': currentFontColorClass === 'text-sky-950',
+            'bg-black/50': currentFontColorClass === 'text-white'
+          }"
+          class="gap-2 flex flex-col w-full items-start rounded-3xl w-full h-[23.6rem] px-3 py-3 overflow-y-auto scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25"
         >
           <button
             *ngFor="
@@ -397,7 +435,9 @@
         <div
           [ngClass]="{
             block: hourlyWeatherStyleToggle === 'graph',
-            hidden: hourlyWeatherStyleToggle !== 'graph'
+            hidden: hourlyWeatherStyleToggle !== 'graph',
+            'bg-white/50': currentFontColorClass === 'text-sky-950',
+            'bg-black/50': currentFontColorClass === 'text-white'
           }"
           class="overflow-hidden flex flex-col w-full items-start justify-start rounded-3xl w-full h-[20rem] tall:h-[23.6rem] bg-black/25"
         >
@@ -602,6 +642,10 @@
       >
         <!-- Hourly Weather Graph-->
         <div
+          [ngClass]="{
+            'bg-white/50': currentFontColorClass === 'text-sky-950',
+            'bg-black/50': currentFontColorClass === 'text-white'
+          }"
           class="overflow-hidden self-center flex flex-col items-start justify-start rounded-3xl w-full h-[33vh] bg-black/25"
         >
           <!-- Weather Data toggle -->
@@ -711,7 +755,9 @@
                 (currentlySelectedWeather[0].dateTime | date: 'M-d-y'),
               'border-[2px]':
                 (weather.dateTime | date: 'M-d-y') ===
-                (currentlySelectedWeather[0].dateTime | date: 'M-d-y')
+                (currentlySelectedWeather[0].dateTime | date: 'M-d-y'),
+              'bg-white/50': currentFontColorClass === 'text-sky-950',
+              'bg-black/50': currentFontColorClass === 'text-white'
             }"
           >
             <div class="flex flex-col gap-0.5 items-center justify-center">
