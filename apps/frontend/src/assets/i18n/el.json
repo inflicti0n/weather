@@ -16,7 +16,6 @@
       "fog": "Fog",
       "showers": "Showers",
       "heavy-rain": "Heavy Rain",
-      "rain-with-sun": "Rain With Sun",
       "snowy": "Snowy",
       "sleet": "Sleet"
     }
@@ -28,7 +27,7 @@
     "tokyo-japan": "Tokyo, Japan",
     "paris-france": "Paris, France",
     "london-england": "London, England",
-    "stockholm-sweden": "Stockhol, Sweden",
+    "stockholm-sweden": "Stockholm, Sweden",
     "amsterdam-netherlands": "Amsterdam, Netherlands",
     "berlin-germany": "Berlin, Germany",
     "rome-italy": "Rome, Italy",

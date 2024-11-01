@@ -4,8 +4,6 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Location } from './location.entity';
 
 export enum WeatherConditions {
-  Sunny = 'sunny',
-  PartlySunny = 'partly-sunny',
   Clear = 'clear',
   PartlyCloudy = 'partly-cloudy',
   Overcast = 'overcast',
@@ -13,7 +11,6 @@ export enum WeatherConditions {
   Fog = 'fog',
   Showers = 'showers',
   HeavyRain = 'heavy-rain',
-  RainWithSun = 'rain-with-sun',
   Snowy = 'snowy',
   Sleet = 'sleet',
 }

@@ -16,9 +16,21 @@
       "fog": "Fog",
       "showers": "Showers",
       "heavy-rain": "Heavy Rain",
-      "rain-with-sun": "Rain With Sun",
       "snowy": "Snowy",
       "sleet": "Sleet"
+    },
+    "forecast": {
+      "sunny": "Sunny",
+      "partly-sunny": "Partly Sunny",
+      "clear": "Mostly Clear",
+      "partly-cloudy": "Mostly Cloudy",
+      "overcast": "Mostly Overcast",
+      "thunderstorm": "Thunderstorm expected at",
+      "fog": "Mostly Foggy",
+      "showers": "Showers expected at",
+      "heavy-rain": "Heavy rain expected at",
+      "snowy": "Snow expected at",
+      "sleet": "Sleet expected at"
     }
   },
   "locations": {
@@ -28,7 +40,7 @@
     "tokyo-japan": "Tokyo, Japan",
     "paris-france": "Paris, France",
     "london-england": "London, England",
-    "stockholm-sweden": "Stockhol, Sweden",
+    "stockholm-sweden": "Stockholm, Sweden",
     "amsterdam-netherlands": "Amsterdam, Netherlands",
     "berlin-germany": "Berlin, Germany",
     "rome-italy": "Rome, Italy",

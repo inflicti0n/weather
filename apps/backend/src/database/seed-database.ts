@@ -39,13 +39,13 @@ export function generateWeatherInsertsForLocation(location: Location) {
         Math.max(
           Math.floor(
             Math.random() *
-              (lastGeneratedPresetId + 3 - (lastGeneratedPresetId - 3) + 1),
+              (lastGeneratedPresetId + 2 - (lastGeneratedPresetId - 2) + 1),
           ) +
             lastGeneratedPresetId -
-            3,
+            2,
           1,
         ),
-        timeOfDay === 'day' ? 10 : 9,
+        9,
       );
 
       const weatherPreset = getWeatherPresets(timeOfDay)[presetIndex];
@@ -84,7 +84,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
             Math.floor(Math.random() * (15 - 0 + 1)) + 0,
           temperatureCelsius: Math.floor(Math.random() * (30 - 15 + 1)) + 15,
           uvIndex: Math.floor(Math.random() * (6 - 3 + 1)) + 3,
-          weatherCondition: WeatherConditions.Sunny,
+          weatherCondition: WeatherConditions.Clear,
           windGustsKmh: Math.floor(Math.random() * (30 - 15 + 1)) + 15,
           windSpeedKmh: Math.floor(Math.random() * (22 - 5 + 1)) + 5,
         },
@@ -95,7 +95,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
             Math.floor(Math.random() * (1 - 0 + 1)) + 0,
           temperatureCelsius: Math.floor(Math.random() * (27 - 12 + 1)) + 12,
           uvIndex: Math.floor(Math.random() * (4 - 2 + 1)) + 2,
-          weatherCondition: WeatherConditions.PartlySunny,
+          weatherCondition: WeatherConditions.PartlyCloudy,
           windGustsKmh: Math.floor(Math.random() * (30 - 15 + 1)) + 15,
           windSpeedKmh: Math.floor(Math.random() * (22 - 5 + 1)) + 5,
         },
@@ -125,17 +125,6 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
-            Math.floor(Math.random() * (80 - 40 + 1)) + 40,
-          temperatureCelsius: Math.floor(Math.random() * (24 - 12 + 1)) + 12,
-          uvIndex: Math.floor(Math.random() * (3 - 1 + 1)) + 1,
-          weatherCondition: WeatherConditions.RainWithSun,
-          windGustsKmh: Math.floor(Math.random() * (30 - 15 + 1)) + 15,
-          windSpeedKmh: Math.floor(Math.random() * (22 - 5 + 1)) + 5,
-        },
-        6: {
-          airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
-          humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
-          precipitationProbabilityPercent:
             Math.floor(Math.random() * (90 - 60 + 1)) + 60,
           temperatureCelsius: Math.floor(Math.random() * (22 - 8 + 1)) + 8,
           uvIndex: Math.floor(Math.random() * (2 - 1 + 1)) + 1,
@@ -143,7 +132,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           windGustsKmh: Math.floor(Math.random() * (30 - 15 + 1)) + 15,
           windSpeedKmh: Math.floor(Math.random() * (22 - 5 + 1)) + 5,
         },
-        7: {
+        6: {
           airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
@@ -154,7 +143,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           windGustsKmh: Math.floor(Math.random() * (30 - 15 + 1)) + 15,
           windSpeedKmh: Math.floor(Math.random() * (22 - 5 + 1)) + 5,
         },
-        8: {
+        7: {
           airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
@@ -165,7 +154,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           windGustsKmh: Math.floor(Math.random() * (30 - 15 + 1)) + 15,
           windSpeedKmh: Math.floor(Math.random() * (22 - 5 + 1)) + 5,
         },
-        9: {
+        8: {
           airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
@@ -176,7 +165,7 @@ export function getWeatherPresets(timeOfDay: 'day' | 'night') {
           windGustsKmh: Math.floor(Math.random() * (30 - 15 + 1)) + 15,
           windSpeedKmh: Math.floor(Math.random() * (22 - 5 + 1)) + 5,
         },
-        10: {
+        9: {
           airQualityIndex: Math.floor(Math.random() * (100 - 1 + 1)) + 1,
           humidityPercent: Math.floor(Math.random() * (80 - 50 + 1)) + 50,
           precipitationProbabilityPercent:
