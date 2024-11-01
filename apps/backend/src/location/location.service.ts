@@ -14,19 +14,21 @@ export class LocationService {
     this.weatherRepository = WeatherDataSource.getRepository(Weather);
   }
 
-  async getLocations(search?: string): Promise<Location[]> {
-    return search
-      ? this.locationRepository.findBy({
-          name: Like(`%${search}%`),
-        })
-      : this.locationRepository.find();
+  async getLocationIds(search?: string): Promise<string[]> {
+    return (
+      search
+        ? await this.locationRepository.findBy({
+            id: Like(`%${search}%`),
+          })
+        : await this.locationRepository.find()
+    ).map((location: Location) => location.id);
   }
 
   async getLocationWeather(
     locationId: string,
     startTime: Date,
-    endTime?: Date
-  ): Promise<Weather[]> {
+    endTime?: Date,
+  ): Promise<Location> {
     let locationWeatherQuery = this.locationRepository
       .createQueryBuilder('location')
       .leftJoinAndSelect('location.weather', 'weather')
@@ -40,10 +42,10 @@ export class LocationService {
         'weather.dateTime < :endTime',
         {
           endTime: endTime,
-        }
+        },
       );
     }
 
-    return (await locationWeatherQuery.getOne())?.weather;
+    return await locationWeatherQuery.getOne();
   }
 }

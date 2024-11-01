@@ -26,16 +26,16 @@ export class LocationController {
   @Get('')
   @ApiOperation({
     summary:
-      'Get All Locations, optionally a query can be provided to only get matching Locations.',
+      'Get All Location Ids, optionally a query can be provided to only get matching Location Ids.',
   })
   @ApiQuery({
     name: 'search',
-    description: 'The search query to filter locations based on name',
+    description: 'The search query to filter location ids with',
     required: false,
   })
-  @ApiOkResponse({ type: Location, isArray: true })
-  getLocations(@Query('search') search?: string): Promise<Location[]> {
-    return this.locationService.getLocations(search);
+  @ApiOkResponse({ isArray: true })
+  getLocations(@Query('search') search?: string): Promise<string[]> {
+    return this.locationService.getLocationIds(search);
   }
 
   @Get(':locationId/weather')
@@ -61,17 +61,17 @@ export class LocationController {
   @ApiOkResponse({ type: Weather, isArray: true })
   getLocationWeather(
     @Param('locationId') locationId: string,
-    @Query() weatherDateRangeDto: WeatherDateRangeDto
-  ): Promise<Weather[]> {
+    @Query() weatherDateRangeDto: WeatherDateRangeDto,
+  ): Promise<Location> {
     if (weatherDateRangeDto.startTime > weatherDateRangeDto.endTime) {
       throw new BadRequestException(
-        'Start Time should be less than or equal to End Time'
+        'Start Time should be less than or equal to End Time',
       );
     }
     return this.locationService.getLocationWeather(
       locationId,
       weatherDateRangeDto.startTime,
-      weatherDateRangeDto.endTime
+      weatherDateRangeDto.endTime,
     );
   }
 }

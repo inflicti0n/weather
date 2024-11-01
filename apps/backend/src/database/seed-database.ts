@@ -34,13 +34,13 @@ export function generateWeatherInsertsForLocation(location: Location) {
         Math.max(
           Math.floor(
             Math.random() *
-              (lastGeneratedPresetId + 3 - (lastGeneratedPresetId - 3) + 1)
+              (lastGeneratedPresetId + 3 - (lastGeneratedPresetId - 3) + 1),
           ) +
             lastGeneratedPresetId -
             3,
-          1
+          1,
         ),
-        12
+        12,
       );
       const weather = new Weather();
       Object.assign(weather, {
@@ -219,7 +219,7 @@ export function generateLocationInserts() {
   ];
 
   const locations = locationNames.map((locationName) =>
-    Object.assign(new Location(), { name: locationName })
+    Object.assign(new Location(), { id: locationName }),
   );
   return locations;
 }

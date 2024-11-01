@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, of, switchMap } from 'rxjs';
+import { LocationService } from '../../shared/services/location.service';
 
 @Component({
   selector: 'weather-layout-component',
@@ -14,6 +15,7 @@ export class LayoutComponent implements OnInit {
   searchInputControl = new UntypedFormControl();
 
   constructor(
+    private locationService: LocationService,
     private router: Router,
     private route: ActivatedRoute,
   ) {}
@@ -28,7 +30,6 @@ export class LayoutComponent implements OnInit {
       .subscribe((query) => {
         this.searchForLocations(query);
       });
-    this.searchInputControl.setValue('');
 
     //Check if user has navigated to a child route and move the search bar accordingly
     this.router.events
@@ -39,10 +40,11 @@ export class LayoutComponent implements OnInit {
   }
 
   getBackgroundImageClass() {
-    return `bg-[url(assets/backgrounds/sunny-0.png)]`;
+    return `bg-[url(assets/backgrounds/sunny-1.png)]`;
   }
 
   private searchForLocations(query: string) {
     console.log('Searching for : ' + query);
+    this.locationService.getLocations(query).subscribe();
   }
 }

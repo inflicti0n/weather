@@ -11,7 +11,7 @@ import { IconsModule } from './modules/icons/icons.module';
 import { TranslocoRootModule } from './modules/transloco/transloco-root.module';
 import { LayoutModule } from './modules/layout/layout.module';
 import { LocationModule } from './modules/location/location.module';
-import { SharedModule } from './modules/shared/shared.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [AppComponent],
