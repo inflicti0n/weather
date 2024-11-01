@@ -963,23 +963,23 @@ export class LocationDetailsComponent implements OnInit, OnDestroy {
   getCompassArrowRotationClass(windDirection: string) {
     switch (windDirection) {
       case 'north':
-        return 'rotate-0';
-      case 'south':
         return 'rotate-180';
-      case 'west':
-        return '-rotate-90';
-      case 'east':
-        return 'rotate-90';
-      case 'north-west':
-        return '-rotate-45';
-      case 'north-east':
-        return 'rotate-45';
-      case 'south-west':
-        return 'rotate-[225deg]';
-      case 'south-east':
-        return 'rotate-[135deg';
-      default:
+      case 'south':
         return 'rotate-0';
+      case 'west':
+        return 'rotate-90';
+      case 'east':
+        return '-rotate-90';
+      case 'north-west':
+        return 'rotate-[135deg]';
+      case 'north-east':
+        return 'rotate-[225deg]';
+      case 'south-west':
+        return 'rotate-45';
+      case 'south-east':
+        return '-rotate-45';
+      default:
+        return 'rotate-180';
     }
   }
 
