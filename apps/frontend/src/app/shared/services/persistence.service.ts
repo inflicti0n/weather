@@ -84,19 +84,17 @@ export class PersistenceService {
   }
 
   addRecentLocation(locationId: string) {
-    let locationsToSet: string[] = [];
-
     this.storage.get('locations').subscribe((locations: any) => {
-      if (locations && locations.length > 1) {
-        locationsToSet.push(locations[1]);
-      } else if (locations && locations.length > 0) {
-        locationsToSet.push(locations[0]);
+      let locationsToSet = new Set<string>(locations);
+      locationsToSet.add(locationId);
+      const locationArray = [...locationsToSet];
+      if (locationArray.length > 2) {
+        locationArray.shift();
       }
-      locationsToSet.push(locationId);
 
-      this.storage.set('locations', locationsToSet).subscribe((result) => {});
+      this.storage.set('locations', locationArray).subscribe(() => {});
 
-      this.recentLocations$.next(locationsToSet);
+      this.recentLocations$.next(locationArray);
     });
   }
 
