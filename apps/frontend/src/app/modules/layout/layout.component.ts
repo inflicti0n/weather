@@ -39,7 +39,7 @@ export class LayoutComponent implements OnInit {
   }
 
   getBackgroundImageClass() {
-    return `bg-[url(assets/backgrounds/sunny-1.png)]`;
+    return `bg-[url(assets/backgrounds/sunny-1.png)] `;
   }
 
   viewLocation(locationId: string) {

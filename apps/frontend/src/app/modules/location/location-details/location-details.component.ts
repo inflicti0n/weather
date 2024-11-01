@@ -25,10 +25,29 @@ export class LocationDetailsComponent implements OnInit {
   time: Date = new Date(); // global variable for string interpolation on html
   centerSearchBar: boolean = true;
 
+  currentlySelectedWeather: Weather[] = [];
+
+  currentlySelectedSingularWeather: Weather | null = null;
+
   searchInputControl = new UntypedFormControl();
 
   location: Location | null = null;
+
+  currentMonthlyWeather: Record<string, Weather[]> = {};
+
+  currentDayAveragedWeather: {
+    dateTime: Date;
+    temperatureCelsius: number;
+    weatherCondition: string;
+  }[] = [];
+
   currentTimezone: string | null = null;
+
+  dayAveragedWeather: {
+    dateTime: Date;
+    temperatureCelsius: number;
+    weatherCondition: string;
+  }[] = [];
 
   constructor(
     private router: Router,
@@ -46,26 +65,35 @@ export class LocationDetailsComponent implements OnInit {
       const id = params.get('location-id');
       if (id) {
         this.currentTimezone = locationTimezoneMap[id];
-        this.getLocationHourlyWeather(id);
+        this.getLocationMonthlyWeather(id);
       }
     });
   }
 
-  private getLocationHourlyWeather(locationId: string) {
+  private getLocationMonthlyWeather(locationId: string) {
     console.log('getting ', locationId);
     const localTime = now(getLocalTimeZone());
-    setTimeout;
     this.locationService
       .getLocationWeather(
         locationId,
         localTime.subtract({ hours: 1 }).toAbsoluteString(),
-        localTime.add({ hours: 6 }).toAbsoluteString(),
+        localTime.add({ days: 29 }).set({ hour: 23 }).toAbsoluteString(),
       )
       .subscribe((result) => {
+        if (!result) {
+          return;
+        }
         this.location = result;
         if (this.currentTimezone) {
           this.initializeClock(this.currentTimezone);
         }
+        this.currentMonthlyWeather = this.getMonthlyWeather(result.weather);
+
+        this.selectDayWeather(this.location.weather[0].dateTime);
+
+        this.selectHourWeather(this.location.weather[0].dateTime);
+
+        this.dayAveragedWeather = this.getDayAveragedWeather();
       });
   }
 
@@ -88,7 +116,7 @@ export class LocationDetailsComponent implements OnInit {
   }
 
   getHighestLocationTemperature() {
-    const temperatures = this.location?.weather.map(
+    const temperatures = this.currentlySelectedWeather.map(
       (weather: Weather) => weather.temperatureCelsius,
     );
 
@@ -99,7 +127,7 @@ export class LocationDetailsComponent implements OnInit {
   }
 
   getLowestLocationTemperature() {
-    const temperatures = this.location?.weather.map(
+    const temperatures = this.currentlySelectedWeather.map(
       (weather: Weather) => weather.temperatureCelsius,
     );
 
@@ -222,5 +250,216 @@ export class LocationDetailsComponent implements OnInit {
       default:
         return 'rotate-0';
     }
+  }
+
+  getDayAveragedWeather(): {
+    dateTime: Date;
+    temperatureCelsius: number;
+    weatherCondition: string;
+  }[] {
+    const averagedDayWeather = Object.keys(this.currentMonthlyWeather).map(
+      (key) => {
+        const dayWeather = this.currentMonthlyWeather[key];
+
+        const average = (array: number[]) =>
+          array.reduce((p: number, c: number) => p + c, 0) / array.length;
+
+        const averageTemperature = Math.ceil(
+          average(
+            dayWeather.map((weather: Weather) => weather.temperatureCelsius),
+          ),
+        );
+
+        const prevalentCondition = this.getDayForecast(dayWeather);
+
+        const adjustedHourDate = new Date(key);
+        adjustedHourDate.setHours(6);
+        return {
+          dateTime: adjustedHourDate,
+          temperatureCelsius: averageTemperature,
+          weatherCondition: prevalentCondition ? prevalentCondition : '',
+        };
+      },
+    );
+
+    //console.log(averagedDayWeather);
+
+    return averagedDayWeather;
+    /*const dayWeather = weather.forEach((weather: Weather) => {
+      const lol = this.datePipe.transform(
+        new Date(weather.dateTime.toString()),
+        'M-d-y',
+      );
+      const hoh = { lol: 'hjeh' };
+
+      const date = new Date(weather.dateTime);
+      daysWithWeathe;
+      return;
+    });
+
+    const average = (array: number[]) =>
+      array.reduce((p: number, c: number) => p + c, 0) / array.length;
+
+    const averageTemperature = average(
+      weather.map((weather: Weather) => weather.temperatureCelsius),
+    );
+
+    const prevalentCondition = this.getDayForecast(weather);*/
+  }
+
+  getDayForecast(dayWeather: Weather[]) {
+    const disruptiveConditions = [
+      'thunderstorm',
+      'showers',
+      'heavy-rain',
+      'snowy',
+      'sleet',
+    ];
+
+    if (dayWeather) {
+      const weather = [...dayWeather];
+
+      const disruptiveWeather = weather.find((weather: Weather) =>
+        disruptiveConditions.includes(weather.weatherCondition),
+      );
+
+      if (!this.currentTimezone) {
+        return;
+      }
+
+      if (disruptiveWeather) {
+        return disruptiveWeather?.weatherCondition;
+      }
+
+      const conditionOccurences = [
+        { condition: 'clear', occurences: 0 },
+        { condition: 'partly-cloudy', occurences: 0 },
+        { condition: 'overcast', occurences: 0 },
+        { condition: 'fog', occurences: 0 },
+      ];
+
+      weather.forEach((weather: Weather) => {
+        const occurence = conditionOccurences.find(
+          (conditionOccurence) =>
+            conditionOccurence.condition === weather.weatherCondition,
+        );
+        if (occurence) {
+          occurence.occurences++;
+        }
+      });
+
+      const prevalentCondition = conditionOccurences.reduce((prev, current) => {
+        return prev.occurences > current.occurences ? prev : current;
+      });
+
+      return prevalentCondition.condition;
+    }
+    return;
+  }
+
+  selectDayWeather(dateTime: Date) {
+    const dayDate = this.datePipe.transform(
+      new Date(dateTime.toString()),
+      'M-d-y',
+    );
+
+    if (!dayDate) {
+      return;
+    }
+
+    this.currentlySelectedWeather = this.currentMonthlyWeather[dayDate];
+
+    if (!this.currentlySelectedSingularWeather?.dateTime) {
+      return;
+    }
+
+    this.selectHourWeather(this.currentlySelectedWeather[0].dateTime);
+  }
+
+  selectHourWeather(dateTime: Date) {
+    const dayDate = this.datePipe.transform(
+      new Date(dateTime.toString()),
+      'M-d-y',
+    );
+
+    if (!dayDate) {
+      return;
+    }
+
+    this.currentlySelectedWeather = this.currentMonthlyWeather[dayDate];
+
+    const hourWeather = this.currentlySelectedWeather.find(
+      (weather: Weather) => {
+        const dayAndHour = this.datePipe.transform(
+          new Date(dateTime.toString()),
+          'short',
+        );
+        console.log(dayAndHour);
+        if (
+          dayAndHour ===
+          this.datePipe.transform(
+            new Date(weather.dateTime.toString()),
+            'short',
+          )
+        ) {
+          return true;
+        }
+        return false;
+      },
+    );
+
+    if (!hourWeather) return;
+
+    this.currentlySelectedSingularWeather = hourWeather;
+  }
+
+  getMonthlyWeather(weather: Weather[]) {
+    const daysWithWeather: Record<string, Weather[]> = {};
+
+    const dates = weather.map((weather: Weather) =>
+      this.datePipe.transform(new Date(weather.dateTime.toString()), 'M-d-y'),
+    );
+
+    if (!dates) {
+      return daysWithWeather;
+    }
+
+    const uniqueDates = new Set(dates);
+    uniqueDates.forEach((date) => {
+      if (!date) {
+        return;
+      }
+      daysWithWeather[date] = [];
+    });
+
+    weather.forEach((weather: Weather) => {
+      const dateKey = this.datePipe.transform(
+        new Date(weather.dateTime.toString()),
+        'M-d-y',
+      );
+
+      if (!dateKey || dateKey === null) {
+        return;
+      }
+
+      daysWithWeather[dateKey].push(weather);
+    });
+
+    return daysWithWeather;
+  }
+
+  getAirQualityIndexSliderClass(aqi: number): string {
+    if (!aqi) {
+      return '';
+    }
+
+    (val: number, max: number, min: number) => (val - min) / (max - min);
+
+    console.log(`left-[${aqi / 13}rem]`);
+    //return 5;
+    const heh = aqi / 13;
+    const slideAmount = 'left-[' + heh.toString() + 'rem]';
+    console.log(slideAmount);
+    return slideAmount;
   }
 }

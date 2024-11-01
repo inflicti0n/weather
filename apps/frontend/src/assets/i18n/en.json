@@ -5,6 +5,7 @@
   },
   "location": {
     "now": "Now",
+    "today": "Today",
     "view-full-forecast": "View Full Forecast",
     "weather-conditions": {
       "sunny": "Sunny",
