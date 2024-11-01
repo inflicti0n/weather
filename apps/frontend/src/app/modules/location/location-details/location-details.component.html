@@ -1,6 +1,8 @@
+<!-- mt-[4rem] sm:mt-0 fixed z-1 -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2 -->
+
 <div
   *transloco="let t"
-  class="w-[95vw] h-[76vh] mt-[4rem] sm:mt-0 fixed z-1 -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2"
+  class="w-full h-full z-10 items-center justify-center overflow-hidden"
 >
   <!-- Weather Details from Screen > lg -->
   <div
@@ -8,11 +10,11 @@
     class="w-full h-full hidden lg:flex justify-center items-center flex-row gap-8"
   >
     <div
-      class="backdrop-blur-[30px] backdrop-brightness-[1.15] rounded-3xl flex justify-center items-start flex-row gap-8 p-8"
+      class="backdrop-blur-[30px] backdrop-brightness-[1.15] rounded-3xl flex justify-center items-start flex-row gap-8 p-6 tall:p-8"
     >
       <div
         *ngIf="currentlySelectedSingularWeather"
-        class="flex flex-col gap-8 items-start justify-center"
+        class="flex flex-col gap-8 max-h-[85vh] max-w-[50vw] items-start justify-center"
       >
         <div class="absolute top-5">
           <!-- Back Button-->
@@ -24,14 +26,14 @@
           </button>
         </div>
         <!-- Weather Summary-->
-        <div class="flex flex-row justify-center self-center max-w-[26rem]">
+        <div class="flex flex-row justify-center self-center max-h-[35vh]">
           <div
-            class="items-center justify-center flex flex-col self-center text-center gap-3"
+            class="items-center justify-center flex flex-col self-center text-center gap-2 tall:gap-3"
           >
-            <div class="w-full text-4xl font-semibold">
+            <div class="w-full text-2xl tall:text-4xl font-semibold">
               {{ t('locations.' + location.id) }}
             </div>
-            <div class="text-2xl font-semibold">
+            <div class="text-xl tall:text-2xl font-semibold">
               {{
                 currentlySelectedSingularWeather.dateTime | date: 'EEEE, MMMM d'
               }}
@@ -44,14 +46,14 @@
                     currentlySelectedSingularWeather.dateTime
                   )
                 }}"
-                [svgClass]="'w-28 h-28'"
+                [svgClass]="'w-20 h-20'"
               ></svg-icon>
-              <div class="ml-2 text-9xl">
+              <div class="ml-2 text-8xl tall:text-9xl">
                 {{ currentlySelectedSingularWeather.temperatureCelsius }}
               </div>
-              <div class="text-3xl font-semibold">°C</div>
+              <div class="text-2xl tall:text-3xl font-semibold">°C</div>
             </div>
-            <div class="text-2xl font-semibold">
+            <div class="text-xl tall:text-2xl font-semibold">
               {{
                 t(
                   'location.weather-conditions.' +
@@ -59,7 +61,9 @@
                 )
               }}
             </div>
-            <div class="text-2xl font-semibold flex flex-row gap-2">
+            <div
+              class="text-xl tall:text-2xl font-semibold flex flex-row gap-2"
+            >
               <div>
                 {{
                   getLocalTime(currentlySelectedSingularWeather.dateTime)
@@ -72,9 +76,9 @@
           </div>
         </div>
         <!-- Weather Details -->
-        <div class="flex flex-row gap-3">
+        <div class="flex flex-row gap-2 tall:gap-3">
           <!-- Precipitation, Humidity & UV Index -->
-          <div class="flex flex-col gap-3">
+          <div class="flex flex-col gap-2 tall:gap-3">
             <!-- Precipitation -->
             <div class="bg-white/50 py-4 px-5 rounded-3xl flex flex-col gap-2">
               <div
@@ -84,7 +88,7 @@
                 >Precipitation
               </div>
               <div
-                class="flex flex-row text-3xl font-semibold items-center justify-start"
+                class="flex flex-row text-2xl tall:text-3xl font-semibold items-center justify-start"
               >
                 {{
                   currentlySelectedSingularWeather.precipitationProbabilityPercent
@@ -94,13 +98,13 @@
             <!-- Humidity -->
             <div class="bg-white/50 py-4 px-5 rounded-3xl flex flex-col gap-2">
               <div
-                class="flex flex-row items-center justify-start gap-2 text-xl font-semibold"
+                class="flex flex-row items-center justify-start gap-2 text-lg tall:text-xl font-semibold"
               >
                 <svg-icon name="humidity" [svgClass]="'w-6 h-6'"></svg-icon
                 >Humidity
               </div>
               <div
-                class="flex flex-row text-3xl font-semibold items-center justify-start"
+                class="flex flex-row text-2xl tall:text-3xl font-semibold items-center justify-start"
               >
                 {{ currentlySelectedSingularWeather.humidityPercent }}%
               </div>
@@ -108,13 +112,13 @@
             <!-- UV Index -->
             <div class="bg-white/50 py-4 px-5 rounded-3xl flex flex-col gap-2">
               <div
-                class="flex flex-row items-center justify-start gap-2 text-xl font-semibold"
+                class="flex flex-row items-center justify-start gap-2 text-lg tall:text-xl font-semibold"
               >
                 <svg-icon name="uv-index" [svgClass]="'w-6 h-6'"></svg-icon>UV
                 Index
               </div>
               <div
-                class="flex flex-row text-3xl gap-2 font-semibold items-center justify-start"
+                class="flex flex-row text-2xl tall:text-3xl gap-2 font-semibold items-center justify-start"
               >
                 {{ currentlySelectedSingularWeather.uvIndex }}
                 <div class="text-xl">
@@ -140,7 +144,7 @@
             </div>
           </div>
           <!-- Wind, Gusts & Air Quality Index-->
-          <div class="flex flex-col gap-3">
+          <div class="flex flex-col gap-2 tall:gap-3">
             <!-- Wind & Gusts -->
 
             <div
@@ -148,14 +152,14 @@
             >
               <div class="flex flex-col items-start gap-[0.3rem]">
                 <!-- Wind -->
-                <div class="flex flex-col py-4 gap-2">
+                <div class="flex flex-col py-3.5 tall:py-4 gap-2">
                   <div
-                    class="flex flex-row items-center justify-start gap-2 text-xl font-semibold"
+                    class="flex flex-row items-center justify-start gap-2 text-lg tall:text-xl font-semibold"
                   >
                     <svg-icon name="wind" [svgClass]="'w-6 h-6'"></svg-icon>Wind
                   </div>
                   <div
-                    class="flex flex-row text-3xl font-semibold items-center justify-start"
+                    class="flex flex-row text-2xl tall:text-3xl font-semibold items-center justify-start"
                   >
                     {{ currentlySelectedSingularWeather.windSpeedKmh }} km/h
                   </div>
@@ -164,15 +168,15 @@
                   class="border-solid border-black rounded-full border-[1.5px] w-full"
                 ></div>
                 <!-- Gusts -->
-                <div class="flex flex-col py-4 gap-2">
+                <div class="flex flex-col py-4 tall:py-4 gap-2">
                   <div
-                    class="flex flex-row items-center justify-start gap-2 text-xl font-semibold"
+                    class="flex flex-row items-center justify-start gap-2 text-lg tall:text-xl font-semibold"
                   >
                     <svg-icon name="gusts" [svgClass]="'w-6 h-6'"></svg-icon
                     >Gusts
                   </div>
                   <div
-                    class="flex flex-row text-3xl font-semibold items-center justify-start"
+                    class="flex flex-row text-2xl tall:text-3xl font-semibold items-center justify-start"
                   >
                     {{ currentlySelectedSingularWeather.windGustsKmh }} km/h
                   </div>
@@ -207,7 +211,7 @@
             <!-- Air Quality Index -->
             <div class="bg-white/50 py-4 px-5 rounded-3xl flex flex-col gap-2">
               <div
-                class="flex flex-row items-center justify-start gap-2 text-xl font-semibold"
+                class="flex flex-row items-center justify-start gap-2 text-lg tall:text-xl font-semibold"
               >
                 <svg-icon
                   name="air-quality-index"
@@ -216,7 +220,7 @@
                 >Air Quality Index
               </div>
               <div
-                class="flex flex-row text-3xl gap-2 font-semibold items-center justify-start"
+                class="flex flex-row text-2xl tall:text-3xl gap-2 font-semibold items-center justify-start"
               >
                 {{ currentlySelectedSingularWeather.airQualityIndex }}
                 <div class="text-xl">
@@ -246,14 +250,14 @@
 
       <!-- 30 Day Forecast, Graph & List -->
       <div
-        class="flex flex-col max-w-[40rem] items-start justify-start rounded-full gap-2"
+        class="flex flex-col max-h-[85vh] max-w-[30vw] items-start justify-start rounded-full gap-2"
       >
-        <div class="text-4xl font-semibold">30 Day Forecast</div>
+        <div class="text-2xl tall:text-4xl font-semibold">30 Day Forecast</div>
         <!-- 30 Day Forecast Container -->
         <div
           (wheel)="onWheel($event)"
           id="day-weather-container"
-          class="flex items-start scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25 justify-start flex-row w-full h-4/6 gap-5 py-3 overflow-x-auto"
+          class="flex items-start scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25 justify-start flex-row w-full gap-3 tall:gap-5 py-1 tall:py-3 overflow-x-auto"
         >
           <button
             (click)="selectDayWeather(weather.dateTime)"
@@ -262,7 +266,7 @@
               let first = first;
               let last = last
             "
-            class="flex bg-white/50 rounded-2xl px-6 py-3 flex-col h-full justify-center items-center gap-4"
+            class="flex bg-white/50 rounded-2xl px-6 py-3 flex-col h-full justify-center items-center gap-2 tall:gap-4"
             [ngClass]="{
               'border-white':
                 (weather.dateTime | date: 'M-d-y') ===
@@ -329,7 +333,7 @@
         <!-- Hourly Weather List -->
         <div
           *ngIf="hourlyWeatherStyleToggle === 'list'"
-          class="gap-2 flex flex-col max-w-[40rem] items-start rounded-3xl w-full h-[23.6rem] px-3 py-3 bg-white/50 overflow-y-auto scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25"
+          class="gap-2 flex flex-col w-full items-start rounded-3xl w-full h-[23.6rem] px-3 py-3 bg-white/50 overflow-y-auto scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25"
         >
           <button
             *ngFor="
@@ -389,7 +393,7 @@
             block: hourlyWeatherStyleToggle === 'graph',
             hidden: hourlyWeatherStyleToggle !== 'graph'
           }"
-          class="overflow-hidden flex flex-col max-w-[40rem] items-start justify-start rounded-3xl w-full h-[23.6rem] bg-black/25"
+          class="overflow-hidden flex flex-col w-full items-start justify-start rounded-3xl w-full h-[20rem] tall:h-[23.6rem] bg-black/25"
         >
           <!-- Weather Data toggle -->
           <div class="flex flex-row mt-3 -ml-4 w-full items-center justify-end">
@@ -474,10 +478,10 @@
   <!-- Weather Details from Screen < lg -->
   <div
     *ngIf="location"
-    class="w-full h-full flex lg:hidden justify-center items-center flex-row gap-3"
+    class="w-full h-full flex lg:hidden justify-center items-center flex-col gap-3"
   >
     <div
-      class="rounded-3xl flex justify-center items-center flex-col gap-3 p-8"
+      class="rounded-3xl flex justify-center items-center flex-col gap-3 px-2 pt-3"
     >
       <div
         *ngIf="currentlySelectedSingularWeather"
@@ -488,7 +492,7 @@
           <div
             class="items-start justify-center flex flex-col self-center text-start"
           >
-            <div class="text-xl font-semibold">
+            <div class="text-xl font-semibold truncate">
               {{ t('locations.' + location.id) }}
             </div>
             <div class="font-semibold">
@@ -589,7 +593,7 @@
       >
         <!-- Hourly Weather Graph-->
         <div
-          class="overflow-hidden self-center flex flex-col max-w-[40rem] items-start justify-start rounded-3xl w-full h-[33vh] bg-black/25"
+          class="overflow-hidden self-center flex flex-col items-start justify-start rounded-3xl w-full h-[33vh] bg-black/25"
         >
           <!-- Weather Data toggle -->
           <div class="flex flex-row mt-3 -ml-4 w-full items-center justify-end">
@@ -653,7 +657,7 @@
               </button>
             </div>
           </div>
-          <div class="w-full px-2 flex items-center justify-center h-[10rem]">
+          <div class="w-full px-2 flex items-center justify-center h-full">
             <canvas id="myChart2"></canvas>
           </div>
           <div
@@ -674,7 +678,7 @@
         <div
           (wheel)="onWheel($event)"
           id="day-weather-container"
-          class="flex items-start scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25 justify-start flex-row w-full h-4/6 gap-2 py-1 overflow-x-auto"
+          class="flex items-start scrollbar-thin scrollbar-thumb-white/50 scrollbar-track-white/25 justify-start flex-row w-full h-26 gap-2 py-1 overflow-x-auto"
         >
           <button
             (click)="selectDayWeather(weather.dateTime)"

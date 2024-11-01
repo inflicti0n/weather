@@ -25,6 +25,12 @@ module.exports = {
       '2xl': '1536px',
       // => @media (min-width: 1536px) { ... }
     },
+    extend: {
+      screens: {
+        tall: { raw: '(min-height: 890px)' },
+        // => @media (min-height: 800px) { ... }
+      },
+    },
   },
   plugins: [require('tailwind-scrollbar')],
 };
