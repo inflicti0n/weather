@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsOptional, IsUrl } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class WeatherDateRangeDto {
   @IsNotEmpty()

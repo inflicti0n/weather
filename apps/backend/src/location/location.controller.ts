@@ -60,7 +60,7 @@ export class LocationController {
   })
   @ApiOkResponse({ type: Weather, isArray: true })
   getLocationWeather(
-    @Param() locationId: string,
+    @Param('locationId') locationId: string,
     @Query() weatherDateRangeDto: WeatherDateRangeDto
   ): Promise<Weather[]> {
     if (weatherDateRangeDto.startTime > weatherDateRangeDto.endTime) {

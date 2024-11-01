@@ -29,9 +29,9 @@ export class LocationService {
   ): Promise<Weather[]> {
     let locationWeatherQuery = this.locationRepository
       .createQueryBuilder('location')
-      .where('location.id = :locationId', { locationId: locationId })
       .leftJoinAndSelect('location.weather', 'weather')
-      .where('weather.dateTime > :startTime', {
+      .where('location.id = :locationId', { locationId: locationId })
+      .andWhere('weather.dateTime > :startTime', {
         startTime: startTime,
       });
 

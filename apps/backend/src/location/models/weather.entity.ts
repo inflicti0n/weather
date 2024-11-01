@@ -4,18 +4,18 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Location } from './location.entity';
 
 export enum WeatherConditions {
-  'sunny',
-  'partly-sunny',
-  'clear',
-  'partly-cloudy',
-  'overcast',
-  'thunderstorm',
-  'fog',
-  'showers',
-  'heavy-rain',
-  'rain-with-sun',
-  'snowy',
-  'sleet',
+  Sunny = 'sunny',
+  PartlySunny = 'partly-sunny',
+  Clear = 'clear',
+  PartlyCloudy = 'partly-cloudy',
+  Overcast = 'overcast',
+  Thunderstorm = 'thunderstorm',
+  Fog = 'fog',
+  Showers = 'showers',
+  HeavyRain = 'heavy-rain',
+  RainWithSun = 'rain-with-sun',
+  Snowy = 'snowy',
+  Sleet = 'sleet',
 }
 
 @Entity()
@@ -25,7 +25,7 @@ export class Weather {
   id: string;
 
   @ApiProperty()
-  @Column()
+  @Column({ type: 'date' })
   dateTime: Date;
 
   @ApiProperty()
