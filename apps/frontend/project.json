@@ -56,7 +56,8 @@
       },
       "defaultConfiguration": "development",
       "options": {
-        "proxyConfig": "apps/frontend/proxy.conf.json"
+        "proxyConfig": "apps/frontend/proxy.conf.json",
+        "host": "0.0.0.0"
       }
     },
     "extract-i18n": {
