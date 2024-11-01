@@ -1,4 +1,10 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Param,
+  Query,
+} from '@nestjs/common';
 import {
   ApiOkResponse,
   ApiOperation,
@@ -10,6 +16,7 @@ import {
 import { LocationService } from './location.service';
 import { Location } from './models/location.entity';
 import { Weather } from './models/weather.entity';
+import { WeatherDateRangeDto } from './dto/date-range.dto';
 
 @ApiTags('Location')
 @Controller('location')
@@ -52,15 +59,19 @@ export class LocationController {
     required: false,
   })
   @ApiOkResponse({ type: Weather, isArray: true })
-  getWeather(
+  getLocationWeather(
     @Param() locationId: string,
-    @Query('startTime') startTime: Date,
-    @Query('endTime') endTime?: Date
+    @Query() weatherDateRangeDto: WeatherDateRangeDto
   ): Promise<Weather[]> {
+    if (weatherDateRangeDto.startTime > weatherDateRangeDto.endTime) {
+      throw new BadRequestException(
+        'Start Time should be less than or equal to End Time'
+      );
+    }
     return this.locationService.getLocationWeather(
       locationId,
-      startTime,
-      endTime
+      weatherDateRangeDto.startTime,
+      weatherDateRangeDto.endTime
     );
   }
 }

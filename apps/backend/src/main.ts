@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
@@ -8,7 +8,9 @@ import { SeedDatabase } from './database/seed-database';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe());
 
+  //Swagger Initialization
   const config = new DocumentBuilder()
     .setTitle('Weather')
     .setDescription('Weather API documentation')
@@ -18,6 +20,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+  //Database Initialization & Seeding
   await WeatherDataSource.initialize();
   await SeedDatabase();
 
