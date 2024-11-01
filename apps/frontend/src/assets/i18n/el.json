@@ -1,0 +1,10 @@
+{
+  "overlay": {
+    "search": "Search location",
+    "recent-locations": "Recent Locations"
+  },
+  "locations": {
+    "athens-greece": "Athens, Greece",
+    "larissa-greece": "Larissa, Greece"
+  }
+}

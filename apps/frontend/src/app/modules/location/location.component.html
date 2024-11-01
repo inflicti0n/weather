@@ -1,0 +1,25 @@
+<div
+  *transloco="let t"
+  class="w-[60vw] h-[33vh] relative sm:fixed z-1 -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2"
+>
+  <div class="w-full h-full flex flex-row gap-8">
+    <div
+      class="w-[35%] h-full items-center justify-center flex flex-col p-4 text-center gap-3"
+    >
+      <div class="w-full text-4xl font-semibold">
+        {{ t('locations.athens-greece') }}
+      </div>
+      <div class="text-2xl font-semibold">Wednesday, January 17</div>
+      <div class="flex flex-row justify-center mt-4">
+        <svg-icon name="sunny" [svgClass]="'w-28 h-28'"></svg-icon>
+        <div class="ml-2 text-9xl">25</div>
+        <div class="text-3xl font-semibold">°C</div>
+      </div>
+      <div class="text-2xl font-semibold">Sunny</div>
+      <div class="text-2xl font-semibold">6:45 PM &nbsp; H : 25° L : 21°</div>
+    </div>
+    <div
+      class="w-[65%] h-full backdrop-blur-[30px] backdrop-brightness-[1.15] rounded-3xl"
+    ></div>
+  </div>
+</div>

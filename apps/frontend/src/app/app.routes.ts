@@ -1,16 +1,19 @@
 import { Route } from '@angular/router';
-import { OverlayComponent } from './modules/overlay/overlay.component';
+import { LayoutComponent } from './modules/layout/layout.component';
+import { LocationComponent } from './modules/location/location.component';
 
 export const appRoutes: Route[] = [
   // Landing route
   {
     path: '',
-    component: OverlayComponent,
-    /* children: [
+    title: 'weather',
+    component: LayoutComponent,
+    children: [
       {
-        path: 'landing',
-        loadChildren: () => import('app/modules/landing/home/home.module').then((m) => m.LandingHomeModule),
+        path: ':location-name',
+        component: LocationComponent,
       },
-    ],*/
+    ],
   },
+  { path: '**', component: LayoutComponent },
 ];

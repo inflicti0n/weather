@@ -3,13 +3,28 @@
 @include mat.core();
 
 /* You can add global styles to this file, and also import other style files */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 @import '@fontsource/comfortaa';
 
-
 body {
   font-family: 'Comfortaa';
+}
+
+@layer utilities {
+  /*
+    Chromium browsers don't render nested backdrop filters.
+    As a workaround, add 'before:' to the outer filter, along with 'before:backdrop-fix':
+
+      <div class="before:backdrop-blur-md before:backdrop-fix>
+        <div class="backdrop-blur-md"></div>
+      </div>
+
+    See https://stackoverflow.com/a/76207141.
+  */
+  .backdrop-fix {
+    @apply absolute inset-0 -z-10;
+  }
 }
